@@ -150,8 +150,11 @@ Doctrine: `autopilot/skill/references/style-family-selector.md`.
 Classify the prospect into the correct ProofPilot style family before any design spec gets written. Output `/tmp/<client>/template-pick.md`.
 
 #### Stage 5c — Designer Brain *(mandatory — routed to Gemini 3.1 Pro)*
-Doctrine: `autopilot/skill/references/design-strategist.md` + `autopilot/skill/references/gold-standard-playbook.md` + `autopilot/skill/references/inspiration/inspiration-guide.md` + `autopilot/skill/references/model-routing.md` + `autopilot/skill/references/style-family-selector.md`.
-Decide preserve / elevate / invent for each element. Lock the palette (logo-derived only). Lock typography (preserve equity > elevate weight > invent face). Commit to ONE motif. Commit to ONE section-transition signature.
+Doctrine: `autopilot/skill/references/style-family-selector.md` + `autopilot/skill/references/style-presets.md` + `autopilot/skill/references/design-strategist.md` + `autopilot/skill/references/gold-standard-playbook.md` + `autopilot/skill/references/inspiration/180sites-portfolio-dna.md` + `autopilot/skill/references/inspiration/betheanomaly-portfolio-dna.md` + `autopilot/skill/references/inspiration/hookagency-portfolio-dna.md` + `autopilot/skill/references/inspiration/inspiration-guide.md` + `autopilot/skill/references/model-routing.md`.
+
+**Pick preset first.** Stage 5b locked the family. Narrow to one of 7 presets in `style-presets.md` (rugged-industrial / archetype-mascot / dfw-luxe-aerial / contractor-heritage / editorial-serif / playful-chunky-consumer / premium-design-build). **No defaulting to editorial-serif** for home service brands. Cite the 180 Sites / Be The Anomaly / Hook Agency DNA reference builds as your design ancestors.
+
+Then decide preserve / elevate / invent for each element. Lock the palette (logo-derived only). Lock typography (preset-bounded). Commit to ONE motif. Commit to ONE section-transition signature.
 
 **Model routing: dispatch this stage to Gemini 3.1 Pro** via `./scripts/gemini-dispatch.sh` (see `autopilot/skill/references/model-routing.md`). Claude writes the brief, Gemini produces `design-spec.md`, Claude reads it and proceeds. Fallback: if Gemini is unreachable, Claude runs the stage itself.
 
