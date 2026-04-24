@@ -22,7 +22,26 @@ This chains:
 3. `npm install` + smoke build
 4. Reports ready for brand-swap pass
 
-**Valid presets** (each has a ref-* clone + patterns/<preset>/ library):
+**Vertical bundles — prefer these over raw presets when the client's vertical has a bundle.** Pre-composed bundles = preset clone + matching vertical patterns + vertical-tuned palette nudges. Validated April 2026 on Premier Pest AZ (rugged-industrial-pest bundle).
+
+| Bundle | For vertical | Base preset | Ships with |
+|--------|--------------|-------------|------------|
+| `ref-contractor-heritage-roofing` | Roofing | contractor-heritage | RoofingSignatureSystem + TeamLedProcess + VisualizerCta + Financing |
+| `ref-rugged-industrial-pest` | Pest control | rugged-industrial | PestEmergencyBand + family-team section + pest services + pest FAQ |
+| `ref-dfw-luxe-aerial-landscape` | Landscape/hardscape | dfw-luxe-aerial | DroneReelGrid + MasonryAerials + AboutFounder + green accent nudge |
+
+Manual bootstrap when using a bundle (init-from-clone.sh doesn't know about bundles yet — roadmap):
+
+```bash
+SRC=~/proofpilot-agents/websitepilot/templates/sources/ref-<preset>-<vertical>
+DST=/tmp/<client>-demo
+cp -R "$SRC" "$DST"
+rm -rf "$DST/node_modules" "$DST/dist" "$DST/deploy-receipt.json"
+./scripts/scrub-template.sh "$DST" --logo ... --client-name ... --tagline ... --brand-color ...
+cd "$DST" && npm install
+```
+
+**Valid raw presets** (each has a ref-* clone + patterns/<preset>/ library):
 
 | Preset | Clone DNA source | Typography | Palette |
 |--------|------------------|------------|---------|
