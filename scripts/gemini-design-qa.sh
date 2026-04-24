@@ -145,6 +145,32 @@ Consider these common failure modes:
 9. Photography treatment (grayscale/duotone/tint) missing from spec'd sections.
 10. Default template colors (Bootstrap blue, shadcn defaults) slipped through.
 
+ANTI-FALSE-POSITIVE RULES (critical — apply BEFORE flagging Must-fix):
+
+A. "Placeholder vs real content" — Only flag content as placeholder if it matches
+   ONE of these specific patterns:
+   - Literal "Lorem ipsum" / "TODO" / "{{variable}}" / "TBD" in visible copy
+   - Obvious image placeholder (gray box with text like "IMAGE HERE")
+   - Stock-template strings ("Change this to your own copy...")
+   Do NOT flag real client copy as placeholder just because it sounds generic
+   or template-like. If the copy references specific client facts (city, phone,
+   founder name, plan tier, vertical term), it is REAL content.
+
+B. "Alignment inconsistency" — Centered H2 over a grid of cards is a CORRECT
+   pattern, not an inconsistency. Cards internally-left-aligned while section
+   heading is centered is standard web design. Only flag TRUE misalignment:
+   H2 centered + single block below left-aligned with no grid/card context.
+
+C. "Same issue repeats on round 2" — if a Must-fix item from round 1 is flagged
+   again in round 2 AND the implementer disputes it in the interim, treat as a
+   Flash false-positive and don't block ship. Move the item to "Won't fix" with
+   reason "Flash false-positive, verified by implementer."
+
+D. DOM-verify before flagging motif / watermark absence — elements at < 10%
+   opacity are often rendered but hard for vision to detect. If the spec calls
+   for a watermark at 5% opacity, don't flag it as missing unless you can also
+   verify via DOM inspection it truly isn't there.
+
 OUTPUT CONTRACT — write EXACTLY this markdown structure:
 
 # Design QA — <client> — Round <N>

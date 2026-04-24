@@ -48,6 +48,7 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 CLIENT=""
 PRESET=""
+BUNDLE=""
 LOGO=""
 CLIENT_NAME=""
 TAGLINE=""
@@ -58,6 +59,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --client)        CLIENT="$2"; shift 2 ;;
     --preset)        PRESET="$2"; shift 2 ;;
+    --bundle)        BUNDLE="$2"; shift 2 ;;
     --logo)          LOGO="$2"; shift 2 ;;
     --client-name)   CLIENT_NAME="$2"; shift 2 ;;
     --tagline)       TAGLINE="$2"; shift 2 ;;
@@ -73,24 +75,34 @@ while [[ $# -gt 0 ]]; do
 done
 
 [[ -z "$CLIENT" ]] && { echo "error: --client required" >&2; exit 2; }
-[[ -z "$PRESET" ]] && { echo "error: --preset required" >&2; exit 2; }
 [[ -z "$LOGO" || ! -f "$LOGO" ]] && { echo "error: --logo <path> required and must exist" >&2; exit 2; }
 [[ -z "$CLIENT_NAME" ]] && { echo "error: --client-name required" >&2; exit 2; }
+
+# --bundle takes precedence over --preset when both provided
+if [[ -n "$BUNDLE" ]]; then
+  REF_SOURCE="$REPO_ROOT/websitepilot/templates/sources/ref-$BUNDLE"
+  SOURCE_LABEL="$BUNDLE (vertical bundle)"
+elif [[ -n "$PRESET" ]]; then
+  REF_SOURCE="$REPO_ROOT/websitepilot/templates/sources/ref-$PRESET"
+  SOURCE_LABEL="$PRESET (preset)"
+else
+  echo "error: --preset <name> or --bundle <name> required" >&2
+  echo "" >&2
+  echo "valid presets + bundles:" >&2
+  ls "$REPO_ROOT/websitepilot/templates/sources/" | grep '^ref-' | sed 's/^ref-/  - /' >&2
+  exit 2
+fi
 
 if ! [[ "$CLIENT" =~ ^[a-z0-9][a-z0-9-]*$ ]]; then
   echo "error: --client slug must be lowercase-with-dashes" >&2
   exit 2
 fi
 
-REF_SOURCE="$REPO_ROOT/websitepilot/templates/sources/ref-$PRESET"
 if [[ ! -d "$REF_SOURCE" ]]; then
-  echo "error: preset '$PRESET' has no ref-* clone at $REF_SOURCE" >&2
+  echo "error: source '$SOURCE_LABEL' has no ref-* template at $REF_SOURCE" >&2
   echo "" >&2
-  echo "valid presets (as of this repo):" >&2
+  echo "valid presets + bundles (as of this repo):" >&2
   ls "$REPO_ROOT/websitepilot/templates/sources/" | grep '^ref-' | sed 's/^ref-/  - /' >&2
-  echo "" >&2
-  echo "if your preset needs a clone, either pick a different preset OR fall back" >&2
-  echo "to a legacy scaffold (rockin-rugged, state48glass, keystone, proactive-pool, doggy-detail)" >&2
   exit 3
 fi
 
@@ -98,7 +110,7 @@ DEMO_DIR="/tmp/$CLIENT-demo"
 
 echo "┌─ init-from-clone"
 echo "│  client:   $CLIENT"
-echo "│  preset:   $PRESET"
+echo "│  using:    $SOURCE_LABEL"
 echo "│  source:   $REF_SOURCE"
 echo "│  dest:     $DEMO_DIR"
 echo "│  logo:     $LOGO"

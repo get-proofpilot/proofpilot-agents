@@ -1,0 +1,28 @@
+{
+  "name": "ref-playful-chunky-consumer-junk",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Pre-composed bundle: ref-playful-chunky-consumer base (Santa Banana DNA — Fira Sans 900 UPPERCASE, navy + candy-yellow + red + lime go-energy) + junk-removal vertical patterns (MultiStepServiceTypeIntake, JunkServicePhotoTiles, JunkFlatRatePricingHero, ExteriorInstantQuotePromise text-a-photo). Internal ProofPilot template only.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.16.5",
+    "@types/react": "^18.3.23",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react-swc": "^3.11.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.3",
+    "vite": "^5.4.19"
+  }
+}

@@ -116,6 +116,22 @@ Decision rules:
   - dental/medical/legal/family-practice → editorial-serif
 - NEVER default to editorial-serif for trades. It was wrong on Richardson Pest v1.
 
+VERTICAL BUNDLE OVERRIDE — when a pre-composed bundle matches the client's vertical,
+prefer it over the raw preset because it ships with vertical-specific sections
+already composed (saves the Website Brain 30-60% of composition work):
+
+| Bundle slug | Base preset | Matches when client vertical is |
+|-------------|-------------|---------------------------------|
+| `contractor-heritage-roofing` | contractor-heritage | Roofing / roof-repair / roofing contractor |
+| `contractor-heritage-hvac` | contractor-heritage | HVAC / heating / cooling / water-heater |
+| `rugged-industrial-pest` | rugged-industrial | Pest control / extermination / scorpion / termite |
+| `dfw-luxe-aerial-landscape` | dfw-luxe-aerial | Landscape / hardscape / outdoor living |
+| `playful-chunky-consumer-junk` | playful-chunky-consumer | Junk removal / hauling / dumpster rental |
+| `premium-design-build-kitchen-bath` | premium-design-build | Kitchen remodel / bath remodel / interior design-build |
+
+If you recommend a bundle, the output MUST include BOTH a preset pick AND a bundle
+recommendation, and the init command MUST use `--bundle <slug>` (not `--preset <slug>`).
+
 OUTPUT FORMAT — write exactly this markdown structure:
 
 ```
@@ -142,12 +158,25 @@ Why:
 Rejected presets within family (1 line each):
 - <preset>: <why not>
 
-## Stage 2.7 — Clone Template
-**Clone:** `ref-<preset>` (DNA from <source site>)
+## Stage 2.7 — Clone Template OR Bundle
+**Clone:** `ref-<preset>` OR bundle `ref-<preset>-<vertical>`
+**Use bundle:** <yes|no — only yes if the client's vertical matches one of the 6 bundles>
+**Reason:** <1-line rationale for preset-only vs bundle>
 
 ## Init command
 
-Run:
+If using a vertical bundle:
+\`\`\`bash
+./scripts/init-from-clone.sh \\
+  --client <slug> \\
+  --bundle <preset>-<vertical> \\
+  --logo <path-to-logo.png> \\
+  --client-name "<Display Name>" \\
+  --tagline "<one-line tagline>" \\
+  --brand-color "<#hex primary logo color>"
+\`\`\`
+
+Otherwise (preset-only):
 \`\`\`bash
 ./scripts/init-from-clone.sh \\
   --client <slug> \\
@@ -157,6 +186,8 @@ Run:
   --tagline "<one-line tagline>" \\
   --brand-color "<#hex primary logo color>"
 \`\`\`
+
+OMIT the init command variant you're not recommending.
 
 ## Design warning
 <1 paragraph on what would make this drift into template-energy OR wrong-preset-energy>

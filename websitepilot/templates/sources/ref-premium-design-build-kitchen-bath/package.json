@@ -1,0 +1,28 @@
+{
+  "name": "ref-premium-design-build-kitchen-bath",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Pre-composed bundle: ref-premium-design-build base (cincomosqueteros.co DNA — Manrope + Fraunces italic accent, black/cream/muted-gold) specialized for KITCHEN & BATH REMODEL design-build studios. Adds before/after dragger, design-build phased system, NKBA/Houzz press, and a premium financing card. CTAs stay 'Start a Project' / 'Begin the Conversation' — never 'Get a Quote'.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}
