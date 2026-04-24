@@ -2,6 +2,13 @@
 
 > Aggressive brand-asset extraction from a client's live site. This is what `brand_extractor.py` should do but doesn't yet — when running AutoPilot via the skill (locally in Claude Code), follow this procedure manually.
 
+## Gotchas (read before you start)
+
+- **Playwright MCP writes screenshots to the user's home dir, not the CWD.** After `browser_take_screenshot(filename: "home.png")` you'll find the file at `~/home.png` (or similar) — not in `/tmp/<client>/assets/`. Either pass an absolute path within your allowed roots, or `mv` the file to the right place after capture. Confirmed during Richardson Pest run (April 2026).
+- **Weebly / Squarespace / Wix templates declare 100+ unused `@font-face` entries.** Filter `document.fonts` to just the ones with an actual loaded state AND used by H1/H2/body — the raw list is noise.
+- **Single-color PNG logos** (like Richardson's scorpion) have most pixels in the anti-alias halo. Pillow quantization still works but the dominant color will be 70-85% of opaque pixels + a long tail of halo shades.
+- **Client sites may have NO favicon / NO apple-touch / NO OG image.** Report as `null` in brand-brain.json; Website Brain will auto-generate from the motif later.
+
 ## Why this exists
 
 Default brand extraction is HTML-scraping only. It returns CSS variable names, font families, and image URLs without ever downloading or analyzing the actual assets. The result: AutoPilot demos look "generic" because they treat the brand as a JSON blob to override, not real equity to preserve and elevate.
@@ -125,6 +132,26 @@ Read `/`, `/about`, `/contact`. Capture:
 - Audience signals — does copy address homeowners, GCs, builders, property managers, all?
 - Trade-specific vocabulary worth preserving (e.g. "panel upgrade", "tract communities", "rough-in", "trim-out")
 
+### 7. Fit signals for style-family selection
+
+Before handing off to Designer Brain, classify the site on a few structured axes using only evidence you can point to:
+
+- **brand_maturity** — `preserve+elevate`, `partial-anchor`, or `invent`
+- **proof_density** — `sparse`, `moderate`, or `rich`
+- **service_model** — choose the clearest match:
+  - `urgent one-off`
+  - `authority-first lead gen`
+  - `inspection-led`
+  - `quote-led`
+  - `recurring plan`
+  - `design-build project`
+  - `gallery-led lead gen`
+  - `friendly operator`
+- **price_point** — `mid`, `upper-mid`, or `premium`
+- **visual_temperament** — 3-5 adjectives grounded in the current brand and market reality
+
+This is not the design strategy yet. It is a factual classifier that helps the next stage choose the right style family.
+
 ## Output: `brand-archaeology-v2.json`
 
 Required keys:
@@ -156,6 +183,14 @@ Required keys:
     "tone": "...",
     "audience_signals": [...],
     "industry_vocabulary": [...]
+  },
+  "fit_signals": {
+    "brand_maturity": "partial-anchor",
+    "proof_density": "moderate",
+    "service_model": "authority-first lead gen",
+    "price_point": "upper-mid",
+    "visual_temperament": ["clear", "trust-heavy", "service-first"],
+    "why": ["bullet 1", "bullet 2"]
   },
   "salvageable_equity": "1-paragraph verdict — what to preserve, what to invent"
 }

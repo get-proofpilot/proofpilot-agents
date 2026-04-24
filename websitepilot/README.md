@@ -5,8 +5,8 @@ discovery to close-ready proof by shipping a bundle: sales audit +
 strategy blueprint + live demo homepage + close pitch.
 
 See `ARCHITECTURE.md` for the pipeline diagram, `skill/SKILL.md` for
-the full operating doctrine, and `templates/README.md` for the 12-
-template design library.
+the full operating doctrine, and `templates/README.md` for the
+style-family design library.
 
 ## Quick run
 
@@ -44,9 +44,9 @@ curl -X POST https://proofpilot-agents.up.railway.app/api/agents/website/templat
 - `bundle.py` — tier shaping + handoff block
 - `schemas.py` — Pydantic I/O
 - `prompts/` — system prompts (3)
-- `templates/` — 12-template design library + selector + sync script
+- `templates/` — 14-profile design library + selector + sync script
   - `registry.json` — template profiles
-  - `sources/` — curated source-code mirrors (5 archetypes)
+  - `sources/` — curated source-code mirrors (6 archetypes)
 - `visual_qa.py` — Playwright + Claude vision compare loop
 - `skill/` — full operating doctrine (SKILL.md + references + related)
 - `tests/` — pytest smoke tests

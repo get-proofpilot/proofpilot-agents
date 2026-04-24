@@ -30,10 +30,11 @@ It **composes** other pilots. It does not duplicate their internals.
 - `bundle.py` — tier shaping + handoff block rendering
 - `schemas.py` — Pydantic I/O
 - `prompts/` — three system prompts (websitepilot / demo_brief / close_pitch)
-- `templates/` — 12-profile design library + selector + sync script
+- `templates/` — scaffold library + family-first selector + sync script
   - `registry.json` — template profiles
   - `library.py` — loader + scorer + context builder
   - `sources/<slug>/` — curated mirror per source archetype
+- `style-families/` — doctrine + starter code for the 4 canonical visual families
 - `visual_qa.py` — Playwright + Claude vision screenshot compare
 - `skill/` — full SKILL.md + references + related-skill doctrine
 - `ARCHITECTURE.md` — the pipeline diagram and design rationale
@@ -50,13 +51,19 @@ It **composes** other pilots. It does not duplicate their internals.
 - Templates are **structural DNA**, not content DNA. Use their section
   rhythm, module ideas, and layout confidence — never copy brand
   names or client-specific copy.
-- 12 profiles, 5 source archetypes. Multiple profiles can point at the
+- 4 style families, 14 profiles, 6 source archetypes. Multiple profiles can point at the
   same source but emphasize different angles
   (state48-authority-blue vs state48-estimator-led, etc).
+- Family first, scaffold second. The family sets the design lane. The
+  scaffold sets the starting build shell.
 - `select_templates` auto-picks; callers override with
   `design_template` (comma-separated ids accepted).
+- `infer_style_families` auto-picks; callers override with
+  `style_family`.
 - `build_template_context` returns a prompt block capped at ~9000
   chars; this gets merged into AutoPilot's `notes` field.
+- `build_style_family_context` returns starter-doctrine + starter-code
+  excerpts for the chosen family.
 
 ## Hard rules
 

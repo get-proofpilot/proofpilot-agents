@@ -21,6 +21,10 @@
 
 set -euo pipefail
 
+# Source shared env if available (GEMINI_API_KEY etc.)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+[[ -f "$SCRIPT_DIR/proofpilot-env.sh" ]] && . "$SCRIPT_DIR/proofpilot-env.sh"
+
 MODEL="gemini-3.1-pro-preview"
 CWD="$(pwd)"
 LOG=""

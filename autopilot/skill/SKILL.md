@@ -25,10 +25,10 @@ Load this skill when Matthew or the team asks for:
 This is how AutoPilot runs in the normal case. Everything happens in the current Claude Code session with Claude + Playwright + Python (Pillow) + Bash + Recraft MCP. No VPS, no Railway call, no external model orchestration.
 
 ```
-Research  →  Brand Brain  →  Designer Brain  →  Website Brain  →  Images  →  QA
-                                                        ↑
-                                           Pick starter from template library
-                                          (score 12 profiles, customize winner)
+Research  →  Brand Brain  →  Style Family Pick  →  Designer Brain  →  Website Brain  →  Images  →  QA
+                                                                           ↑
+                                                        Pick scaffold inside the chosen family
+                                                     (score family first, then scaffold)
 ```
 
 Each stage reads the previous stage's output file. Dispatched as sequential subagents when the work is parallelizable within a stage. Never skip a stage. Never merge stages.
@@ -42,9 +42,16 @@ Capture what the brand IS. No opinions. Download the logo, pixel-analyze for dom
 
 **Output:** `brand-brain.json` + a verdict: PRESERVE+ELEVATE / PARTIAL ANCHOR / INVENT. Most clients are PARTIAL ANCHOR.
 
+### Stage 2.5 — Style Family Pick *(mandatory)*
+**Doctrine:** `references/style-family-selector.md`.
+Classify the brand into the right ProofPilot style family first, then pick the best scaffold inside that family. Output `/tmp/<client>/template-pick.md`.
+
 ### Stage 3 — Designer Brain *(mandatory — routed to Gemini 3.1 Pro)*
-**Doctrine:** `references/design-strategist.md` + `references/gold-standard-playbook.md` + `references/inspiration/inspiration-guide.md` + `references/model-routing.md`.
-Decide what to preserve, elevate, or invent. Produce a concrete `design-spec.md` with palette, typography, THE one committed motif, THE one section-transition signature, button system, icon system, photography strategy, motion.
+**Doctrine:** `references/style-family-selector.md` + `references/style-presets.md` + `references/design-strategist.md` + `references/gold-standard-playbook.md` + `references/inspiration/180sites-portfolio-dna.md` + `references/inspiration/betheanomaly-portfolio-dna.md` + `references/inspiration/hookagency-portfolio-dna.md` + `references/inspiration/inspiration-guide.md` + `references/model-routing.md`.
+
+**Family + preset first. Then design.** Stage 2.5 already picked the family. This stage narrows to a specific preset inside that family (`style-presets.md`, 7 presets). **No defaulting to editorial-serif.** Home service brands are overwhelmingly `rugged-industrial` (pest, roofing, hauling, concrete, industrial) or `contractor-heritage` (roofing, plumbing, HVAC with heritage logo). `editorial-serif` is reserved for dental / medical / legal / luxury / heritage-family-practice.
+
+Then decide what to preserve, elevate, or invent within the preset's bounds. Produce a concrete `design-spec.md` with palette, typography, THE one committed motif, THE one section-transition signature, button system, icon system, photography strategy, motion.
 
 **Model routing (default): dispatch to Gemini 3.1 Pro.** Gemini's design judgment is cleaner and tighter than Claude's on this specific stage (validated April 2026, Red Rock Family Dentistry head-to-head). Claude orchestrates the pipeline; Gemini handles only Designer Brain.
 
@@ -75,7 +82,7 @@ Full routing doctrine (when to route, when not to, brief template, failure modes
 **Doctrine:** `references/three-brain-architecture.md` (Stage 3 section).
 Pick the best starting template and customize it heavily. This is the single most important design quality lever.
 
-**Template selection** — score all 12 profiles in the WebsitePilot library (`backend/agents/websitepilot/templates/registry.json`) against the brief. Use `library.py::_score_template` if running programmatically. Pick top 1 (winner) and top 2 (runner-up) — never pre-pick a default.
+**Design-system selection** — use `websitepilot/templates/library.py::recommend_design_system(...)` against the brief + brand fit signals. Pick the style family first, then the top scaffold (winner) and runner-up. Never pre-pick a default.
 
 **Customization discipline:**
 - Copy the template's source to a scratch dir (e.g. `/tmp/<client>-demo/`).
@@ -99,8 +106,9 @@ Pick the best starting template and customize it heavily. This is the single mos
 ### Stage 5 — Images
 Generate custom imagery via Recraft MCP (`mcp__recraft__generate_image`) informed by the Designer Brain's photography strategy section. Apply duotone treatment in CSS to tie stock-generated images to the palette. **Always prefer authentic client photography** (from Brand Brain) to Recraft output — one real fleet photo beats ten perfect generations.
 
-### Stage 6 — QA
-Screenshot the demo via Playwright. Run the **"remove the logo" success test** from `references/gold-standard-playbook.md`:
+### Stage 6 — QA (two sub-stages)
+
+**Stage 6a — Claude Playwright pass.** Screenshot the demo (hero + full page, force `.reveal` elements visible before full-page capture). Run the **"remove the logo" success test** from `references/gold-standard-playbook.md`:
 
 1. Remove the logo mentally — can a visitor still tell what the business does, who it serves, and what vibe it has?
 2. Next to 5 template sites in the same vertical — does this one stand out as clearly more designed?
@@ -108,7 +116,21 @@ Screenshot the demo via Playwright. Run the **"remove the logo" success test** f
 4. Scroll at 50% speed — do section transitions feel rhythmic?
 5. Would the target customer describe this as "designed FOR" their company, or "a website that happens to be for" their company?
 
-If any answer is "no," go back to the Designer Brain. Do not ship template-level design.
+If any answer is "no," go back to the Designer Brain.
+
+**Stage 6b — Gemini Flash vision QA loop.** After Stage 6a passes, run:
+
+```bash
+./scripts/gemini-design-qa.sh /tmp/<client>-demo \
+  --spec /tmp/<client>/design-spec.md \
+  --brand /tmp/<client>/brand-brain.json \
+  --port <PORT> \
+  --round 1
+```
+
+Gemini 2.5 Flash (vision) critiques the live render against the spec and writes `/tmp/<client>/qa-feedback.md` with a structured Must-fix / Should-fix / Won't-fix list. Claude reads the feedback, applies fixes, re-runs QA (up to 2 iterations total). Ship when Must-fix is empty and score ≥ 8.
+
+Full doctrine: `references/design-qa.md`. The loop is quality-improvement, not a blocker — if Gemini is unreachable, ship Stage 6a's pass.
 
 ## Source doctrine
 
@@ -116,15 +138,30 @@ Read in this order before any design run:
 
 1. `references/three-brain-architecture.md` — the sequenced architecture (Brand → Designer → Website)
 2. `references/brand-archaeology.md` — Brand Brain procedure + output schema
-3. `references/design-strategist.md` — Designer Brain procedure + spec template
-4. `references/gold-standard-playbook.md` — cross-vertical patterns + "remove the logo" test
-5. `references/inspiration/inspiration-guide.md` — the 3 pillars + ProofPilot's gold-standard home-service site references (Hook Agency, 180 Sites, Be The Anomaly, Get Local Leads)
+3. `references/style-family-selector.md` — choose the visual lane before choosing the scaffold
+4. `references/design-strategist.md` — Designer Brain procedure + spec template
+5. `references/gold-standard-playbook.md` — cross-vertical patterns + "remove the logo" test
+6. `references/inspiration/inspiration-guide.md` — the 3 pillars + ProofPilot's gold-standard home-service site references (Hook Agency, 180 Sites, Be The Anomaly, Get Local Leads)
 
 **Concrete reference example:** `../examples/prestige-v3-benchmark/` — the April 23 2026 Prestige build that set the bar. Includes the Brand Brain JSON, Designer Brain spec, hero screenshot, and a README explaining the discipline that made v3 work.
 
 ## Template library (the starting-point decision)
 
-`backend/agents/websitepilot/templates/` contains 12 profiles across 5 source archetypes:
+`websitepilot/style-families/` defines 4 visual families. `websitepilot/templates/` contains 14 scaffold profiles across 6 source archetypes.
+
+Choose in this order:
+
+1. **Style family**
+2. **Scaffold profile**
+
+| Style family | Best for |
+|--------------|----------|
+| heroic-branded-conversion | bold owner-led trades, mascot-able or emblem-heavy brands, urgent local service |
+| operator-proof-longform | proof-heavy, authority-first, FAQ/process/inspection-led services |
+| premium-outdoor-editorial | high-ticket outdoor, landscaping, design-build, gallery-led brands |
+| clean-recurring-service | recurring maintenance, plan-led, friendly residential service |
+
+Scaffold archetypes available today:
 
 | Archetype | Profiles | Best for |
 |-----------|----------|----------|
@@ -134,7 +171,7 @@ Read in this order before any design run:
 | proactive-pool-solutions (clean cyan) | proactive-clean-cyan, proactive-inspection-led, proactive-local-service-area | residential service, inspection-led funnels, polished homeowner feel |
 | doggy-detail (bold consumer) | doggy-bold-membership, doggy-pricing-promo | consumer-playful, membership framing, pricing-led offers |
 
-**Rule: never pre-pick.** Score all 12 profiles against the client's brief (page_type + industry blob). Pick the winner with the highest score — the match for Prestige Electrical was `state48-authority-blue` at 23/23, not because "state48 is the electrician default" but because it scored highest for `authority + estimate + builder + premium`. Doggy scored 13, Rockin scored 13-14.
+**Rule: never pre-pick.** Infer the family first, then score scaffold profiles against the client's brief (page_type + industry blob + fit signals). Pick the winner with the highest score inside that family. If a family has no native scaffold yet, use the best bridge scaffold and lean harder on the family starter code.
 
 Then **customize heavily.** The template is structural DNA — section rhythm, module shells, layout confidence. The content DNA (copy, color, fonts, logo, imagery, motif, transitions) is all replaced.
 
@@ -171,6 +208,7 @@ Backend-specific details (SSH to VPS, OpenRouter model matrix, preview-server de
 ## Checklist before reporting "done"
 
 - [ ] Brand Brain output exists: `brand-brain.json` with non-empty logo analysis + verdict
+- [ ] Style-family selection exists: `template-pick.md` with family + scaffold rationale
 - [ ] Designer Brain output exists: `design-spec.md` with locked palette and committed motif
 - [ ] Template picked from the WebsitePilot library with rationale
 - [ ] Clone + npm install passed

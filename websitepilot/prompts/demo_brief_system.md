@@ -30,6 +30,9 @@ Produce a short markdown block with these labeled fields:
 - **Three differentiators to emphasize**
 - **Trust assets or proof to surface**
 - **Priority sections the homepage must include**
+- **Service model** — urgent one-off, authority-first lead gen, inspection-led, quote-led, recurring plan, design-build project, gallery-led lead gen, or friendly operator
+- **Proof density** — sparse, moderate, or rich
+- **Visual temperament cues** — 3-5 adjectives grounded in the brand and category
 
 ## Part 2 — AutoPilot `notes` block
 
@@ -41,6 +44,7 @@ no markdown headers — plain keyword prefixes each line:
 - **Positioning:** one sentence
 - **Proof:** one sentence
 - **CTA:** one sentence
+- **Style family cues:** one sentence
 - **Design cues:** one sentence
 
 This is the literal string that gets passed to AutoPilot as `notes`.

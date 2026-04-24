@@ -38,11 +38,13 @@ The helper runs `gemini --model gemini-3.1-pro-preview --yolo` with the brief pi
 When dispatching to Gemini, the brief must include:
 
 1. **Client facts** — ideally a path to the already-written `brand-brain.json`. Do not re-summarize; hand Gemini the file.
-2. **Locked brand system** — crimson/motif/palette/typography already committed by earlier stages. Gemini does NOT re-pick these.
-3. **Inspiration reference** — URL to the design target (e.g. Glinic dental theme). Gemini can navigate to it.
-4. **Output contract** — exact path for `design-spec.md` and what sections it must contain (11 numbered sections per `design-strategist.md`).
-5. **Hard rules** — the preserve/elevate/invent ladder, "one motif one transition," no-invented-colors rule, etc. Paste these verbatim from `design-strategist.md`.
-6. **Working dir** — `/tmp/<client>/` — Gemini writes `design-spec.md` here.
+2. **Selected design lane** — path to `/tmp/<client>/template-pick.md`, including the chosen style family and scaffold.
+3. **Family starter code** — point Gemini to the chosen family's `FAMILY.md`, `starter/index.css`, and `starter/sections.tsx`.
+4. **Locked brand system** — crimson/motif/palette/typography already committed by earlier stages. Gemini does NOT re-pick these.
+5. **Inspiration reference** — URL to the design target (e.g. Glinic dental theme). Gemini can navigate to it.
+6. **Output contract** — exact path for `design-spec.md` and what sections it must contain (11 numbered sections per `design-strategist.md`).
+7. **Hard rules** — the preserve/elevate/invent ladder, "one motif one transition," no-invented-colors rule, etc. Paste these verbatim from `design-strategist.md`.
+8. **Working dir** — `/tmp/<client>/` — Gemini writes `design-spec.md` here.
 
 See `references/design-strategist.md` for the spec template Gemini must fill.
 
@@ -57,6 +59,10 @@ preserve/elevate/invent for each brand element, produce design-spec.md.
 
 ## Inputs
 - Brand Brain output: /tmp/<client>/brand-brain.json
+- Style-family pick: /tmp/<client>/template-pick.md
+- Family doctrine: ~/proofpilot-agents/websitepilot/style-families/<family>/FAMILY.md
+- Family starter CSS: ~/proofpilot-agents/websitepilot/style-families/<family>/starter/index.css
+- Family starter sections: ~/proofpilot-agents/websitepilot/style-families/<family>/starter/sections.tsx
 - Strategy notes: /tmp/<client>/strategy.md
 - Doctrine: ~/proofpilot-agents/autopilot/skill/references/{design-strategist,gold-standard-playbook,three-brain-architecture}.md
 - Inspiration: <url-to-reference-site>
@@ -76,6 +82,7 @@ preserve/elevate/invent for each brand element, produce design-spec.md.
 ```
 Claude: Stage 1 — Research (Playwright, WebFetch)
 Claude: Stage 2 — Brand Brain (Playwright + Python Pillow)
+Claude: Stage 2.5 — Style Family Pick (`template-pick.md`)
 Claude: write designer-brain-brief.md in /tmp/<client>/
 Claude: dispatch — ./scripts/gemini-dispatch.sh /tmp/<client>/designer-brain-brief.md --cwd /tmp/<client>
 Gemini: produces /tmp/<client>/design-spec.md + DONE.md

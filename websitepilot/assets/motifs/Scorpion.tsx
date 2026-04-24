@@ -1,0 +1,33 @@
+import * as React from "react";
+
+/**
+ * Scorpion motif — stylized Arizona bark scorpion silhouette.
+ * Used for: Richardson Pest Management + any pest-control client.
+ *
+ * Three named exports:
+ *   <Scorpion /> — default (inherits size via CSS)
+ *   <ScorpionIcon /> — 14px button variant
+ *   <ScorpionWatermark /> — large low-opacity variant
+ *
+ * All three use currentColor; set fill via parent text color.
+ */
+
+const PATH = "M12 10.5c-.8 0-1.6.2-2.3.5l-.7-1c-.3-.4-.8-.4-1.1-.1l-1.1 1c-.3.3-.3.7 0 1l.9 1c-.3.4-.5.8-.5 1.2 0 .3.1.6.2.9l-1.3.7c-.3.2-.4.6-.2 1l.5 1c.2.3.6.5 1 .3l1.3-.6c.4.3.9.5 1.5.6l-.1 1.1c0 .4.3.7.6.7l1 .1c.4 0 .7-.3.7-.6v-1.2c.5-.1 1-.2 1.4-.5l.7.7c.3.3.8.2 1-.1l.6-.9c.2-.3.2-.7-.1-1l-.7-.6c.3-.4.5-.9.5-1.4 0-.2 0-.4-.1-.6l1.2-.4c.4-.1.6-.5.4-.9l-.3-1c-.1-.4-.5-.6-.9-.4l-1.2.4c-.3-.4-.7-.8-1.2-1l.2-1c.1-.4-.2-.7-.6-.8l-1-.1c-.4 0-.7.3-.7.7l-.1.9c-.3 0-.5 0-.7.1zM5.5 8c-.4 0-.7.3-.7.7 0 .2.1.4.2.5l1.8 1.9c.2.2.5.2.7 0l.8-.9-1.8-2c-.2-.2-.5-.3-.7-.2zm12.9 0c-.2-.1-.5 0-.7.2l-1.8 2 .8.9c.2.2.5.2.7 0l1.8-1.9c.1-.1.2-.3.2-.5 0-.4-.3-.7-.7-.7zM12 3c-.4 0-.7.3-.7.7v1.6c0 .4.3.7.7.7s.7-.3.7-.7V3.7c0-.4-.3-.7-.7-.7z";
+
+export const Scorpion: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" {...props}>
+    <path d={PATH} />
+  </svg>
+);
+
+export const ScorpionIcon: React.FC<React.SVGProps<SVGSVGElement>> = ({ className = "", ...props }) => (
+  <Scorpion className={`motif-glyph ${className}`} style={{ width: 14, height: 14 }} {...props} />
+);
+
+export const ScorpionWatermark: React.FC<React.SVGProps<SVGSVGElement> & { size?: number }> = ({ className = "", size = 500, style, ...props }) => (
+  <Scorpion
+    className={`pointer-events-none select-none ${className}`}
+    style={{ width: size, height: size, opacity: 0.05, ...style }}
+    {...props}
+  />
+);

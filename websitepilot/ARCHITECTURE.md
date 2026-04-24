@@ -55,7 +55,7 @@ the frontend needs to render preview + docx links.
 | 2 | Sales audit          | `agents.auditpilot.engine.run_audit`         | AuditPilot's SYNTHESIS_SYSTEM         |
 | 3 | Strategy blueprint   | `agents.strategypilot.engine.run_strategy`   | StrategyPilot's SYNTHESIS_SYSTEM      |
 | 4 | Demo brief synthesis | `prompts/demo_brief_system.md`               | Claude Sonnet                         |
-| 5 | Template select + demo | `templates/library.py::select_templates` → `agents.autopilot.sprint_runner.run_sprint` (or dry-run when AutoPilot is not reachable) | Template context injected in notes |
+| 5 | Style-family + template select + demo | `templates/library.py::recommend_design_system` → `agents.autopilot.sprint_runner.run_sprint` (or dry-run when AutoPilot is not reachable) | Family + template context injected in notes |
 | 6 | Close pitch          | `prompts/close_pitch_system.md`              | Claude Opus                           |
 | 7 | Bundle               | `bundle.py::shape_bundle(tier)`              | —                                     |
 
@@ -63,41 +63,69 @@ Each stage is **failure-tolerant**. If AutoPilot is unavailable,
 WebsitePilot still delivers the audit + strategy + brief + close pitch
 and clearly marks the demo as `BLOCKED`.
 
-## Template library
+## Design-system library
 
-Lives at `backend/agents/websitepilot/templates/`.
+Lives at `websitepilot/templates/`, with companion family doctrine in `websitepilot/style-families/`.
 
-- `registry.json` — 12 template profiles across 5 source archetypes.
-  Each profile carries an id, status, source_slug, supported
-  page_types, selection_terms (for auto-select), style_traits,
-  best_for, prompt_focus.
+- `registry.json` — 14 template profiles across 6 source archetypes.
+  Each profile carries an id, status, style_family, source_slug,
+  supported page_types, selection_terms (for auto-select),
+  style_traits, best_for, prompt_focus.
+- `../style-families/manifest.json` — 4 visual-family definitions.
+  Each family carries selection cues, anti-fit cues, fit metadata,
+  default scaffold ids, starter-file paths, and reference URLs.
+- `../style-families/<family>/starter/` — family starter CSS and section
+  components. This is the code layer that teaches the model how the
+  family behaves, not just what it is called.
 - `sources/<slug>/` — curated mirrors of the 5 proven ProofPilot builds
   (`package.json`, `src/index.css`, `src/pages/Index.tsx`, all
   `src/components/*.tsx`). Used by the design agent for structural
   inspiration, not literal copying.
 - `library.py` — pure Python registry loader + scorer. No external
-  deps. Exports `load_registry`, `list_templates`, `get_template`,
-  `select_templates`, `build_template_context`.
+  deps. Exports `load_registry`, `load_style_families`,
+  `infer_style_families`, `select_templates`,
+  `recommend_design_system`, `build_style_family_context`,
+  `build_template_context`.
 - `sync.py` — refreshes the mirrored sources from local clones of the
-  5 source repos. Used when we re-baseline the library.
+  external source repos. Native sources stay in this package.
 
 ### Selector algorithm
 
-`select_templates(page_type, service, keyword, location, notes)`
-scores every ready template:
+`recommend_design_system(page_type, service, keyword, location, notes, ...)`
+runs two decisions in order.
 
-- `+12` if the template supports the requested page_type
-- `+4` per `selection_term` that matches the blob of
-  (page_type + service + keyword + location + notes), lowercased
-- `+2` for homepage-preferred defaults when no explicit override
-- Requested override IDs (comma-separated) bypass scoring
+First: `infer_style_families(...)` scores each family with:
 
-Returns the top-`limit` (default 2) templates.
+- `+5` per matching `selection_term`
+- `-6` per matching `anti_fit_term`
+- `+6` when `brand_maturity` fits
+- `+6` when `proof_density` fits
+- `+5` when `price_point` fits
+- `+7` when `service_model` fits
+- `+4` per matching visual temperament signal
 
-`build_template_context` renders the picked templates into a prompt
-block the design stage can inject into its notes — including component
-order, key component filenames, and truncated excerpts from
-`Index.tsx` and `index.css`. Capped at ~9000 chars by default.
+Second: `select_templates(...)` scores templates inside the chosen
+family:
+
+- `+12` if the template supports the requested `page_type`
+- `+4` per matching `selection_term`
+- `+10` when the template is a native scaffold for the chosen family
+- `+5` when it is a bridge scaffold via `secondary_style_families`
+- `+4` to `+1` when it appears early in the family's default scaffold order
+- `+2` when it is a proven recipe
+
+Requested override IDs bypass scoring for either layer.
+
+Returns the top-`limit` families and templates, plus prompt-ready context.
+
+`build_style_family_context` renders the chosen family doctrine into a
+prompt block — including the family rationale, starter CSS excerpt, and
+starter section-component excerpt.
+
+`build_template_context` renders the chosen scaffold templates into a
+second prompt block — including component order, key component
+filenames, and truncated excerpts from `Index.tsx` and `index.css`.
+Capped at ~9000 chars by default.
 
 ## Tier model
 

@@ -55,6 +55,13 @@ Lead qualification
         │                                               │
         │                                               ▼
         │                              ┌─────────────────────────────┐
+        │                              │   Style Family Pick         │
+        │                              │  (family first, scaffold    │
+        │                              │   second)                   │
+        │                              └─────────────────────────────┘
+        │                                               │
+        │                                               ▼
+        │                              ┌─────────────────────────────┐
         │                              │    Designer Brain           │
         │                              │  (palette, type, motif,     │
         │                              │   transitions — strict)     │
@@ -63,8 +70,9 @@ Lead qualification
         │                                               ▼
         │                              ┌─────────────────────────────┐
         │                              │    Website Brain            │
-        │                              │  (score 12 templates, pick  │
-        │                              │   winner, clone, customize) │
+        │                              │  (score family scaffolds,   │
+        │                              │   pick winner, clone,       │
+        │                              │   customize)                │
         │                              └─────────────────────────────┘
         │                                               │
         │           ┌───────────────────────────────────┘
@@ -137,8 +145,12 @@ Doctrine: `autopilot/skill/references/brand-archaeology.md`.
 Capture what the brand IS — no opinions. Download the logo, pixel-analyze for colors, pull authentic photography (fleet, team, storefront), capture `@font-face` URLs, download favicon + OG image, read voice signals from copy.
 **Output:** `/tmp/<client>/brand-brain.json` + verdict (PRESERVE+ELEVATE / PARTIAL ANCHOR / INVENT).
 
-#### Stage 5b — Designer Brain *(mandatory — routed to Gemini 3.1 Pro)*
-Doctrine: `autopilot/skill/references/design-strategist.md` + `autopilot/skill/references/gold-standard-playbook.md` + `autopilot/skill/references/inspiration/inspiration-guide.md` + `autopilot/skill/references/model-routing.md`.
+#### Stage 5b — Style Family Pick *(mandatory)*
+Doctrine: `autopilot/skill/references/style-family-selector.md`.
+Classify the prospect into the correct ProofPilot style family before any design spec gets written. Output `/tmp/<client>/template-pick.md`.
+
+#### Stage 5c — Designer Brain *(mandatory — routed to Gemini 3.1 Pro)*
+Doctrine: `autopilot/skill/references/design-strategist.md` + `autopilot/skill/references/gold-standard-playbook.md` + `autopilot/skill/references/inspiration/inspiration-guide.md` + `autopilot/skill/references/model-routing.md` + `autopilot/skill/references/style-family-selector.md`.
 Decide preserve / elevate / invent for each element. Lock the palette (logo-derived only). Lock typography (preserve equity > elevate weight > invent face). Commit to ONE motif. Commit to ONE section-transition signature.
 
 **Model routing: dispatch this stage to Gemini 3.1 Pro** via `./scripts/gemini-dispatch.sh` (see `autopilot/skill/references/model-routing.md`). Claude writes the brief, Gemini produces `design-spec.md`, Claude reads it and proceeds. Fallback: if Gemini is unreachable, Claude runs the stage itself.
@@ -151,11 +163,11 @@ Decide preserve / elevate / invent for each element. Lock the palette (logo-deri
 
 **Output:** `/tmp/<client>/design-spec.md` with a numbered Implementation Order.
 
-#### Stage 5c — Website Brain *(executor)*
+#### Stage 5d — Website Brain *(executor)*
 Doctrine: `autopilot/skill/references/three-brain-architecture.md` (Stage 3).
 
-1. **Score all 12 templates** in `backend/agents/websitepilot/templates/registry.json` against the demo brief. Use `library.py::_score_template` if running programmatically. **Never pre-pick a default.** Pick winner + runner-up with rationale.
-2. **Clone the winner's source** from `backend/agents/websitepilot/templates/sources/<slug>/` into `/tmp/<client>-demo/`.
+1. **Run the design-system selector** in `websitepilot/templates/library.py`. Infer the style family first, then score scaffold templates inside that family. **Never pre-pick a default.** Pick winner + runner-up with rationale.
+2. **Clone the winner's source** from `websitepilot/templates/sources/<slug>/` into `/tmp/<client>-demo/`.
 3. `npm install` in the clone.
 4. **Apply the Implementation Order** from `design-spec.md`, priority 1 → N:
    - Logo swap (Header + Footer)
@@ -176,8 +188,20 @@ Doctrine: `autopilot/skill/references/three-brain-architecture.md` (Stage 3).
 
 ### Stage 6 — QA and packaging
 
-#### Design QA
-Screenshot the demo via Playwright. Run the **"remove the logo" success test** from `autopilot/skill/references/gold-standard-playbook.md`. 5/5 yes or back to Designer Brain.
+#### Design QA — two sub-stages
+
+**6a. Claude Playwright pass.** Screenshot the demo (hero + full page, force `.reveal` elements visible first). Run the **"remove the logo" success test** from `autopilot/skill/references/gold-standard-playbook.md`. 5/5 yes or back to Designer Brain.
+
+**6b. Gemini Flash vision QA loop.** Run `./scripts/gemini-design-qa.sh` to get a structured fix list from gemini-2.5-flash comparing the render to the spec:
+
+```bash
+./scripts/gemini-design-qa.sh /tmp/<client>-demo \
+  --spec /tmp/<client>/design-spec.md \
+  --brand /tmp/<client>/brand-brain.json \
+  --port <PORT>
+```
+
+Read `/tmp/<client>/qa-feedback.md`, apply Must-fix items, re-run QA (max 2 iterations). Ship when Must-fix empty and score ≥ 8. Full doctrine: `autopilot/skill/references/design-qa.md`.
 
 #### Sales document packaging
 Render the bundle as a single branded `.docx` via the docx-kit in `proofpilot-brand/skills/_shared/docx-kit/`:
@@ -197,7 +221,7 @@ A full WebsitePilot deliverable:
 - **`.docx` sales bundle** — branded, 35-45 pages typical
 - **Live demo URL** — `http://localhost:5173/` during the pitch session
 - **Demo screenshots** — hero + full-page
-- **Artifact files** — `audit.md`, `strategy.md`, `demo-brief.md`, `brand-brain.json`, `design-spec.md` (for future edits + traceability)
+- **Artifact files** — `audit.md`, `strategy.md`, `demo-brief.md`, `brand-brain.json`, `template-pick.md`, `design-spec.md` (for future edits + traceability)
 - **Next move** — the one-line recommended close for Matthew
 
 ## Golden rule
@@ -210,9 +234,16 @@ Every WebsitePilot run should answer this sequence:
 4. **What the better version already looks like** — the live demo
 5. **How Matthew should close from here** — the next move
 
-## Template library (the best-starting-point decision)
+## Design-system library (the best-starting-point decision)
 
-`backend/agents/websitepilot/templates/` houses 12 profiles across 5 source archetypes. The Website Brain scores all 12 and picks the best — never a pre-selected default.
+`websitepilot/style-families/` houses 4 visual families. `websitepilot/templates/` houses 14 scaffold profiles across 6 source archetypes. WebsitePilot chooses the family first, then the scaffold inside that family — never a pre-selected default.
+
+| Style family | Typical fit |
+|--------------|-------------|
+| heroic-branded-conversion | bold owner-led trades, mascot-able or emblem-heavy brands, urgent local service |
+| operator-proof-longform | proof-heavy, FAQ/process/inspection-led, authority-first services |
+| premium-outdoor-editorial | high-ticket outdoor, landscaping, design-build, gallery-led brands |
+| clean-recurring-service | recurring maintenance, inspection-led care, friendly residential service |
 
 | Archetype | Profile ids | Typical fit |
 |-----------|-------------|-------------|
@@ -221,13 +252,14 @@ Every WebsitePilot run should answer this sequence:
 | austinrockinshauling | rockin-rugged-industrial, rockin-gallery-social, rockin-service-area-map | blue-collar + social proof + territory |
 | proactive-pool-solutions | proactive-clean-cyan, proactive-inspection-led, proactive-local-service-area | residential service + inspection funnels |
 | doggy-detail | doggy-bold-membership, doggy-pricing-promo | consumer-playful + membership / offer-led |
+| premium-outdoor-editorial | premium-outdoor-editorial-showcase, premium-outdoor-consultation-led | high-ticket outdoor + design-build editorial |
 
-**All 5 archetypes share the same stack:** Vite + React 18 + TypeScript + Tailwind 3 + shadcn/ui. The selector works uniformly across them.
+**All 6 archetypes share the same core stack:** Vite + React 18 + TypeScript. Most external mirrors use Tailwind 3 + shadcn/ui; the native premium outdoor scaffold uses authored CSS to keep the starter lighter and easier to adapt. The selector works uniformly across them, and the style-family starter files add reusable CSS + section-code guidance on top.
 
 ## Hard rules
 
-- **Always run the three-brain sequence before Design.** Brand Brain → Designer Brain → Website Brain. No shortcuts.
-- **Score all 12 templates against the brief.** Never pre-pick.
+- **Always run the three-brain sequence before Design.** Brand Brain → Style Family Pick → Designer Brain → Website Brain. No shortcuts.
+- **Choose the family first, then score templates inside it.** Never pre-pick.
 - **The chosen template is structural DNA only.** Content DNA (copy, color, typography, logo, imagery, motif, transitions) is replaced per Designer Brain's spec.
 - **Preserve the client's real brand.** Logo in header + footer. Authentic photography in hero when available. Palette locked to logo colors + neutrals.
 - **QA gate: "remove the logo" test.** 5/5 yes or back to Designer Brain.
@@ -248,7 +280,7 @@ Legacy / deprecated (do **not** load):
 
 ## Running via backend (Railway — secondary path)
 
-The `backend/agents/websitepilot/engine.py` Python code still ships as a FastAPI service on Railway via `POST /api/agents/website/run`. Use that path when:
+The `websitepilot/engine.py` Python code still ships as a FastAPI service on Railway via `POST /api/agents/website/run`. Use that path when:
 - You need an SSE-streaming response for a web UI
 - Job persistence in SQLite matters
 - Orchestrating a batch of WebsitePilot runs

@@ -366,6 +366,51 @@
         "src/components/TrustBar.tsx",
         "src/components/Unlimited.tsx"
       ]
+    },
+    {
+      "slug": "premium-outdoor-editorial",
+      "repo_url": "local:websitepilot/templates/sources/premium-outdoor-editorial",
+      "local_path": "websitepilot/templates/sources/premium-outdoor-editorial",
+      "component_order": [
+        "Header",
+        "Hero",
+        "ProjectGallery",
+        "Services",
+        "Process",
+        "Proof",
+        "Consultation",
+        "Footer"
+      ],
+      "component_files": [
+        "src/components/Consultation.tsx",
+        "src/components/Footer.tsx",
+        "src/components/Header.tsx",
+        "src/components/Hero.tsx",
+        "src/components/Process.tsx",
+        "src/components/ProjectGallery.tsx",
+        "src/components/Proof.tsx",
+        "src/components/Services.tsx"
+      ],
+      "copied_files": [
+        "package.json",
+        "index.html",
+        "vite.config.ts",
+        "tsconfig.json",
+        "tsconfig.app.json",
+        "tsconfig.node.json",
+        "src/App.tsx",
+        "src/main.tsx",
+        "src/index.css",
+        "src/pages/Index.tsx",
+        "src/components/Consultation.tsx",
+        "src/components/Footer.tsx",
+        "src/components/Header.tsx",
+        "src/components/Hero.tsx",
+        "src/components/Process.tsx",
+        "src/components/ProjectGallery.tsx",
+        "src/components/Proof.tsx",
+        "src/components/Services.tsx"
+      ]
     }
   ]
 }

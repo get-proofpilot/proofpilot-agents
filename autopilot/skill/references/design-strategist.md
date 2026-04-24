@@ -18,11 +18,24 @@ Output is a `brand-spec-v2.md` document that downstream Design + Image generatio
 ## Inputs required
 
 1. `brand-archaeology-v2.json` from the previous stage
-2. The Strategy doc (StrategyPilot output) — establishes positioning, audience, market
-3. `gold-standard-playbook.md` (sibling doc) — the design pillars + cross-vertical patterns
-4. Optional: 3-5 competitor URLs to inspect for vertical context
+2. `template-pick.md` from `style-family-selector.md` so the design spec knows which family it is designing inside
+3. The Strategy doc (StrategyPilot output) — establishes positioning, audience, market
+4. `gold-standard-playbook.md` (sibling doc) — the design pillars + cross-vertical patterns
+5. Optional: 3-5 competitor URLs to inspect for vertical context
 
 ## Procedure
+
+### 0. Read the selected style family first
+
+Before you choose any visual system detail, read the selected family's:
+
+- `websitepilot/style-families/<family>/FAMILY.md`
+- `websitepilot/style-families/<family>/starter/index.css`
+- `websitepilot/style-families/<family>/starter/sections.tsx`
+
+These are not optional inspiration references. They are the canonical family behavior for this run.
+
+Then read the selected scaffold notes from `template-pick.md`. The family tells you how the design should behave. The scaffold only tells you what you are starting from.
 
 ### 1. Synthesize the brand thesis (1 paragraph)
 
@@ -145,6 +158,7 @@ Document structure (mirror this verbatim):
 ## Hand-off rules
 
 - Brand spec ALWAYS comes from real brand archaeology, not from the template's defaults.
+- Brand spec must respect the selected style family. Do not write a luxury-editorial spec if the family chosen was `heroic-branded-conversion`.
 - The Design stage reads `brand-spec-v2.md` and executes the Implementation Order in priority order.
 - The Image stage reads section 8 (Photography Strategy) for moodboard + duotone treatment instructions.
 - The QA stage reads section 11 (Success Test) for the explicit pass/fail rubric.

@@ -1,0 +1,95 @@
+{
+  "families": [
+    {
+      "id": "heroic-branded-conversion",
+      "name": "Heroic Branded Conversion",
+      "description": "A bold, themed, high-conversion family for owner-led trades with personality, speed, and strong emblematic branding.",
+      "selection_terms": ["electrical", "electrician", "garage door", "pest control", "termite", "scorpion", "junk removal", "pressure washing", "heroic", "bold", "mascot", "family-owned", "owner-led", "themed"],
+      "anti_fit_terms": ["luxury landscape", "editorial", "architectural showcase", "minimalist spa", "soft feminine"],
+      "brand_maturity_fit": ["partial-anchor", "preserve+elevate"],
+      "proof_asset_requirements": ["moderate", "rich"],
+      "price_point_fit": ["mid", "upper-mid"],
+      "service_model_fit": ["urgent one-off", "authority-first lead gen"],
+      "visual_temperament": ["bold", "high-contrast", "character-led", "conversion-first"],
+      "default_template_ids": ["rockin-rugged-industrial", "rockin-gallery-social", "rockin-family-home-service"],
+      "reference_urls": [
+        "https://180sites.com/portfolio/volt-vikings/",
+        "https://voltvikings.com",
+        "https://180sites.com/portfolio/pro-line-garage-doors/",
+        "https://180sites.com/portfolio/professor-pressure/"
+      ],
+      "starter_files": [
+        "websitepilot/style-families/heroic-branded-conversion/FAMILY.md",
+        "websitepilot/style-families/heroic-branded-conversion/starter/index.css",
+        "websitepilot/style-families/heroic-branded-conversion/starter/sections.tsx"
+      ]
+    },
+    {
+      "id": "operator-proof-longform",
+      "name": "Operator Proof Longform",
+      "description": "A disciplined, trust-heavy family built around repeated proof, scoped offers, FAQs, and homeowner clarity.",
+      "selection_terms": ["roofing", "restoration", "inspection", "estimate", "authority", "proof", "longform", "faq", "service page", "warm trust", "homeowner"],
+      "anti_fit_terms": ["luxury design build", "editorial gallery", "mascot-heavy", "playful membership"],
+      "brand_maturity_fit": ["invent", "partial-anchor", "preserve+elevate"],
+      "proof_asset_requirements": ["sparse", "moderate", "rich"],
+      "price_point_fit": ["mid", "upper-mid"],
+      "service_model_fit": ["authority-first lead gen", "inspection-led", "quote-led"],
+      "visual_temperament": ["clear", "trust-heavy", "conversion-steady", "service-first"],
+      "default_template_ids": ["state48-authority-blue", "state48-estimator-led", "keystone-earthy-restoration", "keystone-contact-heavy"],
+      "reference_urls": [
+        "https://180sites.com/portfolio/",
+        "https://180sites.com/portfolio/steves-modern-roofing/"
+      ],
+      "starter_files": [
+        "websitepilot/style-families/operator-proof-longform/FAMILY.md",
+        "websitepilot/style-families/operator-proof-longform/starter/index.css",
+        "websitepilot/style-families/operator-proof-longform/starter/sections.tsx"
+      ]
+    },
+    {
+      "id": "premium-outdoor-editorial",
+      "name": "Premium Outdoor Editorial",
+      "description": "A high-ticket, photography-led family for luxury landscaping, outdoor living, and design-build firms that need editorial restraint and project gravity.",
+      "selection_terms": ["landscape", "landscaping", "outdoor living", "pool builder", "design build", "luxury", "architectural", "editorial", "project gallery", "showcase", "high ticket", "premium"],
+      "anti_fit_terms": ["urgent repair", "cheap quote", "membership promo", "high-volume recurring clean"],
+      "brand_maturity_fit": ["partial-anchor", "preserve+elevate"],
+      "proof_asset_requirements": ["rich"],
+      "price_point_fit": ["upper-mid", "premium"],
+      "service_model_fit": ["design-build project", "gallery-led lead gen"],
+      "visual_temperament": ["editorial", "restrained", "luxury", "architectural"],
+      "default_template_ids": ["premium-outdoor-editorial-showcase", "premium-outdoor-consultation-led", "keystone-earthy-restoration", "proactive-clean-cyan"],
+      "reference_urls": [
+        "https://www.betheanomaly.io/portfolio",
+        "https://www.kingswoodlandscape.com/",
+        "https://www.redrockoutdoorliving.com/"
+      ],
+      "starter_files": [
+        "websitepilot/style-families/premium-outdoor-editorial/FAMILY.md",
+        "websitepilot/style-families/premium-outdoor-editorial/starter/index.css",
+        "websitepilot/style-families/premium-outdoor-editorial/starter/sections.tsx"
+      ]
+    },
+    {
+      "id": "clean-recurring-service",
+      "name": "Clean Recurring Service",
+      "description": "A bright, structured family for recurring maintenance brands that sell reliability, recurring care, and friendly professionalism.",
+      "selection_terms": ["pool cleaning", "pool maintenance", "cleaning service", "lawn care", "weekly service", "maintenance plan", "recurring", "inspection", "friendly", "certified", "maintenance"],
+      "anti_fit_terms": ["architectural showcase", "mascot-heavy hero", "dark industrial", "luxury estate gallery"],
+      "brand_maturity_fit": ["invent", "partial-anchor", "preserve+elevate"],
+      "proof_asset_requirements": ["moderate", "rich"],
+      "price_point_fit": ["mid", "upper-mid"],
+      "service_model_fit": ["recurring plan", "inspection-led", "friendly operator"],
+      "visual_temperament": ["clean", "bright", "operator-led", "badge-proof"],
+      "default_template_ids": ["proactive-clean-cyan", "proactive-inspection-led", "proactive-local-service-area", "doggy-bold-membership", "doggy-pricing-promo"],
+      "reference_urls": [
+        "https://www.betheanomaly.io/website/anomaly-pool-services",
+        "https://www.anomalypoolservices.io/"
+      ],
+      "starter_files": [
+        "websitepilot/style-families/clean-recurring-service/FAMILY.md",
+        "websitepilot/style-families/clean-recurring-service/starter/index.css",
+        "websitepilot/style-families/clean-recurring-service/starter/sections.tsx"
+      ]
+    }
+  ]
+}

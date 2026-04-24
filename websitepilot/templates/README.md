@@ -1,9 +1,10 @@
 # Design Template Library
 
-This library turns finished ProofPilot website builds into reusable starter systems for AutoPilot.
+This library turns finished ProofPilot website builds into reusable starter systems for AutoPilot and WebsitePilot.
 
 Goals:
-- give the design agent 10-12 strong structural starting points
+- give the design agent a growing set of strong structural starting points
+- classify the brand into the right visual family before a scaffold gets picked
 - preserve the best layout/component patterns from proven builds
 - separate reusable design DNA from client-specific branding
 - let AutoPilot pick a template automatically or accept a manual override
@@ -11,8 +12,26 @@ Goals:
 ## Structure
 
 - `registry.json` — the template profile catalog
+- `library.py` — family-first selector + prompt-context builder
+- `../style-families/` — reusable visual doctrine and starter code per design family
 - `sources/` — curated mirrors of source repos used as template DNA
 - `scripts/sync_design_template_sources.py` — refreshes the mirrored source pack from local clones
+
+## Family-first selection
+
+WebsitePilot should not jump straight to `state48` or `rockin`.
+It should first choose the design lane:
+
+1. `heroic-branded-conversion`
+2. `operator-proof-longform`
+3. `premium-outdoor-editorial`
+4. `clean-recurring-service`
+
+Then it should choose the best scaffold template inside that lane.
+
+That gives the system two layers of usable context:
+- **Style-family doctrine** — visual behavior, section habits, starter CSS, starter section components
+- **Scaffold template DNA** — route structure, component order, proven module shells, existing build stack
 
 ## Current source repos
 
@@ -21,21 +40,30 @@ Goals:
 - austinrockinshauling
 - Proactive-pool-solutions
 - doggy-detail
+- premium-outdoor-editorial
 
 ## Current template profiles
 
-There are 12 starter profiles in the registry. Multiple profiles can point at the same source repo while emphasizing different strengths.
+There are 14 starter profiles in the registry. Multiple profiles can point at the same source repo while emphasizing different strengths.
+Each profile now carries a `style_family` and may optionally expose `secondary_style_families` when it works as a bridge scaffold for another family.
 
 ## How AutoPilot uses this
 
 The design stage can:
-1. accept `design_template` as an explicit override
-2. auto-select the best-fit templates based on service, keyword, page type, and notes
-3. inject a compact prompt block containing:
-   - the selected template name
-   - why it was selected
-   - its section order and design traits
-   - curated source-code excerpts from the mirrored repo
+1. accept `style_family` and `design_template` as explicit overrides
+2. infer the best-fit style families from service, keyword, page type, notes, and brand-fit signals
+3. auto-select the best scaffold templates inside that family
+4. inject two compact prompt blocks:
+   - **style-family context**
+     - selected family name
+     - why it was selected
+     - family doctrine excerpt
+     - starter CSS + starter section code excerpts
+   - **template context**
+     - selected template name
+     - why it was selected
+     - section order and design traits
+     - curated scaffold-code excerpts from the mirrored repo
 
 ## Important rule
 

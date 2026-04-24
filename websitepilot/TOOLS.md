@@ -37,13 +37,15 @@ WebsitePilot imports cleanly even when a sibling is unavailable.
 
 | Path                                                  | Contents                   | Lifetime       |
 |-------------------------------------------------------|----------------------------|----------------|
-| `backend/agents/websitepilot/templates/sources/`      | 5 source archetype mirrors | Committed; refresh via `sync.py` |
+| `websitepilot/templates/sources/`                     | 6 source archetype mirrors | Committed; refresh external mirrors via `sync.py` |
+| `websitepilot/style-families/`                        | Family doctrine + starter code | Committed |
 | `$VISUAL_QA_SCREENSHOT_DIR` (default `/tmp/autopilot_visual_qa`) | Comparison screenshots | Ephemeral |
 
 ## Config / feature flags
 
 - `generate_demo=False` → skip AutoPilot handoff, still ship
   audit+strategy+brief+close.
+- `style_family` → explicit family override before scaffold selection.
 - `tier` override → force `light` / `standard` / `full` instead of
   auto-inferring from `lead_value`.
 - `design_template` → comma-separated template ids (first wins) to
