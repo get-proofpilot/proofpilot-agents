@@ -31,9 +31,9 @@ Always load these alongside this skill:
 
 ```bash
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/GOOGLECALENDAR_EVENTS_LIST" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"arguments": {"calendar_id": "primary", "timeMin": "DATE_T00:00:00-07:00", "timeMax": "NEXT_DATE_T23:59:59-07:00", "maxResults": 15}, "entity_id": "***REDACTED_COMPOSIO_ENTITY***"}' \
+  -d '{"arguments": {"calendar_id": "primary", "timeMin": "DATE_T00:00:00-07:00", "timeMax": "NEXT_DATE_T23:59:59-07:00", "maxResults": 15}, "entity_id": "$COMPOSIO_ENTITY_ID"}' \
   -o /tmp/gcal_raw.json
 ```
 **CRITICAL**: The `calendar_id: "primary"` argument is REQUIRED. Args are `timeMin`/`timeMax` (camelCase), not `time_min`/`time_max`.
@@ -60,25 +60,25 @@ Use the schedule section to surface the *actionable daytime commitments and deci
 ```bash
 # Step 1: Get events
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/CALENDLY_LIST_EVENTS" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"arguments": {"user": "https://api.calendly.com/users/5c324794-9144-4ef4-b786-9d1bf32b9e12", "organization": "https://api.calendly.com/organizations/c06ba6ea-f6cf-489e-93b1-fdf891f4d55e", "min_start_time": "DATE_ISO", "max_start_time": "NEXT_DATE_ISO", "count": 20, "status": "active"}, "entity_id": "***REDACTED_COMPOSIO_ENTITY***"}'
+  -d '{"arguments": {"user": "https://api.calendly.com/users/5c324794-9144-4ef4-b786-9d1bf32b9e12", "organization": "https://api.calendly.com/organizations/c06ba6ea-f6cf-489e-93b1-fdf891f4d55e", "min_start_time": "DATE_ISO", "max_start_time": "NEXT_DATE_ISO", "count": 20, "status": "active"}, "entity_id": "$COMPOSIO_ENTITY_ID"}'
 
 # Step 2: For each event, get invitees (extract UUID from event URI last path segment)
 # Arg key is "uuid" NOT "event_uuid"
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/CALENDLY_LIST_EVENT_INVITEES" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"arguments": {"uuid": "EVENT_UUID"}, "entity_id": "***REDACTED_COMPOSIO_ENTITY***"}'
+  -d '{"arguments": {"uuid": "EVENT_UUID"}, "entity_id": "$COMPOSIO_ENTITY_ID"}'
 ```
 Tag each Calendly event as AMPED or ProofPilot based on event name.
 
 ### 3. Gmail (unread, last 1-2 days)
 ```bash
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/GMAIL_FETCH_EMAILS" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"arguments": {"max_results": 30, "query": "is:unread newer_than:2d"}, "entity_id": "***REDACTED_COMPOSIO_ENTITY***"}' \
+  -d '{"arguments": {"max_results": 30, "query": "is:unread newer_than:2d"}, "entity_id": "$COMPOSIO_ENTITY_ID"}' \
   -o /tmp/gmail_raw.json
 ```
 Parse from disk. Headers are in `payload.headers[]` (From, Subject, Date). Body snippet in `messageText`.
@@ -151,7 +151,7 @@ subprocess.run([
 ```
 Then post it:
 ```bash
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/slack_post.py \
+python3 _shared/skills/pilot-api-reference/scripts/slack_post.py \
   D0AQ9PB64L8 --blocks-file /tmp/briefing_blocks.json --fallback-text "Morning briefing"
 ```
 Use explicit blocks so dividers, context lines, and section hierarchy render consistently.

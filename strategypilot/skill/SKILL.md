@@ -79,6 +79,24 @@ If the site needs heavy baseline discovery, load AuditPilot first or alongside t
 
 Then switch into StrategyPilot mode to convert that research into a strategic plan.
 
+### Audit-to-Strategy handoff contract
+When StrategyPilot follows AuditPilot inside WebsitePilot, do not start with a
+blank strategy prompt. Read the audit research ledger, audit draft, ranking
+tables, competitor notes, local visibility scan, and page inventory first.
+
+The strategy must explicitly answer:
+- what demand the business is missing
+- which competitors are winning and why
+- which current pages should be improved, merged, or retired
+- which service pages, location pages, service-plus-city pages, proof pages,
+  comparison/cost/best-of pages, and content hubs should exist
+- which recommendations directly support the homepage/demo thesis
+- which pages are build-now, build-next, build-later, or not-now
+
+If the audit evidence is thin, pause and gather the missing research instead of
+inventing a page system. StrategyPilot can make assumptions only when they are
+clearly labeled and tied to a reasonable business or search pattern.
+
 ### Use instead of AuditPilot when:
 - Matthew explicitly says this is not a sales audit
 - he wants a strategy overview or blueprint
@@ -149,6 +167,9 @@ Before drafting the strategy, gather as many of these as possible:
 - known competitors, if provided
 - current page inventory
 - current ranking snapshots on priority themes
+- AuditPilot research ledger or audit draft when this is part of WebsitePilot
+- DataForSEO top pages, ranked keywords, competitor domains, and page-two opportunities
+- local visibility scan summary for local-intent businesses
 - visible proof assets such as projects, reviews, certifications, partnerships, case studies, photos, videos, experts, or process detail
 
 ## Research Workflow
@@ -198,11 +219,11 @@ Composio does not currently expose the core DataForSEO Labs endpoints we need fo
 - domain intersection
 
 Use the shared router:
-- `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py ranked_keywords --target DOMAIN --limit 100`
-- `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py competitors_domain --target DOMAIN --limit 20`
-- `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py relevant_pages --target DOMAIN --limit 20`
-- `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py domain_rank_overview --target DOMAIN`
-- `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py domain_intersection --target DOMAIN --target2 COMPETITOR.com --limit 50`
+- `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py ranked_keywords --target DOMAIN --limit 100`
+- `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py competitors_domain --target DOMAIN --limit 20`
+- `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py relevant_pages --target DOMAIN --limit 20`
+- `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py domain_rank_overview --target DOMAIN`
+- `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py domain_intersection --target DOMAIN --target2 COMPETITOR.com --limit 50`
 
 Routing rule:
 - direct DataForSEO is primary
@@ -217,20 +238,20 @@ When StrategyPilot needs domain intelligence, run this exact sequence in the mai
 This is the default research order unless Matthew asks for a lighter strategy pass.
 
 **Core sequence**
-1. `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py ranked_keywords --target DOMAIN --limit 100`
-2. `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py domain_rank_overview --target DOMAIN`
-3. `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py relevant_pages --target DOMAIN --limit 20`
-4. `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py competitors_domain --target DOMAIN --limit 20 --max-rank-group 10`
+1. `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py ranked_keywords --target DOMAIN --limit 100`
+2. `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py domain_rank_overview --target DOMAIN`
+3. `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py relevant_pages --target DOMAIN --limit 20`
+4. `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py competitors_domain --target DOMAIN --limit 20 --max-rank-group 10`
 
 **Competitor comparison sequence**
 Choose the top 2-3 true sales competitors from step 4, then run:
-1. `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py domain_intersection --target DOMAIN --target2 COMPETITOR.com --limit 50`
-2. `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py ranked_keywords --target COMPETITOR.com --limit 50`
-3. `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py relevant_pages --target COMPETITOR.com --limit 20`
+1. `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py domain_intersection --target DOMAIN --target2 COMPETITOR.com --limit 50`
+2. `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py ranked_keywords --target COMPETITOR.com --limit 50`
+3. `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py relevant_pages --target COMPETITOR.com --limit 20`
 
 **Expansion / planning support pulls**
-- `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py keywords_for_site --target DOMAIN --limit 50`
-- `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py historical_traffic --target DOMAIN`
+- `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py keywords_for_site --target DOMAIN --limit 50`
+- `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py historical_traffic --target DOMAIN`
 
 **Strategy interpretation rules**
 - `ranked_keywords` tells you what the domain already owns.
@@ -249,7 +270,7 @@ This is useful when you need:
 - intersection keyword lists for competitor-gap analysis
 
 Pattern:
-1. In terminal, import `~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py` with `importlib.util`
+1. In terminal, import `_shared/skills/pilot-api-reference/scripts/dataforseo_router.py` with `importlib.util`
 2. Build a small `argparse` parser that mirrors the script's CLI args
 3. Call `route_endpoint(endpoint, args)` directly
 4. Read from `result['response']['tasks'][0]['result'][0]`

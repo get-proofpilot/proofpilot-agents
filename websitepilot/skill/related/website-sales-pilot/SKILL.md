@@ -53,6 +53,25 @@ Identify the target lead, confirm the root domain, confirm the primary service a
 - a standard sales bundle
 - a full audit + strategy + demo pass
 
+### Broad-market lead list workflow
+When Matthew wants a cold prospecting list across a vertical or metro, do not
+jump straight to broad parallel web-only subagents. Lightweight delegated web
+research can stall or time out on broad discovery runs.
+
+Use this sequence instead:
+1. Run batched web searches in the main session across city + service variants.
+2. Collect candidate domains and exclude obvious directories, aggregators,
+   Reddit/forum results, and national brands unless they are true competitors.
+3. Run targeted extraction only on shortlisted business sites.
+4. Score prospects for website-first sales based on patterns like no owned
+   website surfaced, ultra-thin homepage, one-page site, legacy builder feel,
+   duplicated or broken sections, weak trust stack, weak service depth, or weak
+   conversion path.
+5. Then write the outreach angle and low-fidelity audit from extracted evidence.
+
+This main-session batched search to shortlist to extract flow is faster and more
+reliable for list building than spawning child agents too early.
+
 ### Stage 2: Sales audit
 Run AuditPilot in the correct mode:
 - fast HTML-first sales opportunity mode for lighter outreach
@@ -88,6 +107,8 @@ Minimum required inputs:
 - location
 - keyword/theme
 - notes
+- optional `design_template` when a specific starter profile should be forced
+  from the WebsitePilot template library
 
 ### Stage 6: Visual verification and QA
 Do not stop at a preview URL.

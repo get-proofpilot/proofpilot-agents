@@ -20,18 +20,19 @@ architecture, 90-day rollout, and ROI model.
 
 ## Stages
 
-1. Footprint (site classification + page inventory)
-2. Competitive (SERP patterns + competitor page systems + gaps)
-3. Page Systems (12-category taxonomy, prioritized)
-4. ROI (3-scenario funnel model)
-5. Synthesis (13-section markdown document)
+1. Audit handoff review (research ledger, ranking tables, page inventory, competitor notes)
+2. Footprint (site classification + page inventory)
+3. Competitive (SERP patterns + competitor page systems + gaps)
+4. Page Systems (12-category taxonomy, prioritized)
+5. ROI (3-scenario funnel model)
+6. Synthesis (13-section markdown document)
 
-## Run locally
+StrategyPilot turns evidence into a page system. It should not invent pages from
+a generic checklist; recommendations must trace to audit evidence, SERP patterns,
+competitor page systems, or clearly labeled assumptions.
+
+## Local Helper
 
 ```bash
-cd backend
-.venv/bin/uvicorn server:app --reload
-curl -N -X POST http://localhost:8000/api/agents/strategy \
-  -H "Content-Type: application/json" \
-  -d '{"domain":"example.com","service":"plumber","location":"Mesa, AZ"}'
+python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py --help
 ```

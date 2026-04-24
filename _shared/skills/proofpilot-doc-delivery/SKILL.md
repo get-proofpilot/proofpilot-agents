@@ -49,16 +49,16 @@ After the .docx is saved at `/root/YOUR_FILE.docx`, run this one-shot upload:
 ```python
 python3 << 'PYEOF'
 import os, json, time, requests
-os.environ['COMPOSIO_API_KEY'] = 'ak_***REDACTED***'
+os.environ["COMPOSIO_API_KEY"]  # required by composio-core
 from composio import ComposioToolSet
 
 FILE_PATH = "/root/YOUR_FILE.docx"
 FILE_NAME = "Client Name - Document Type.docx"
 MIME_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-PARENT_FOLDER = "***REDACTED_DRIVE_FOLDER***"  # Proposals folder
+PARENT_FOLDER = os.environ["PROOFPILOT_DRIVE_FOLDER_ID"]
 
-ENTITY = "***REDACTED_COMPOSIO_ENTITY***"
-CONNECTION = "***REDACTED_GDRIVE_CONNECTION***"
+ENTITY = os.environ["COMPOSIO_ENTITY_ID"]
+CONNECTION = os.environ["GDRIVE_CONNECTION_ID"]
 
 toolset = ComposioToolSet(entity_id=ENTITY)
 

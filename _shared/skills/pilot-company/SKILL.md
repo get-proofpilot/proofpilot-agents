@@ -54,7 +54,7 @@ Website: getproofpilot.com | Slack: proofpilot-hq.slack.com | ClickUp workspace:
 - Matthew's email tone: friendly, not pushy, relationship-focused
 - Overview doc template: Google Doc ID 10s7UjGa0kcb9tx8p668Dg-IHbSgIuA3vFccF8mLobII
 - Lead Gen folder: 1EwejgTUqmSoyqe_-NgrTQt8y6XIAUau_
-- Proposals folder: ***REDACTED_DRIVE_FOLDER***
+- Proposals folder: PROOFPILOT_DRIVE_FOLDER_ID
 
 ## Monthly SEO Cycle
 Tasks flow: Planning > In Progress > Ready for Review > Approved > Done
@@ -100,8 +100,8 @@ Sales CRM: 90171038883
 ### Matthew DM: D0AQ9PB64L8
 
 ## Composio Integration
-API key: ak_***REDACTED***
-Entity ID: ***REDACTED_COMPOSIO_ENTITY***
+API key: `COMPOSIO_API_KEY`
+Entity ID: `COMPOSIO_ENTITY_ID`
 Connected: Gmail, Google Drive/Sheets/Docs/Calendar/Analytics/Search Console, ClickUp, GitHub, Slack, Calendly, DataForSEO, Firecrawl, OpenRouter
 
 ## AI Agents
@@ -112,9 +112,8 @@ Three named AI agents operate under the Pilot umbrella:
 
 ## Key Operational Facts
 - Server runs UTC, Matthew is MST (UTC-7)
-- ClickUp write via connectedAccountId: 467c804d
-- ClickUp read token: pk_***REDACTED***
-- Slack bot token: xoxb-***REDACTED***
-- GitHub PAT auth (ghp_7AkxluGBgP...)
-- Firecrawl key: fc-***REDACTED***
-- Fireflies token: 154c9662-8f64-456e-9ec6-50a21f373c85
+- ClickUp write via connected account; use `CLICKUP_API_KEY` / `CLICKUP_TOKEN` for direct reads.
+- Slack bot token lives in `SLACK_BOT_TOKEN`.
+- GitHub auth lives in the local `gh`/GitHub connector session.
+- Firecrawl key lives in `FIRECRAWL_API_KEY`.
+- Fireflies token lives in `FIREFLIES_API_KEY`.

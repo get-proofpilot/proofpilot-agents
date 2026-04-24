@@ -10,9 +10,9 @@ No pip installs needed. Direct curl calls.
 Returns search volume, CPC, competition for seed keywords + related terms.
 ```bash
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/DATAFORSEO_GET_KW_GOOGLE_ADS_KW_FOR_KW_LIVE" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"arguments": {"keywords": ["electrician mesa az","plumber mesa az"], "location_code": 1014226, "language_code": "en", "sort_by": "search_volume"}, "entity_id": "***REDACTED_COMPOSIO_ENTITY***"}'
+  -d '{"arguments": {"keywords": ["electrician mesa az","plumber mesa az"], "location_code": 1014226, "language_code": "en", "sort_by": "search_volume"}, "entity_id": "$COMPOSIO_ENTITY_ID"}'
 ```
 
 Response: `data.tasks[0].result[]` = array of keyword objects with:
@@ -23,9 +23,9 @@ Response: `data.tasks[0].result[]` = array of keyword objects with:
 ### Top Searches (Live)
 ```bash
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/DATAFORSEO_GET_DATAFORSEO_LABS_GOOGLE_TOP_SEARCHES_LIVE" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"arguments": {"location_code": 2840, "language_code": "en", "limit": 20, "order_by": ["keyword_info.search_volume,desc"]}, "entity_id": "***REDACTED_COMPOSIO_ENTITY***"}'
+  -d '{"arguments": {"location_code": 2840, "language_code": "en", "limit": 20, "order_by": ["keyword_info.search_volume,desc"]}, "entity_id": "$COMPOSIO_ENTITY_ID"}'
 ```
 
 **Note:** `top_searches` and `bulk_keyword_difficulty` can reject some city-level `location_code` values with
@@ -35,25 +35,25 @@ when a more local code is unsupported.
 ### Keyword Difficulty (Bulk, up to 1000 keywords)
 ```bash
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/DATAFORSEO_POST_DATAFORSEO_LABS_BULK_KEYWORD_DIFFICULTY_LIVE" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"arguments": {"keywords": ["electrician mesa az","plumber mesa az"], "location_code": 1014226, "language_code": "en"}, "entity_id": "***REDACTED_COMPOSIO_ENTITY***"}'
+  -d '{"arguments": {"keywords": ["electrician mesa az","plumber mesa az"], "location_code": 1014226, "language_code": "en"}, "entity_id": "$COMPOSIO_ENTITY_ID"}'
 ```
 
 ### SERP Analysis (Async: create task, then retrieve)
 ```bash
 # Step 1: Create task
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/DATAFORSEO_CREATE_SERP_GOOGLE_ORGANIC_TASK_POST" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"arguments": {"tasks": [{"keyword": "electrician mesa az", "location_code": 1014226, "language_code": "en", "depth": 20}]}, "entity_id": "***REDACTED_COMPOSIO_ENTITY***"}'
+  -d '{"arguments": {"tasks": [{"keyword": "electrician mesa az", "location_code": 1014226, "language_code": "en", "depth": 20}]}, "entity_id": "$COMPOSIO_ENTITY_ID"}'
 # Returns task_id in response
 
 # Step 2: Get results (wait ~5s)
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/DATAFORSEO_GET_SERP_GOOGLE_ORGANIC_TASK_ADVANCED_BY_ID" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"arguments": {"id": "TASK_ID_HERE"}, "entity_id": "***REDACTED_COMPOSIO_ENTITY***"}'
+  -d '{"arguments": {"id": "TASK_ID_HERE"}, "entity_id": "$COMPOSIO_ENTITY_ID"}'
 ```
 
 ### All Working Slugs (Apr 2026)
@@ -71,11 +71,11 @@ Only use if Method 1 fails. Requires pip install composio-core.
 
 ```python
 import os, time, requests
-os.environ['COMPOSIO_API_KEY'] = 'ak_***REDACTED***'
+os.environ["COMPOSIO_API_KEY"]  # required by composio-core
 from composio import ComposioToolSet
 
-DFS_CONNECTION = "d69d7e6d-756f-4654-93ea-f981bb7528fc"
-ENTITY = "***REDACTED_COMPOSIO_ENTITY***"
+DFS_CONNECTION = os.environ["DATAFORSEO_CONNECTION_ID"]
+ENTITY = os.environ["COMPOSIO_ENTITY_ID"]
 
 toolset = ComposioToolSet(entity_id=ENTITY)
 r = requests.post("https://webhook.site/token")
@@ -202,28 +202,33 @@ domain_rank_overview, and domain_intersection.
 For AuditPilot, the best setup is:
 - direct DataForSEO = primary
 - Composio = backup where wrappers exist and are proven working
-- shared router = `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py`
+- shared router = `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py`
+
+Credentials are local, not Hermes-specific:
+- `DFS_LOGIN` / `DFS_PASSWORD`
+- or `DATAFORSEO_LOGIN` / `DATAFORSEO_PASSWORD`
+- optional fallback file: `~/.proofpilot/secrets/dataforseo_direct.env`
 
 Recommended AuditPilot command set:
 ```bash
 # Prospect keyword portfolio
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py \
+python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py \
   ranked_keywords --target prospect.com --limit 100
 
 # Page-2 quick wins
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py \
+python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py \
   ranked_keywords --target prospect.com --limit 100 --filter-page-two
 
 # Competitor table
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py \
+python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py \
   competitors_domain --target prospect.com --limit 20 --max-rank-group 10
 
 # Top organic pages
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py \
+python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py \
   relevant_pages --target prospect.com --limit 20
 
 # Position distribution / striking distance
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py \
+python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py \
   domain_rank_overview --target prospect.com
 ```
 
@@ -244,4 +249,4 @@ total_ads_cost = sum(
 - Backlinks API NOT active on our subscription.
 - DEAD SLUG: DATAFORSEO_KEYWORDS_DATA_GOOGLE_ADS_SEARCH_VOLUME_LIVE (returns 404)
 - If any slug returns 404, search for updated name before failing:
-  `curl -s "https://backend.composio.dev/api/v3/tools?search=DATAFORSEO+keyword&limit=20" -H "x-api-key: ak_***REDACTED***"`
+  `curl -s "https://backend.composio.dev/api/v3/tools?search=DATAFORSEO+keyword&limit=20" -H "x-api-key: $COMPOSIO_API_KEY"`

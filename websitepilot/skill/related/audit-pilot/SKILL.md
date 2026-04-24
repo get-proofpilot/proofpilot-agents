@@ -69,7 +69,7 @@ The parallel subagent approach is still faster overall because summaries contain
 
 **DataForSEO: Always run in MAIN session, NOT in subagents.** Use the shared router in
 the main terminal, not subagents. Preferred helper:
-`python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py`
+`python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py`
 Routing policy: direct DataForSEO is primary, Composio is backup only where an overlapping
 wrapper exists. After subagents return, run routed DataForSEO calls for the prospect domain
 AND 2-3 competitor domains identified by the subagents. This gets you exact search volumes,
@@ -82,28 +82,46 @@ data for the document tables.
 3. Screenshot capture of 3-5 key pages (main session browser)
 4. Any specific numbers from subagent summaries that seem rounded or estimated
 
+## Research-First Operating Contract
+
+AuditPilot does not write the audit until the research layer is complete enough
+to support the sales story. Before drafting, create `/tmp/<client>-audit/research-ledger.md`
+or `/tmp/<client>-audit/research-ledger.json` with:
+
+- confirmed business name, root domain, primary market, services, and known competitors
+- URL inventory and page-family classification from Firecrawl/sitemap/robots checks
+- ranking reality table for 10 core money queries
+- broader 20-25 query SERP sweep with competitor positions when Sales Audit v2 is needed
+- DataForSEO domain intelligence for the prospect and 2-3 true sales competitors
+- indexed-page count compared with sitemap/page inventory
+- local visibility scan summary when the business has local intent
+- conversion, proof, trust, schema, content-quality, image, crawlability, and AEO/GEO support-layer notes
+
+Each major finding must have `finding`, `evidence`, `impact`, and `fix`. If a
+claim cannot be tied to the ledger, it does not go in the audit.
+
 ### AuditPilot Canned DataForSEO Sequence (follow in this order)
 
 For every serious sales audit, run this exact router sequence in the main session.
 Do not improvise the order unless Matthew asks for a custom cut.
 
 **Prospect sequence**
-1. `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py ranked_keywords --target DOMAIN --limit 100`
-2. `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py ranked_keywords --target DOMAIN --limit 100 --filter-page-two`
-3. `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py domain_rank_overview --target DOMAIN`
-4. `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py relevant_pages --target DOMAIN --limit 20`
-5. `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py competitors_domain --target DOMAIN --limit 20 --max-rank-group 10`
+1. `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py ranked_keywords --target DOMAIN --limit 100`
+2. `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py ranked_keywords --target DOMAIN --limit 100 --filter-page-two`
+3. `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py domain_rank_overview --target DOMAIN`
+4. `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py relevant_pages --target DOMAIN --limit 20`
+5. `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py competitors_domain --target DOMAIN --limit 20 --max-rank-group 10`
 
 **Top competitor follow-up sequence**
 Run for the top 2-3 true sales competitors surfaced by step 5:
-1. `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py ranked_keywords --target COMPETITOR.com --limit 50`
-2. `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py relevant_pages --target COMPETITOR.com --limit 20`
-3. `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py domain_rank_overview --target COMPETITOR.com`
+1. `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py ranked_keywords --target COMPETITOR.com --limit 50`
+2. `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py relevant_pages --target COMPETITOR.com --limit 20`
+3. `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py domain_rank_overview --target COMPETITOR.com`
 
 **Optional support pulls**
-- `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py historical_traffic --target DOMAIN`
-- `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py keywords_for_site --target DOMAIN --limit 50`
-- `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py domain_intersection --target DOMAIN --target2 COMPETITOR.com --limit 50`
+- `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py historical_traffic --target DOMAIN`
+- `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py keywords_for_site --target DOMAIN --limit 50`
+- `python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py domain_intersection --target DOMAIN --target2 COMPETITOR.com --limit 50`
 
 **Interpretation rules**
 - Treat `ranked_keywords` + `domain_rank_overview` + `relevant_pages` as the core site-explorer replacement.
@@ -118,51 +136,16 @@ The output of these is what anchors Section 02 (The Ranking Reality) and the
 cover page stats bar.
 
 **Check 1: Are they ranking for ANY of their core keywords?**
-Run web_search (not DataForSEO SERP tasks — too slow/expensive for this) on
-10 high-intent commercial queries in their market. Look for their domain in
-the top 10. For each query, record: their rank (or "Not in top 10") and
-who is #1.
-
-```python
-from hermes_tools import web_search
-from urllib.parse import urlparse
-
-queries = [
-    "pest control scottsdale", "exterminator scottsdale az",
-    "scorpion control scottsdale", "rodent control scottsdale",
-    "mosquito control scottsdale", "ant control scottsdale",
-    "commercial pest control scottsdale", "family owned pest control scottsdale",
-    "pet safe pest control scottsdale", "pest control phoenix"
-]  # Adjust per vertical/city
-
-ranked_count = 0
-for q in queries:
-    r = web_search(q, limit=10)
-    results = r.get("data", {}).get("web", [])
-    ap_rank = None
-    for i, item in enumerate(results):
-        if 'target-domain.com' in item.get('url', ''):
-            ap_rank = i + 1
-            break
-    top_dom = urlparse(results[0]['url']).netloc.replace('www.','') if results else 'N/A'
-    print(f"{q}: rank={ap_rank or 'Not in top 10'} | #1={top_dom}")
-    if ap_rank: ranked_count += 1
-
-print(f"\nRanked in top 10 for {ranked_count}/{len(queries)} keywords")
-```
+Use the current environment's web search/browser tools, or the DataForSEO
+`serp_live` endpoint through `_shared/skills/pilot-api-reference/scripts/dataforseo_router.py`
+when scripted SERP capture is needed. Run 10 high-intent commercial queries in
+the market. Look for the target domain in the top 10. For each query, record:
+query, target rank or `Not in top 10`, #1 domain, #1 page type, and notes.
 
 **Check 2: How many pages are actually indexed vs. sitemap count?**
-Run `site:domain.com` via web_search. Count the returned pages. Compare
-against total pages in the sitemap (from Subagent 1 or firecrawl map).
-
-```python
-r = web_search("site:target-domain.com", limit=10)
-indexed_pages = r.get("data", {}).get("web", [])
-print(f"Indexed: {len(indexed_pages)} pages")
-for p in indexed_pages:
-    print(f"  - {p['url']}")
-# Compare to sitemap count (e.g. 32 in sitemap, 5 indexed = huge finding)
-```
+Run `site:domain.com` through the current environment's web search/browser
+tools. Count visible indexed pages and compare that with the sitemap or
+Firecrawl inventory. Save the URLs in the research ledger.
 
 **Gold finding pattern:** "0 of 10 keywords ranking | X of Y pages indexed"
 goes straight into the cover page stats bar. If they rank for nothing AND most
@@ -175,52 +158,16 @@ competitor-per-query data for Section 02 and the "Who Is #1" column.
 
 **Check 3 (REQUIRED for Section 03): Broader SERP sweep for competitor ranking tables.**
 After the 10-query check, expand to 20-25 queries and track ALL competitor
-positions, not just the prospect. This is what powers the "What They Are
-Actually Ranking For" subsection with per-competitor ranking tables. Run this
-in a single execute_code block:
+positions, not just the prospect. This powers the "What They Are Actually
+Ranking For" subsection with per-competitor ranking tables. Save the sweep to
+`/tmp/<client>-audit/competitor-rankings.json` or a markdown table in the
+research ledger.
 
-```python
-from hermes_tools import web_search
-from urllib.parse import urlparse
-
-# 20-25 queries covering: core commercial, service+city combos, specialty terms
-queries = [
-    "pest control scottsdale", "exterminator scottsdale az",
-    "scorpion control scottsdale", "termite control scottsdale",
-    "termite inspection scottsdale", "termite treatment phoenix",
-    "bed bug treatment scottsdale", "bed bug exterminator phoenix",
-    "rodent control scottsdale", "roof rat control phoenix",
-    "bee removal scottsdale", "mosquito control scottsdale",
-    "ant control scottsdale", "cockroach exterminator scottsdale",
-    "commercial pest control scottsdale", "commercial pest control phoenix",
-    "pest control phoenix", "exterminator phoenix az",
-    "pest control gilbert az", "pest control chandler az",
-    "pest control mesa az", "pest control tempe az",
-    "scorpion exterminator phoenix", "termite control arizona",
-]
-
-# Domains to track (prospect + top 5-7 competitors discovered earlier)
-target_domains = [
-    "blueskypest.com", "urbandesertpest.com", "budgetbrotherstermite.com",
-    "orkin.com", "trulynolen.com", "responsiblepestcontrol.net",
-    "mosquitosquad.com", "prospect-domain.com",
-]
-
-rankings = {d: [] for d in target_domains}
-for q in queries:
-    r = web_search(q, limit=10)
-    for i, item in enumerate(r.get("data", {}).get("web", [])):
-        domain = urlparse(item.get('url', '')).netloc.replace('www.','').replace('locations.','')
-        if 'trulynolen.com' in domain: domain = 'trulynolen.com'  # normalize subdomains
-        for td in target_domains:
-            if td in domain or domain in td:
-                rankings[td].append((q, i+1))
-
-# Output: domain -> list of (keyword, position)
-import json
-with open('/tmp/competitor_rankings.json','w') as f:
-    json.dump(rankings, f, indent=2)
-```
+Track 20-25 queries covering core commercial, service+city, specialty,
+emergency, commercial, and adjacent high-intent terms. Track the prospect plus
+5-7 real competitors. Normalize subdomains before matching, for example strip
+`www.`, `locations.`, and city/location subdomains so `locations.trulynolen.com`
+matches `trulynolen.com`.
 
 Then cross-reference each ranked keyword with DataForSEO volume/CPC data you
 already pulled. For missing volumes, run a second DataForSEO call specifically
@@ -717,7 +664,7 @@ Do NOT create a full-page dark blue box for the cover.
 
 AuditPilot can now pull real Google Maps geo-grid rankings and embed heat maps in the audit doc. This replaces the old "we would need to buy ads" guess with actual visibility data across a 49-point (or 121-point) grid around the prospect's location.
 
-**API key:** stored at `~/.hermes/secrets/local_falcon.env` as `LOCAL_FALCON_API_KEY`.
+**API key:** stored at `~/.proofpilot/secrets/local_falcon.env` as `LOCAL_FALCON_API_KEY`.
 Account: ProofPilot Agency, Starter plan (7,500 credits/cycle). Helper script:
 `scripts/local_falcon.py`.
 
@@ -743,7 +690,7 @@ Starter plan has ~7500 credits per cycle so budget ~50-100 credits per audit.
 
 4. Run the scan with the business's top commercial keyword:
    `python3 scripts/local_falcon.py scan --place_id <id> --keyword "electrician near me" \
-       --lat 33.39 --lng -111.84 --grid 7 --radius 5 --measurement mi --platform google --eager`
+       --lat 33.39 --lng -111.84 --grid 7 --radius 5 --measurement mi --platform google --ai --eager`
    Returns report_key, owner_key, and all metrics immediately when --eager is set.
 
 5. Download the heatmap + grid PNGs for embedding:
@@ -752,30 +699,16 @@ Starter plan has ~7500 credits per cycle so budget ~50-100 credits per audit.
 6. Summarize for the doc:
    `python3 scripts/local_falcon.py report <report_key> --summary`
 
-**Always run with ai_analysis=true.** Local Falcon's AI analysis returns a full
+**Always run with `--ai`.** Local Falcon's AI analysis returns a full
 strategic consultation in structured format: summary narrative, major problems,
 minor problems, what is working, vulnerable competitors (overtake targets), and
 citation opportunities. This is sales-ready content you drop straight into the
 audit doc. The cost is minor and the value is enormous.
 
-**CLI pitfall discovered Apr 11 2026:** `local_falcon.py scan --help` does not
-currently expose an `--ai` flag even though the underlying `run_scan()` Python
-function supports `ai_analysis=True`. If you need AI analysis and the CLI lacks
-`--ai`, call the script programmatically:
-```python
-import importlib.util
-from pathlib import Path
-p = Path('~/.hermes/skills/productivity/audit-pilot/scripts/local_falcon.py').expanduser()
-spec = importlib.util.spec_from_file_location('local_falcon_mod', p)
-mod = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(mod)
-job = mod.run_scan(place_id=pid, keyword=kw, lat=lat, lng=lng,
-                   grid_size=7, radius=5, measurement='mi',
-                   platform='google', ai_analysis=True)
-report = mod.wait_for_report(job['report_key'], timeout=420, interval=20)
-```
-If `rich_report(...)["ai_analysis"]` still comes back null, continue with the
-scan summary and markdown output. Do not block the audit on missing AI text.
+If `rich_report(...)["ai_analysis"]` comes back null after an `--ai` scan, run
+`python3 scripts/local_falcon.py report <report_key> --markdown --ai`. If it is
+still unavailable, continue with the scan summary and markdown output. Do not
+block the audit on missing AI text.
 
 **Every scan returns a pre-computed rich dataset:**
 - `places` dict with full profile per competitor (name, reviews, rating, phone,
@@ -913,8 +846,8 @@ Three API tiers available (use the cheapest that fits):
 - Know the URL, want structured business data? Use /v2/extract
 - Don't know URLs, need competitor/review research? Use /v2/agent
 
-**API Key:** ***REDACTED_FIRECRAWL_KEY***
-**CLI:** `firecrawl` (v1.12.2, installed globally on both sandbox and VPS, auth persisted)
+**API Key:** use `FIRECRAWL_API_KEY` in the local environment.
+**CLI:** `firecrawl` when installed locally.
 **Helper script:** scripts/firecrawl_agent.py (handles polling, schemas, credit caps)
 **Python SDK:** `from firecrawl import Firecrawl` (v4.22+, NOT FirecrawlApp)
 
@@ -1222,9 +1155,9 @@ NEVER use 6+ column tables in .docx files destined for Google Docs — they get 
   subagent 1 for accurate numbers (don't estimate from partial scrapes).
 - Pricing transparency varies. Some agencies hide pricing. Note "not published"
   in the competitor table rather than guessing.
-- Screenshot path: browser_vision saves to /root/.hermes/cache/screenshots/, NOT
-  /root/.hermes/browser_screenshots/. Use `ls -lt /root/.hermes/cache/screenshots/`
-  to find the latest. Resize with Pillow before embedding (max 900px wide).
+- Screenshot path depends on the local browser tool. Save screenshots explicitly
+  into `/tmp/<client>-audit/screenshots/` so the main session can find them.
+  Resize with Pillow before embedding (max 900px wide).
 - Subagent 2 sleep pattern: `terminal: sleep 3` between web_search batches works
   but counts as a "failed" tool call (exit code 0 but logged as error). Harmless.
   All 9 web_searches succeeded in v2 run with this pattern.
@@ -1404,5 +1337,5 @@ Use these layers to make the audit more effective, strategic, and evidence-backe
 - **Local Falcon AI analysis insights folded into Problems, What Is Working, and Overtake Targets**
 - **Local Falcon SoLV / ARP / Found-in X of Y metrics called out in the stats bar**
 - No em dashes, semicolons, tool names (NEVER write "Local Falcon" in the client doc, call it "geo-grid visibility scan" or "local search visibility analysis")
-- Uploaded to GDrive Proposals folder (1cilIh15KLR1lmdY3wVrn0r4jX69o3T18)
+- Uploaded to GDrive Proposals folder (PROOFPILOT_DRIVE_FOLDER_ID)
 - Link sent to Matthew for review

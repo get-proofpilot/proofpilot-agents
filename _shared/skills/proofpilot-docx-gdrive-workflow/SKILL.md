@@ -45,16 +45,16 @@ Run in terminal (not execute_code):
 ```python
 python3 << 'PYEOF'
 import os, json, time, requests
-os.environ['COMPOSIO_API_KEY'] = 'ak_***REDACTED***'
+os.environ["COMPOSIO_API_KEY"]  # required by composio-core
 from composio import ComposioToolSet
 
 FILE_PATH = "/root/Judds-Plumbing-AZ-Website-SEO-Audit.docx"
 FILE_NAME = "Judd's Plumbing AZ - Website & SEO Audit.docx"
 MIME_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-PARENT_FOLDER = "***REDACTED_DRIVE_FOLDER***"
+PARENT_FOLDER = os.environ["PROOFPILOT_DRIVE_FOLDER_ID"]
 
-ENTITY = "***REDACTED_COMPOSIO_ENTITY***"
-CONNECTION = "***REDACTED_GDRIVE_CONNECTION***"
+ENTITY = os.environ["COMPOSIO_ENTITY_ID"]
+CONNECTION = os.environ["GDRIVE_CONNECTION_ID"]
 
 toolset = ComposioToolSet(entity_id=ENTITY)
 
@@ -119,10 +119,10 @@ PYEOF
 
 | Variable | Value |
 |----------|-------|
-| Composio API Key | `ak_***REDACTED***` |
-| Entity ID | `***REDACTED_COMPOSIO_ENTITY***` |
-| GDrive Connection ID | `***REDACTED_GDRIVE_CONNECTION***` |
-| Proposals Folder | `***REDACTED_DRIVE_FOLDER***` |
+| Composio API Key | `COMPOSIO_API_KEY` |
+| Entity ID | `COMPOSIO_ENTITY_ID` |
+| GDrive Connection ID | `GDRIVE_CONNECTION_ID` |
+| Proposals Folder | `PROOFPILOT_DRIVE_FOLDER_ID` |
 
 ## Common MIME Types
 

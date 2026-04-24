@@ -1,6 +1,6 @@
 ---
 name: websitepilot
-description: WebsitePilot — ProofPilot's combined website sales agent. Runs end-to-end website deals locally in Claude Code: lead qualification → sales audit → strategy → custom demo homepage (AutoPilot three-brain design) → branded deliverable. No VPS. No Railway call.
+description: WebsitePilot — ProofPilot's combined website sales agent. Runs end-to-end website deals locally in Codex/Claude-compatible agent sessions: lead qualification → sales audit → strategy → custom demo homepage (AutoPilot three-brain design) → branded deliverable. No VPS. No Railway call.
 tags: [websitepilot, websites, sales, seo, audits, strategy, demos, proofpilot, local]
 ---
 
@@ -25,9 +25,9 @@ WebsitePilot is the full website-deal orchestrator. It unifies:
 - **AutoPilot** — the custom demo homepage (three-brain design)
 - **docx-kit** from `proofpilot-brand` — branded `.docx` output
 
-## Canonical flow (local — Claude Code)
+## Canonical flow (local agent session)
 
-This is how WebsitePilot runs end-to-end in a single Claude Code session. Every stage is a dispatched subagent that writes its output to `/tmp/<client>/` and returns a structured report. Subsequent stages read the previous stage's file.
+This is how WebsitePilot runs end-to-end in a single local agent session. For Codex runs, Codex owns the orchestration and may execute the stages directly in `/tmp/<client>/` without Hermes or Claude-specific harnesses.
 
 ```
 Lead qualification
@@ -94,25 +94,41 @@ Move a lead through one connected flow:
 
 ## Non-negotiables
 
+- **Research first, always.** WebsitePilot does not write, strategize, or design
+  until the business, domain, market, services, competitors, and first-pass
+  audit research are clear.
 - Every design decision ties back to real audit evidence.
 - The strategy sharpens what the homepage is selling. It doesn't just list recommendations.
 - The final deliverable reads as one connected sales document with proof → direction → next step.
 - **AutoPilot output must pass the "remove the logo" test before reporting done.** See `autopilot/skill/references/gold-standard-playbook.md`.
 - For stronger opportunities, bundle the audit, strategy, demo, and close path as one coherent document.
 
+Core first-pass research doctrine lives in
+`websitepilot/skill/references/audit-research-phase.md`. Read it before Stage 2
+on any serious WebsitePilot run.
+
 ## Default workflow
 
 ### Stage 1 — Lead qualification
 Confirm the company, domain, primary service, service area, and sales priority. If sourced from a lead sheet, pull any prior context (prior outreach, known blockers, referral source).
 
-### Stage 2 — Sales audit
-Run discovery subagents in parallel to expose pain with data:
-- **Rankings reality** — DataForSEO domain overview + ranked keywords + target money-term SERPs
-- **Site crawl** — Playwright-driven inventory: pages, conversion architecture, trust signals, schema, template residue
-- **Competitor teardown** — top 5-7 real competitors with head-to-head keyword + content comparison
-- **Local visibility** — 3-pack presence for primary service + city, GBP profile, geo reach
+### Stage 2 — Audit research layer
+Before writing the audit, build the research ledger at
+`/tmp/<client>/audit-research.md` or `/tmp/<client>/audit-research.json`.
 
-Synthesize into an **8-section Sales Audit v2** document (AuditPilot doctrine) at `/tmp/<client>/audit.md`. Lead with the pain stat (e.g. "Ranks for 0 of 15 money terms"). Sales-focused, not a technical checklist. Fifth-grade reading level. No em dashes. No semicolons.
+Run the evidence stack from `references/audit-research-phase.md`:
+- **Target confirmation** — business, root domain, market, service category, known competitors, and sales priority
+- **Live site inventory** — Firecrawl map/scrape, sitemap, robots, page families, services, locations, proof/trust, conversion path, schema
+- **Ranking reality** — 10 high-intent SERP checks, top-10 presence, #1 domain per query, indexed pages vs sitemap/page inventory
+- **Domain intelligence** — DataForSEO ranked keywords, page-two keywords, domain overview, relevant pages, competitor domains, and competitor follow-ups
+- **Competitor and SERP patterns** — 20-25 query sweep, page types ranking, missing page systems, competitor service/location coverage
+- **Local visibility** — geo-grid/local search visibility scan for local-intent businesses
+- **Support layers** — UX, conversion, proof, schema/entity, content quality, image SEO, internal links, crawlability, social metadata, AEO/GEO readiness
+
+Then synthesize into a **Sales Audit v2** document (AuditPilot doctrine) at
+`/tmp/<client>/audit.md`. Lead with the clearest pain stat, for example
+`Ranks for 0 of 10 core keywords` or `5 of 32 pages visibly indexed`. Sales-focused,
+not a technical checklist. Fifth-grade reading level. No em dashes. No semicolons.
 
 ### Stage 3 — Strategy layer
 Turn audit findings into a **13-section StrategyPilot document** at `/tmp/<client>/strategy.md`:
@@ -127,6 +143,9 @@ Turn audit findings into a **13-section StrategyPilot document** at `/tmp/<clien
 - Prioritized build plan (P1 / P2 / P3 / Not now)
 
 StrategyPilot doctrine lives in the `strategypilot` skill. Reference it directly.
+The strategy may not introduce major page recommendations unless they trace to
+the audit research ledger, live SERP patterns, competitor page systems, or
+clearly labeled assumptions.
 
 ### Stage 4 — Demo brief
 Condense audit + strategy into a **homepage demo brief** at `/tmp/<client>/demo-brief.md`:
@@ -135,6 +154,18 @@ Condense audit + strategy into a **homepage demo brief** at `/tmp/<client>/demo-
 - Copy direction per section
 - Conversion architecture (CTA ladder from sticky header → hero → mid-page → footer)
 - What to remove from the current site (the kill list)
+
+The demo brief is the gate between research/strategy and AutoPilot. It must
+carry the audit logic into the build:
+- primary offer and service hierarchy
+- top buyer pains found in research
+- trust/proof assets that must appear
+- local positioning and service-area message
+- CTA ladder and conversion priority
+- page-system priorities the homepage should preview or point toward
+
+If the demo brief cannot explain why this homepage should exist, do not start
+AutoPilot yet.
 
 ### Stage 5 — Custom demo (AutoPilot three-brain)
 

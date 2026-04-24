@@ -348,7 +348,7 @@ UPDATE RULE: Every time you access a client's data (site, ClickUp, analytics) an
 - Sales Playbook v2: GDoc 1-IUSrQVqOBTuf_f2V0NTWTyKTmw39guw
 - Brainstorm doc: GDoc 1lf_4tkH2ZZBljm9a-2ESj_lFY_yd3banP3j5Wp9BC5w
 - Pitch Deck: /root/ShopStack-Pitch-Deck.pptx + PDF
-- GDrive folder: ***REDACTED_DRIVE_FOLDER***
+- GDrive folder: PROOFPILOT_DRIVE_FOLDER_ID
 
 ### Status (as of Apr 8 2026)
 - Sales playbook v2 complete and uploaded

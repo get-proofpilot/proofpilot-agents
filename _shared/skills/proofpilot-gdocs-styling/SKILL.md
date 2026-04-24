@@ -10,7 +10,7 @@ description: Create and style ProofPilot branded Google Docs via Composio Google
 Use `GOOGLEDOCS_CREATE_DOCUMENT_MARKDOWN` with fields:
 - `markdown_text`: Full markdown content (headings, tables, bullets all work)
 - `title`: Document title
-- `folder_id`: Google Drive folder ID (Proposals folder: `***REDACTED_DRIVE_FOLDER***`)
+- `folder_id`: Google Drive folder ID (Proposals folder: `PROOFPILOT_DRIVE_FOLDER_ID`)
 
 ## Applying Brand Styles
 
