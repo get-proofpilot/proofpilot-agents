@@ -1,0 +1,202 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Premium-Design-Build base tokens
+   Adapted from cincomosqueteros.co computed styles and normalized
+   to the ProofPilot premium-design-build preset signature:
+     - Modern sans (Manrope/Inter) + italic serif (Fraunces) accent
+     - Black + cream + muted gold (NOT Cinco's deep green)
+     - 4px button radius (restrained, not pill, not sharp)
+     - Commissioned architectural / aerial drone photography
+   Swap --brand-gold (and optionally --brand-ink) to reskin per client.
+   ============================================================ */
+:root {
+  --brand-gold: #b08a3e;
+  --brand-gold-hover: #977530;
+  --brand-gold-soft: #d4b26b;
+  --brand-ink: #111111;
+  --brand-ink-soft: #2a2a28;
+  --brand-ink-muted: #6f6e6a;
+  --brand-cream: #f7f2e8;
+  --brand-cream-warm: #efe7d4;
+  --brand-cream-line: #d8cfbb;
+  --brand-white: #ffffff;
+  --brand-black: #0a0a0a;
+
+  --radius-btn: 4px;
+  --radius-card: 6px;
+
+  --container: 1240px;
+  --narrow: 820px;
+}
+
+html,
+body {
+  @apply font-sans text-brand-ink-soft bg-brand-cream;
+  font-size: 16px;
+  line-height: 26px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Display headings — sans, heavy. */
+h1,
+h2 {
+  @apply font-display text-brand-ink;
+  font-weight: 700;
+  margin: 0;
+}
+h3,
+h4,
+h5,
+h6 {
+  @apply font-display text-brand-ink;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Italic accent — premium-design-build signature */
+.italic-accent {
+  font-family: "Fraunces", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--brand-gold);
+  letter-spacing: -0.01em;
+}
+
+/* ========== Buttons — 4px radius, tight letter-spacing, ALLCAPS ========== */
+.btn {
+  @apply inline-flex items-center justify-center gap-2;
+  font-family: "Manrope", "Inter", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 18px 28px;
+  border-radius: var(--radius-btn);
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, transform 200ms ease;
+}
+.btn-primary {
+  background: var(--brand-gold);
+  color: var(--brand-white);
+  border: 1px solid var(--brand-gold);
+}
+.btn-primary:hover {
+  background: var(--brand-gold-hover);
+  border-color: var(--brand-gold-hover);
+}
+.btn-ghost-dark {
+  background: transparent;
+  color: var(--brand-ink);
+  border: 1px solid var(--brand-ink);
+}
+.btn-ghost-dark:hover {
+  background: var(--brand-ink);
+  color: var(--brand-cream);
+}
+.btn-ghost-light {
+  background: transparent;
+  color: var(--brand-white);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+.btn-ghost-light:hover {
+  background: var(--brand-white);
+  color: var(--brand-ink);
+}
+.btn-text {
+  font-family: "Manrope", "Inter", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand-gold);
+  border-bottom: 1px solid currentColor;
+  padding: 0 0 2px 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-text:hover {
+  color: var(--brand-ink);
+}
+
+/* ========== Section rhythm ========== */
+.section {
+  padding-top: 112px;
+  padding-bottom: 112px;
+}
+.section-sm {
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+.section-ink {
+  background: var(--brand-ink);
+  color: var(--brand-cream);
+}
+.section-ink h1,
+.section-ink h2,
+.section-ink h3,
+.section-ink h4 {
+  color: var(--brand-cream);
+}
+.section-warm {
+  background: var(--brand-cream-warm);
+}
+.container-wide {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-left: 28px;
+  padding-right: 28px;
+}
+.container-narrow {
+  max-width: var(--narrow);
+  margin: 0 auto;
+  padding-left: 28px;
+  padding-right: 28px;
+}
+
+/* ========== Form inputs — 4px radius, cream-warm fill ========== */
+.input {
+  @apply w-full;
+  background: var(--brand-white);
+  border: 1px solid var(--brand-cream-line);
+  border-radius: var(--radius-btn);
+  padding: 14px 16px;
+  font-size: 16px;
+  font-family: "Manrope", "Inter", system-ui, sans-serif;
+  color: var(--brand-ink);
+}
+.input::placeholder {
+  color: var(--brand-ink-muted);
+}
+.input:focus {
+  outline: none;
+  border-color: var(--brand-gold);
+}
+
+/* ========== Photo overlay treatment — used in hero + gallery ========== */
+.photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0.15) 0%, rgba(10, 10, 10, 0.65) 100%);
+}
+
+/* ========== Placeholder architectural gradient — stand-in for commissioned photography ========== */
+.placeholder-architectural {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(212, 178, 107, 0.28) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 90%, rgba(17, 17, 17, 0.7) 0%, transparent 50%),
+    linear-gradient(135deg, #1c1b18 0%, #2f2b22 45%, #4a3d24 100%);
+}
+.placeholder-aerial {
+  background:
+    radial-gradient(circle at 50% 40%, rgba(212, 178, 107, 0.2) 0%, transparent 55%),
+    linear-gradient(180deg, #0f1214 0%, #1a1d1f 40%, #231f17 100%);
+}
+.placeholder-twilight {
+  background:
+    radial-gradient(ellipse at 60% 70%, rgba(176, 138, 62, 0.4) 0%, transparent 60%),
+    linear-gradient(180deg, #07090b 0%, #151613 45%, #2a2317 100%);
+}

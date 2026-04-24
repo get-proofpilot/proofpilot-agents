@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-ink: #151c24;
+  --color-ink-deep: #0b1017;
+  --color-concrete: #0071ba;
+  --color-concrete-deep: #005083;
+  --color-steel: #f3f3f3;
+  --color-paper: #ffffff;
+  --color-text: #333333;
+  --radius-rugged: 4px;
+}
+
+html,
+body {
+  font-family: 'Roboto', system-ui, sans-serif;
+  color: var(--color-text);
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer components {
+  /* Flat rugged rectangle — Tagg signature. No shadow, no lift, just weight. */
+  .btn-rugged {
+    @apply inline-flex items-center justify-center font-display font-extrabold text-[15px] md:text-base tracking-wide;
+    background: var(--color-concrete);
+    color: #ffffff;
+    border-radius: var(--radius-rugged);
+    padding: 16px 28px;
+    text-transform: uppercase;
+    border: 2px solid var(--color-concrete);
+    transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .btn-rugged:hover {
+    background: var(--color-concrete-deep);
+    border-color: var(--color-concrete-deep);
+  }
+
+  .btn-rugged--ghost {
+    background: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+  }
+  .btn-rugged--ghost:hover {
+    background: #ffffff;
+    color: var(--color-ink);
+    border-color: #ffffff;
+  }
+
+  .btn-rugged--ink {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+  .btn-rugged--ink:hover {
+    background: var(--color-ink-deep);
+    border-color: var(--color-ink-deep);
+  }
+
+  .section-pad {
+    @apply px-4 md:px-8 lg:px-14 py-16 md:py-24;
+  }
+
+  /* UPPERCASE Montserrat 900 section headlines — Tagg DNA signature. */
+  .display-headline {
+    @apply font-display text-hero-xl;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--color-ink);
+  }
+  .display-headline .accent {
+    color: var(--color-concrete);
+  }
+
+  .section-headline {
+    @apply font-display text-section-xl;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--color-ink);
+  }
+
+  .section-headline--light {
+    color: #ffffff;
+  }
+
+  .card-headline {
+    @apply font-display text-card-lg;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--color-concrete);
+    letter-spacing: -0.03em;
+  }
+
+  .eyebrow {
+    @apply font-display text-eyebrow;
+    font-weight: 600;
+    color: #ffffff;
+    text-transform: none;
+  }
+
+  /* Concrete mid-ribbon background — brand-agnostic diagonal slash + hex grid. */
+  .rugged-ribbon {
+    background-color: var(--color-concrete);
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><g stroke='%23ffffff' stroke-width='1' stroke-opacity='0.08'><line x1='-10' y1='60' x2='60' y2='-10'/><line x1='30' y1='130' x2='130' y2='30'/></g></svg>");
+    background-size: 120px 120px;
+    background-repeat: repeat;
+  }
+
+  .rugged-ink-texture {
+    background-color: var(--color-ink);
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='56' height='64' viewBox='0 0 56 64'><path d='M28 2 L54 17 L54 47 L28 62 L2 47 L2 17 Z' fill='none' stroke='%23ffffff' stroke-opacity='0.06' stroke-width='1'/></svg>"),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'><g stroke='%230071BA' stroke-width='1' stroke-opacity='0.08'><line x1='-20' y1='100' x2='100' y2='-20'/><line x1='60' y1='200' x2='200' y2='60'/></g></svg>");
+    background-size: 56px 64px, 180px 180px;
+    background-repeat: repeat, repeat;
+  }
+}

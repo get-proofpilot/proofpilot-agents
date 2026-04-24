@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Playful-Chunky-Consumer DNA — extracted from gosantabanana.com.
+ * SIGNATURE MOVES:
+ *   1. Navy (#063250) + candy-yellow (#FDD40C) + candy-red (#D11F2E) palette.
+ *   2. Fira Sans at weight 900 for ALL display headings, uppercase.
+ *   3. Chunky rectangular buttons with 5px radius + 2px solid border (NOT pills).
+ *   4. Character-led hero (mascot tilted, bobs softly on hover/animation).
+ *   5. Twinkle lights motif decorating dark section tops (accent dots, not photo).
+ *   6. Card blocks = flat colored rectangles with oversized uppercase H4 + body copy.
+ */
+
+:root {
+  --brand-primary:      #FDD40C;
+  --brand-primary-ink:  #090F17;
+  --brand-accent:       #D11F2E;
+  --brand-accent-ink:   #FFFFFF;
+  --brand-dark:         #063250;
+  --brand-darker:       #0F1A28;
+  --brand-sky:          #146094;
+  --brand-cream:        #F8F8F8;
+  --brand-ink:          #0F1A28;
+  --brand-ink-muted:    #3F444B;
+  --brand-on-dark:      #FFFFFF;
+  --brand-on-dark-muted:#CCD9E4;
+  --radius-btn:  5px;
+  --radius-card: 8px;
+}
+
+* { border-color: rgba(255, 255, 255, 0.08); }
+
+html, body, #root { min-height: 100%; }
+
+body {
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--brand-ink);
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@layer components {
+  /* --- Buttons: chunky rectangular, 5px radius, 2px border --- */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-3 bg-brand-primary text-brand-primaryInk font-sans font-bold uppercase;
+    font-size: 18px;
+    letter-spacing: 0.02em;
+    padding: 13px 28px;
+    border: 2px solid var(--brand-primary);
+    border-radius: var(--radius-btn);
+    transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  }
+  .btn-primary:hover { filter: brightness(.95); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(253,212,12,0.35); }
+  .btn-primary.btn-xl { font-size: 22px; padding: 16px 34px; letter-spacing: 0.03em; }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 font-sans font-bold uppercase;
+    color: var(--brand-accent);
+    background: transparent;
+    font-size: 20px;
+    padding: 14px 24px;
+    border: 2px solid var(--brand-accent);
+    border-radius: var(--radius-btn);
+    transition: transform .15s ease, filter .15s ease;
+  }
+  .btn-accent:hover { background: var(--brand-accent); color: var(--brand-accent-ink); transform: translateY(-1px); }
+
+  .btn-ghost-light {
+    @apply inline-flex items-center justify-center gap-2 font-sans font-bold uppercase;
+    color: #fff;
+    background: transparent;
+    font-size: 20px;
+    padding: 14px 24px;
+    border: 2px solid #fff;
+    border-radius: var(--radius-btn);
+  }
+  .btn-ghost-light:hover { background: #fff; color: var(--brand-dark); }
+
+  /* --- Surfaces --- */
+  .section-dark    { background: var(--brand-dark);   color: var(--brand-on-dark); }
+  .section-darker  { background: var(--brand-darker); color: var(--brand-on-dark); }
+  .section-sky     { background: var(--brand-sky);    color: var(--brand-on-dark); }
+  .section-cream   { background: var(--brand-cream);  color: var(--brand-ink); }
+  .section-primary { background: var(--brand-primary);color: var(--brand-primary-ink); }
+
+  /* --- Headings: ONE family, heavy weights, uppercase --- */
+  .display-giga {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 900;
+    font-size: clamp(44px, 7vw, 100px);
+    line-height: 1;
+    letter-spacing: -0.3px;
+    text-transform: uppercase;
+  }
+  .display-hero {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 900;
+    font-size: clamp(36px, 5.5vw, 89px);
+    line-height: 1.05;
+    letter-spacing: -0.3px;
+    text-transform: uppercase;
+  }
+  .display-h1 {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 900;
+    font-size: clamp(32px, 4.2vw, 57px);
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+  }
+  .display-h2 {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 900;
+    font-size: clamp(26px, 3vw, 41px);
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+    text-transform: uppercase;
+  }
+  .display-eyebrow {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 500;
+    font-size: clamp(22px, 2vw, 31px);
+    line-height: 1;
+    letter-spacing: -0.8px;
+  }
+  .card-title {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 800;
+    font-size: 23px;
+    line-height: 1.2;
+    letter-spacing: -0.2px;
+    text-transform: uppercase;
+  }
+  .tile-title {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.3;
+    letter-spacing: -0.1px;
+  }
+  .kicker {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+}
+
+/* The playful hero base — radial gradient + faint twinkle pattern overlay */
+.hero-surface {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 10%, rgba(253,212,12,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at top, #0B4778 0%, #063250 55%, #031A2B 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Light-string divider used at band seams (candy-red + yellow twinkle feel) */
+.lights-divider {
+  height: 16px;
+  background-image:
+    radial-gradient(circle at 10px 10px, #FDD40C 0 3.5px, transparent 4px),
+    radial-gradient(circle at 30px 12px, #D11F2E 0 3.5px, transparent 4px),
+    radial-gradient(circle at 50px 10px, #FDD40C 0 3.5px, transparent 4px),
+    radial-gradient(circle at 70px 12px, #146094 0 3.5px, transparent 4px);
+  background-size: 80px 16px;
+  background-repeat: repeat-x;
+}
+
+/* Sliding marquee of feature bullets */
+.marquee {
+  display: flex;
+  gap: 3.5rem;
+  animation: marquee 28s linear infinite;
+  white-space: nowrap;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}

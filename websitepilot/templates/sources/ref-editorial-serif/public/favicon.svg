@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#FFFCF4" />
+  <path d="M14 22 L20 12 L26 22 L32 10 L38 22 L44 12 L50 22 L50 28 L14 28 Z" fill="#42AC54" />
+  <text x="50%" y="52" text-anchor="middle" fill="#1F1E1A" font-family="Georgia,serif" font-weight="400" font-size="14" font-style="italic">K</text>
+</svg>

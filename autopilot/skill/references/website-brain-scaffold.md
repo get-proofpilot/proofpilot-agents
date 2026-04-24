@@ -2,6 +2,65 @@
 
 > Rules that apply to every Website Brain run, before you start executing the design-spec Implementation Order. These are load-bearing — skipping them causes preventable failures.
 
+## Canonical bootstrap (v2 clone-first flow)
+
+As of 2026-04-24, all 7 presets have pixel-perfect reference clones + full section pattern libraries. Bootstrap is **one command**:
+
+```bash
+./scripts/init-from-clone.sh \
+  --client <slug> \
+  --preset <preset-name> \
+  --logo /tmp/<client>/assets/logo-original.png \
+  --client-name "Client Display Name" \
+  --tagline "One-line OG tagline" \
+  --brand-color "#hex"
+```
+
+This chains:
+1. Clone `websitepilot/templates/sources/ref-<preset>/` → `/tmp/<client>-demo/`
+2. Run `scrub-template.sh` → strips Lovable, lands real logo, favicon + OG auto-generated
+3. `npm install` + smoke build
+4. Reports ready for brand-swap pass
+
+**Valid presets** (each has a ref-* clone + patterns/<preset>/ library):
+
+| Preset | Clone DNA source | Typography | Palette |
+|--------|------------------|------------|---------|
+| `archetype-mascot` | voltvikings.com | Saira 300-900 single-family | orange/purple + cream |
+| `contractor-heritage` | bearsplumbing.net | Roboto Condensed 400-800 | red + ink + pink |
+| `dfw-luxe-aerial` | anomalypoolservices.io | Bebas Neue 400 title-case + Work Sans | pool-blue + navy |
+| `rugged-industrial` | taggconcretecoatings.com | Montserrat 900 UPPERCASE + Roboto | ink + concrete-blue |
+| `playful-chunky-consumer` | gosantabanana.com | Fira Sans 500-900 UPPERCASE | navy + candy-yellow + red |
+| `editorial-serif` | Kingswood Landscape | Fraunces italic H1 + roman eyebrow | cream + ink + green |
+| `premium-design-build` | cincomosqueteros.co | Manrope + Fraunces italic accent | black + cream + muted gold |
+
+After `init-from-clone.sh`, the Website Brain's job shrinks from "build the site" to **"brand-swap the clone."** Specifically:
+- Replace hero + section copy with Brand-Brain-derived content
+- Swap placeholder photos for authentic client photography
+- Adjust palette tokens if the brand demands variation within the preset (often not needed)
+- Compose additional patterns from `websitepilot/patterns/<preset>/*` or `websitepilot/patterns/vertical/*` for vertical-specific signature moves
+
+## Pattern composition
+
+Two pattern directories ship prop-driven brand-agnostic React components:
+
+- **`websitepilot/patterns/<preset>/*`** — 5-8 patterns per preset, matching each clone's DNA
+- **`websitepilot/patterns/vertical/*`** — 18 vertical-specific patterns from Matthew's 30+ inspo-guide sites (concrete before/after dragger, roofing financing CTA, HVAC service-area map, pressure-washing reel gallery, commercial logo marquee, 24/7 emergency band, etc)
+
+When to compose a vertical pattern: when the client's vertical has a signature move the preset-default clone doesn't cover.
+
+Every pattern has a WHEN-TO-USE / WHEN-NOT-TO-USE docstring + source URL citation.
+
+## Legacy scaffolds (pre-clone era)
+
+Still useful when no ref-* preset matches cleanly:
+- `austinrockinshauling/` — true hauling/demolition (adjacent to rugged-industrial)
+- `state48glass/`, `keystonerestoration/`, `proactive-pool-solutions/`, `doggy-detail/` — legacy archetypes
+
+Manual fallback flow: `cp -R` the legacy scaffold, then `scrub-template.sh`, then build from scratch per the design-spec.
+
+---
+
 ## Mandatory first step — `scrub-template.sh`
 
 **Before any design work:**

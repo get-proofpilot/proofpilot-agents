@@ -1,0 +1,10 @@
+{
+  "client": "ref-rugged-industrial",
+  "project": "proofpilot-preview",
+  "clean_url": "https://demo.proofpilotapps.com/ref-rugged-industrial/",
+  "pages_url": "https://proofpilot-preview.pages.dev/ref-rugged-industrial/",
+  "immutable": "https://9f621511.proofpilot-preview.pages.dev",
+  "index_url": "https://demo.proofpilotapps.com/",
+  "clean_url_http": "200",
+  "deployed_at": "2026-04-24T21:20:14Z"
+}

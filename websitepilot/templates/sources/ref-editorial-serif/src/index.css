@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Editorial-Serif base tokens
+   Derived from kingswoodlandscape.com computed styles.
+   Swap --brand-accent + --brand-ink to reskin per client.
+   Keep --brand-cream ground, italic display H1, and 0px button
+   radii — that is the preset's DNA.
+   ============================================================ */
+:root {
+  --brand-accent: #42ac54;
+  --brand-accent-hover: #399948;
+  --brand-ink: #1f1e1a;
+  --brand-ink-soft: #464646;
+  --brand-ink-muted: #8c8b87;
+  --brand-cream: #fffcf4;
+  --brand-cream-warm: #f6f0e2;
+  --brand-cream-line: #cfcdc6;
+  --brand-white: #ffffff;
+  --brand-black: #0e0d0a;
+
+  --radius-btn: 0px;
+  --radius-card: 2px;
+
+  --container: 1280px;
+  --narrow: 880px;
+}
+
+html,
+body {
+  @apply font-body text-brand-ink-soft bg-brand-cream;
+  font-size: 16px;
+  line-height: 25.6px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Display headings — regular weight serif. H1 is italic. That is the signature. */
+h1 {
+  @apply font-display italic text-brand-ink;
+  font-weight: 400;
+  margin: 0;
+}
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-display text-brand-ink;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* ========== Buttons (Kingswood has 0px radius, 2-3px letter-spacing) ========== */
+.btn {
+  @apply inline-flex items-center justify-center gap-2;
+  font-family: "Fraunces", "Libre Caslon Text", Georgia, serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16.8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 16px 32px;
+  border-radius: var(--radius-btn);
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+.btn-primary {
+  background: var(--brand-accent);
+  color: var(--brand-white);
+  border: 1px solid var(--brand-accent);
+}
+.btn-primary:hover {
+  background: var(--brand-accent-hover);
+  border-color: var(--brand-accent-hover);
+}
+.btn-ghost-dark {
+  background: transparent;
+  color: var(--brand-ink);
+  border: 1px solid var(--brand-ink);
+}
+.btn-ghost-dark:hover {
+  background: var(--brand-ink);
+  color: var(--brand-cream);
+}
+.btn-ghost-light {
+  background: transparent;
+  color: var(--brand-white);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+.btn-ghost-light:hover {
+  background: var(--brand-white);
+  color: var(--brand-ink);
+}
+/* Italic serif secondary — the Kingswood "Learn more" treatment */
+.btn-italic-link {
+  font-family: "Fraunces", Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.18em;
+  text-transform: capitalize;
+  border-bottom: 1px solid currentColor;
+  padding: 0 0 2px 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--brand-ink);
+}
+.btn-italic-link:hover {
+  color: var(--brand-accent);
+}
+
+/* ========== Monogram crown motif (generic) ========== */
+.monogram-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: var(--brand-accent);
+}
+.monogram-divider::before,
+.monogram-divider::after {
+  content: "";
+  flex: 1;
+  max-width: 80px;
+  height: 1px;
+  background: var(--brand-cream-line);
+}
+
+/* ========== Section rhythm ========== */
+.section {
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+.section-sm {
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+.section-ink {
+  background: var(--brand-ink);
+  color: var(--brand-cream);
+}
+.section-ink h1,
+.section-ink h2,
+.section-ink h3,
+.section-ink h4 {
+  color: var(--brand-cream);
+}
+.section-warm {
+  background: var(--brand-cream-warm);
+}
+.container-wide {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+.container-narrow {
+  max-width: var(--narrow);
+  margin: 0 auto;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+/* ========== Form inputs — Kingswood has 0px radius, transparent bg, bottom-rule feel ========== */
+.input {
+  @apply w-full;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--brand-cream-line);
+  border-radius: 0;
+  padding: 14px 0;
+  font-size: 16px;
+  font-family: "Fraunces", Georgia, serif;
+  color: var(--brand-ink);
+}
+.input::placeholder {
+  color: var(--brand-ink-muted);
+  font-style: italic;
+}
+.input:focus {
+  outline: none;
+  border-bottom-color: var(--brand-accent);
+}
+
+/* ========== Photo overlay treatment — used in hero + gallery ========== */
+.photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(14, 13, 10, 0.1) 0%, rgba(14, 13, 10, 0.55) 100%);
+}
+
+/* ========== Editorial numeral style (used in process + stats) ========== */
+.editorial-numeral {
+  font-family: "Fraunces", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--brand-accent);
+  letter-spacing: -0.02em;
+}
