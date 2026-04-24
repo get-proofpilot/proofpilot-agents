@@ -47,9 +47,20 @@ Capture what the brand IS. No opinions. Download the logo, pixel-analyze for dom
 Classify the brand into the right ProofPilot style family first, then pick the best scaffold inside that family. Output `/tmp/<client>/template-pick.md`.
 
 ### Stage 3 — Designer Brain *(mandatory — routed to Gemini 3.1 Pro)*
-**Doctrine:** `references/style-family-selector.md` + `references/style-presets.md` + `references/design-strategist.md` + `references/gold-standard-playbook.md` + `references/inspiration/180sites-portfolio-dna.md` + `references/inspiration/betheanomaly-portfolio-dna.md` + `references/inspiration/hookagency-portfolio-dna.md` + `references/inspiration/inspiration-guide.md` + `references/model-routing.md`.
+**Doctrine (in read order):**
+1. `references/home-service-blueprint.md` — **THE STRATEGY**. The 14-section wireframe, hero 7-element rule, ranks-and-converts premise. EVERY design-spec must include a Blueprint Coverage Matrix.
+2. `references/design-patterns-catalog.md` — **THE DESIGN COOKBOOK**. Cohesive/Detail/Dynamic pillars + 7 presets + clone templates + pattern library.
+3. `references/seo-playbook.md` — keyword placement, schema markup, URL structure, internal linking (the rank layer)
+4. `references/copywriting-playbook.md` — 7 hero copy formulas, voice register per preset, CTA library, benefits-not-features 5×5 rule
+5. `references/launch-checklist.md` — pre-ship verification (every demo must pass)
+6. `references/style-family-selector.md` + `references/style-presets.md`
+7. `references/design-strategist.md` + `references/gold-standard-playbook.md`
+8. `references/inspiration/180sites-portfolio-dna.md` + `references/inspiration/betheanomaly-portfolio-dna.md` + `references/inspiration/hookagency-portfolio-dna.md` + `references/inspiration/getlocalleads-portfolio-dna.md` + `references/inspiration/inspiration-guide.md`
+9. `references/model-routing.md`
 
 **Family + preset first. Then design.** Stage 2.5 already picked the family. This stage narrows to a specific preset inside that family (`style-presets.md`, 7 presets). **No defaulting to editorial-serif.** Home service brands are overwhelmingly `rugged-industrial` (pest, roofing, hauling, concrete, industrial) or `contractor-heritage` (roofing, plumbing, HVAC with heritage logo). `editorial-serif` is reserved for dental / medical / legal / luxury / heritage-family-practice.
+
+**NEW (v2.2):** every `design-spec.md` MUST include a **Blueprint Coverage Matrix** per `home-service-blueprint.md` — one row per each of the 14 canonical blueprint sections, mapping to a concrete ref-clone component OR `patterns/<preset>/*.tsx` OR `patterns/vertical/*.tsx`. Spec is rejected if any matrix row is blank/"N/A" without explicit justification. This enforces the ranks+converts strategy at the spec layer.
 
 Then decide what to preserve, elevate, or invent within the preset's bounds. Produce a concrete `design-spec.md` with palette, typography, THE one committed motif, THE one section-transition signature, button system, icon system, photography strategy, motion.
 

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="f" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a3446"/>
+      <stop offset="1" stop-color="#0b1017"/>
+    </linearGradient>
+    <pattern id="flakes" x="0" y="0" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="5" cy="7" r="1.2" fill="#0071BA" fill-opacity="0.45"/>
+      <circle cx="15" cy="14" r="1" fill="#a4b8cc" fill-opacity="0.35"/>
+      <circle cx="10" cy="20" r="0.7" fill="#6c7c8d" fill-opacity="0.3"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" fill="url(#f)"/>
+  <rect width="800" height="500" fill="url(#flakes)"/>
+  <text x="400" y="260" fill="#ffffff" opacity="0.3" font-family="Montserrat" font-weight="800" font-size="26" text-anchor="middle" letter-spacing="4">[FLOOR PHOTO]</text>
+</svg>

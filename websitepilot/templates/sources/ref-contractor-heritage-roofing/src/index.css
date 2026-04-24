@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Contractor Heritage base tokens
+   Derived from bearsplumbing.net computed styles.
+   Swap --brand-red + --brand-ink to reskin per client.
+   ============================================================ */
+:root {
+  --brand-red: #ef3e33;
+  --brand-red-hover: #d63329;
+  --brand-ink: #231f20;
+  --brand-pink: #cc3366;
+  --brand-white: #ffffff;
+  --brand-gray-border: #69727d;
+  --brand-gray-soft: #ccd6df;
+  --brand-gray-tint: #f4f6f8;
+
+  --radius-btn: 7px;
+  --radius-input: 3px;
+
+  --container: 1200px;
+}
+
+html,
+body {
+  @apply font-body text-brand-ink bg-brand-white;
+  font-size: 17px;
+  line-height: 27.2px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-display uppercase;
+  font-weight: 800;
+  margin: 0;
+}
+
+/* ========== Buttons (Bears has radius 7px, pad 16/32, 700 uppercase) ========== */
+.btn {
+  @apply inline-flex items-center justify-center gap-2;
+  font-family: "Roboto Condensed", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19.2px;
+  text-transform: uppercase;
+  padding: 16px 32px;
+  border-radius: var(--radius-btn);
+  transition: background-color 150ms ease, transform 150ms ease;
+  letter-spacing: 0;
+}
+.btn-primary {
+  background: var(--brand-red);
+  color: var(--brand-white);
+}
+.btn-primary:hover {
+  background: var(--brand-red-hover);
+}
+.btn-dark {
+  background: var(--brand-ink);
+  color: var(--brand-white);
+}
+.btn-dark:hover {
+  background: #000;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--brand-white);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+}
+.btn-white {
+  background: var(--brand-white);
+  color: var(--brand-ink);
+}
+
+/* ========== Red diagonal slash motif (generic CSS version) ========== */
+.slash-red {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    var(--brand-ink) 0%,
+    var(--brand-ink) 38%,
+    var(--brand-red) 38%,
+    var(--brand-red) 72%,
+    var(--brand-ink) 72%,
+    var(--brand-ink) 100%
+  );
+  z-index: 0;
+}
+.slash-red-left {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    var(--brand-red) 0%,
+    var(--brand-red) 30%,
+    var(--brand-ink) 30%,
+    var(--brand-ink) 100%
+  );
+  z-index: 0;
+}
+
+/* ========== Section rhythm ========== */
+.section {
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+.section-sm {
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+.section-dark {
+  background: var(--brand-ink);
+  color: var(--brand-white);
+}
+.section-dark h2,
+.section-dark h3 {
+  color: var(--brand-white);
+}
+.container-1200 {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* ========== Form inputs (Bears radius 3px) ========== */
+.input {
+  @apply w-full;
+  background: var(--brand-white);
+  border: 1px solid var(--brand-gray-border);
+  border-radius: var(--radius-input);
+  padding: 12px 14px;
+  font-size: 15px;
+  font-family: "Roboto Condensed", system-ui, sans-serif;
+  color: var(--brand-ink);
+}
+.input:focus {
+  outline: 2px solid var(--brand-red);
+  outline-offset: 0;
+  border-color: var(--brand-red);
+}
+
+/* ========== 5-star rating glyph cluster ========== */
+.stars {
+  color: var(--brand-red);
+  letter-spacing: 2px;
+  font-size: 16px;
+}

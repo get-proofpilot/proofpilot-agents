@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Twilight backyard aerial placeholder">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0C0C0C"/>
+      <stop offset="0.5" stop-color="#121A1E"/>
+      <stop offset="1" stop-color="#2F85B7"/>
+    </linearGradient>
+    <linearGradient id="pool" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4CA8DE"/>
+      <stop offset="1" stop-color="#2F85B7"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.25" cy="0.9" r="0.5">
+      <stop offset="0" stop-color="rgba(76,168,222,0.4)"/>
+      <stop offset="1" stop-color="rgba(76,168,222,0)"/>
+    </radialGradient>
+    <pattern id="grain" x="0" y="0" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="4" fill="rgba(255,255,255,0.01)"/>
+      <circle cx="1" cy="1" r="0.3" fill="rgba(255,255,255,0.04)"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <rect width="1600" height="900" fill="url(#glow)"/>
+
+  <!-- distant city silhouette -->
+  <path d="M0 540 L80 540 L80 500 L140 500 L140 520 L210 520 L210 470 L270 470 L270 510 L340 510 L340 490 L410 490 L410 530 L500 530 L500 500 L570 500 L570 520 L640 520 L640 480 L720 480 L720 515 L800 515 L800 495 L870 495 L870 525 L950 525 L950 500 L1020 500 L1020 530 L1100 530 L1100 490 L1180 490 L1180 520 L1260 520 L1260 505 L1340 505 L1340 530 L1420 530 L1420 515 L1500 515 L1500 535 L1600 535 L1600 900 L0 900 Z" fill="#0C0C0C" opacity="0.92"/>
+
+  <!-- foreground: house + deck + pool -->
+  <g>
+    <!-- deck / concrete luxe -->
+    <rect x="380" y="560" width="840" height="300" fill="#1A2226" />
+    <rect x="380" y="560" width="840" height="8" fill="#2a343a" opacity="0.6"/>
+    <!-- house outline -->
+    <rect x="380" y="430" width="840" height="130" fill="#0C0C0C"/>
+    <rect x="400" y="460" width="60" height="80" fill="#4CA8DE" opacity="0.7"/>
+    <rect x="490" y="460" width="60" height="80" fill="#4CA8DE" opacity="0.5"/>
+    <rect x="590" y="460" width="60" height="80" fill="#4CA8DE" opacity="0.7"/>
+    <rect x="690" y="460" width="200" height="100" fill="#121A1E"/>
+    <rect x="920" y="460" width="60" height="80" fill="#4CA8DE" opacity="0.6"/>
+    <rect x="1010" y="460" width="60" height="80" fill="#4CA8DE" opacity="0.4"/>
+    <rect x="1100" y="460" width="60" height="80" fill="#4CA8DE" opacity="0.7"/>
+
+    <!-- pool (organic rectangle with reflection) -->
+    <rect x="530" y="650" width="540" height="170" rx="14" fill="url(#pool)"/>
+    <rect x="540" y="660" width="520" height="14" rx="6" fill="#ffffff" opacity="0.25"/>
+    <rect x="540" y="686" width="320" height="6" rx="3" fill="#ffffff" opacity="0.18"/>
+    <rect x="540" y="706" width="460" height="4" rx="2" fill="#ffffff" opacity="0.12"/>
+    <rect x="540" y="724" width="240" height="4" rx="2" fill="#ffffff" opacity="0.12"/>
+
+    <!-- fire feature -->
+    <circle cx="450" cy="640" r="18" fill="#F6B100" opacity="0.85"/>
+    <circle cx="450" cy="640" r="10" fill="#F59E0B"/>
+
+    <!-- landscape -->
+    <circle cx="320" cy="610" r="50" fill="#0f2720"/>
+    <circle cx="1260" cy="620" r="58" fill="#0f2720"/>
+    <circle cx="1350" cy="590" r="36" fill="#0f2720"/>
+  </g>
+
+  <rect width="1600" height="900" fill="url(#grain)"/>
+  <!-- license tag -->
+  <text x="20" y="880" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.35)">placeholder-aerial.svg — template-only synthetic art, no brand assets</text>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a2230"/>
+      <stop offset="1" stop-color="#0b1017"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <g fill="#4b7aa8" fill-opacity="0.35">
+    <circle cx="240" cy="300" r="70"/>
+    <rect x="170" y="360" width="140" height="200" rx="10"/>
+    <circle cx="400" cy="290" r="80"/>
+    <rect x="320" y="360" width="160" height="220" rx="10"/>
+    <circle cx="560" cy="300" r="70"/>
+    <rect x="490" y="360" width="140" height="200" rx="10"/>
+  </g>
+  <text x="400" y="540" fill="#ffffff" opacity="0.35" font-family="Montserrat" font-weight="800" font-size="28" text-anchor="middle" letter-spacing="4">[CREW PHOTO]</text>
+</svg>
