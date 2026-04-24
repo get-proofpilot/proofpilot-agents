@@ -137,9 +137,18 @@ Doctrine: `autopilot/skill/references/brand-archaeology.md`.
 Capture what the brand IS — no opinions. Download the logo, pixel-analyze for colors, pull authentic photography (fleet, team, storefront), capture `@font-face` URLs, download favicon + OG image, read voice signals from copy.
 **Output:** `/tmp/<client>/brand-brain.json` + verdict (PRESERVE+ELEVATE / PARTIAL ANCHOR / INVENT).
 
-#### Stage 5b — Designer Brain *(mandatory)*
-Doctrine: `autopilot/skill/references/design-strategist.md` + `autopilot/skill/references/gold-standard-playbook.md` + `autopilot/skill/references/inspiration/inspiration-guide.md`.
+#### Stage 5b — Designer Brain *(mandatory — routed to Gemini 3.1 Pro)*
+Doctrine: `autopilot/skill/references/design-strategist.md` + `autopilot/skill/references/gold-standard-playbook.md` + `autopilot/skill/references/inspiration/inspiration-guide.md` + `autopilot/skill/references/model-routing.md`.
 Decide preserve / elevate / invent for each element. Lock the palette (logo-derived only). Lock typography (preserve equity > elevate weight > invent face). Commit to ONE motif. Commit to ONE section-transition signature.
+
+**Model routing: dispatch this stage to Gemini 3.1 Pro** via `./scripts/gemini-dispatch.sh` (see `autopilot/skill/references/model-routing.md`). Claude writes the brief, Gemini produces `design-spec.md`, Claude reads it and proceeds. Fallback: if Gemini is unreachable, Claude runs the stage itself.
+
+```bash
+./scripts/gemini-dispatch.sh /tmp/<client>/designer-brain-brief.md \
+  --cwd /tmp/<client> \
+  --log /tmp/<client>/designer-brain.log
+```
+
 **Output:** `/tmp/<client>/design-spec.md` with a numbered Implementation Order.
 
 #### Stage 5c — Website Brain *(executor)*

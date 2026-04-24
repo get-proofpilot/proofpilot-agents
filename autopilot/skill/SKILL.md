@@ -42,15 +42,34 @@ Capture what the brand IS. No opinions. Download the logo, pixel-analyze for dom
 
 **Output:** `brand-brain.json` + a verdict: PRESERVE+ELEVATE / PARTIAL ANCHOR / INVENT. Most clients are PARTIAL ANCHOR.
 
-### Stage 3 — Designer Brain *(mandatory)*
-**Doctrine:** `references/design-strategist.md` + `references/gold-standard-playbook.md` + `references/inspiration/inspiration-guide.md`.
+### Stage 3 — Designer Brain *(mandatory — routed to Gemini 3.1 Pro)*
+**Doctrine:** `references/design-strategist.md` + `references/gold-standard-playbook.md` + `references/inspiration/inspiration-guide.md` + `references/model-routing.md`.
 Decide what to preserve, elevate, or invent. Produce a concrete `design-spec.md` with palette, typography, THE one committed motif, THE one section-transition signature, button system, icon system, photography strategy, motion.
 
-**Hard rules (learned from Prestige v2):**
+**Model routing (default): dispatch to Gemini 3.1 Pro.** Gemini's design judgment is cleaner and tighter than Claude's on this specific stage (validated April 2026, Red Rock Family Dentistry head-to-head). Claude orchestrates the pipeline; Gemini handles only Designer Brain.
+
+How to dispatch (from the `~/proofpilot-agents/` directory):
+
+```bash
+# 1. Write the Designer Brain brief to /tmp/<client>/designer-brain-brief.md
+#    (template in references/model-routing.md)
+# 2. Invoke the helper — Gemini writes design-spec.md + DONE.md in the working dir
+./scripts/gemini-dispatch.sh /tmp/<client>/designer-brain-brief.md \
+  --cwd /tmp/<client> \
+  --log /tmp/<client>/designer-brain.log
+# 3. Claude reads /tmp/<client>/design-spec.md and proceeds to Stage 4 (Website Brain)
+```
+
+Requires `GEMINI_API_KEY` env var. **Fallback:** if Gemini is unreachable or errors, Claude runs Designer Brain itself — don't block the pipeline on Gemini availability.
+
+Full routing doctrine (when to route, when not to, brief template, failure modes): `references/model-routing.md`.
+
+**Hard rules (learned from Prestige v2 + Red Rock v1) — include these verbatim in any brief you hand to Gemini:**
 - Do **not** add colors the logo doesn't have. If the logo is red + blue + black + white, the palette is red + blue + black + white + grey. Period.
 - Do **not** replace typography that has brand equity. If the client's current site uses Manrope + Poppins, keep those and elevate with weight. Replace only when current type is genuinely generic (Arial, default sans).
 - Commit to **one** motif, not three.
 - Commit to **one** section-transition signature, not a mix.
+- Fewer sections, uniform grids when content is parallel. Every section must earn its place — don't add sections to fill pattern slots from an inspiration site.
 
 ### Stage 4 — Website Brain *(executor)*
 **Doctrine:** `references/three-brain-architecture.md` (Stage 3 section).

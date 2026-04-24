@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Speech bubbles for "Transparent Communication" -->
+  <path d="M10 12 H42 C44 12 46 14 46 16 V32 C46 34 44 36 42 36 H22 L14 44 V36 H10 C8 36 6 34 6 32 V16 C6 14 8 12 10 12Z"/>
+  <path d="M50 22 H54 C56 22 58 24 58 26 V42 C58 44 56 46 54 46 H50 V54 L42 46 H30 C28 46 26 44 26 42 V36"/>
+  <line x1="14" y1="20" x2="38" y2="20"/>
+  <line x1="14" y1="26" x2="32" y2="26"/>
+</svg>

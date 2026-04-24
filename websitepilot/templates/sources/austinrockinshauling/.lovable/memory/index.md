@@ -1,0 +1,55 @@
+# Project Memory
+
+## Core
+- **Aesthetic**: Rugged industrial, red/black/gray palette. Square borders ONLY (no rounded corners), skewed boxes, hard shadows.
+- **Typography**: Bold uppercase tracking-tight sans-serif headings. Highlight key words in red. No text gradients.
+- **Buttons**: Primary buttons use bg-primary (red) with white text, transitioning to bg-foreground (black) and `scale-95` on hover.
+- **Constraints**: NEVER claim ROC licensing, insurance, or bonding. NEVER reference Roofing or General Contracting. No floating chat widgets.
+- **Scope**: Specialized in Material Hauling, Demolition, Dirt Work, Skid Steer, Dump Trailer Rental. Statistics use "500+".
+- **SEO & Structure**: Dedicated service pages use react-helmet-async and JSON-LD schemas (FAQPage, LocalBusiness).
+- **Forms**: Quick quote uses free-text for City/ZIP to support broad East/West Valley AZ areas. Exclude long dropdown lists.
+
+## Memories
+- [Licensing Status](mem://business/licensing-status) — Strict constraints against claiming ROC licensing or insurance
+- [Project Scope](mem://business/project-scope) — Core service offerings and forbidden trade references
+- [Operating Hours](mem://business/operating-hours) — Standard business hours (Mon-Sat 6AM-6PM)
+- [Social Profiles](mem://business/social-profiles) — Centralized social presence on FB, IG, Google with hover effects
+- [Identity & Branding](mem://branding/identity) — Logo sizing, footer layout, and ProofPilot attribution
+- [Industrial Aesthetic](mem://style/industrial-aesthetic) — Core visual language: hard lines, square borders, red/black/gray
+- [Typography Constraints](mem://style/typography-constraints) — Aggressive sans-serif headings with two-tone red emphasis
+- [Button Interaction](mem://style/button-interaction-design) — Standardized bg-primary to bg-foreground shrink-hover effect
+- [Icon Design Language](mem://style/icon-design-language) — Bold white glyphs in red badges or circular containers
+- [Readability Standards](mem://style/readability-standards) — Baseline typography sizes and high-contrast subheadings
+- [Desktop Content Scaling](mem://style/desktop-content-scaling) — Expanded layouts (1400px+) and headings for large screens
+- [Header Branding](mem://style/header-branding) — Enlarged h-28 header, scaled nav links, and primary CTA styling
+- [Hero Layout](mem://style/hero-layout-design) — 12-column spacious grid with prominent 8xl left-aligned headline
+- [Hero Background](mem://features/hero-background) — Looping video collage with multi-layer gradient overlays
+- [Trust Badges Custom](mem://features/trust-badges-custom) — Solid red hero trust bar with white outline PNG icons
+- [Social Review Badges](mem://marketing/social-review-badges) — 5.0 rating Google/FB/IG badges in two-row hero layout
+- [Quick Quote Form](mem://features/quick-quote-form) — Free-text city/ZIP input replacing dropdowns for flexibility
+- [Service Card Visuals](mem://style/service-card-visuals) — Standardized grid heights with custom photo backgrounds
+- [Process Workflow](mem://features/process-workflow) — 'Rock and Ice' dark cards vs. Industrial Process Grid white cards
+- [Service Area Coverage](mem://features/service-area) — East and West Valley AZ service regions
+- [Service Area Design](mem://features/service-area-design) — Cracked concrete textured map section with 3-column city grid
+- [UI Elements Constraints](mem://constraints/ui-elements) — Intentional exclusion of floating chat or support widgets
+- [Reviews Section](mem://style/reviews-section-design) — 3-column grid of gray-tinted cards with red left-accent border
+- [Portfolio Gallery](mem://features/portfolio-gallery) — Filtered recent work with permanent dark tint overlays
+- [Trust Section Design](mem://style/trust-section-design) — Static solid red cards with white icons and no hover animations
+- [Trust Video Logic](mem://features/trust-video-logic) — Scroll-triggered autoplay muted background video with audio toggle
+- [CTA Banner](mem://features/cta-banner-design) — Max-w-4xl bottom quote form with dark-tinted drone background
+- [Instagram Feed](mem://features/instagram-feed) — Authentic IG grid with real metrics and audio-on-hover reels
+- [Section Badges](mem://style/section-badge-design) — bg-primary text-white uppercase black-weight labels
+- [Service Pages Overview](mem://features/service-pages) — Dedicated high-depth SEO pages for core services
+- [Dump Trailer Section](mem://features/dump-trailer-section) — Split layout rental section without floating review badges
+- [Dump Trailer Form](mem://features/dump-trailer-rental-form) — Modal/inline rental request form with $300 price badge
+- [Dump Trailer Service Page](mem://features/service-pages/dump-trailer) — Deep marketing page with comparison tables and FAQs
+- [Demolition Page Overview](mem://features/service-pages/demolition) — Comprehensive 12-section demo page with local SEO
+- [Demolition Hero Style](mem://features/service-pages/demolition/hero-style) — Object-center hero fading into solid dark gradient
+- [Demolition Services](mem://features/service-pages/demolition/services-section) — Dark excavator background fading to white gradient
+- [Demolition Pricing](mem://features/service-pages/demolition/pricing-table) — Solid white rows, black borders, red price accents
+- [Demolition Use Cases](mem://features/service-pages/demolition/use-cases) — Solid black cards transitioning to solid red on hover
+- [Demolition FAQs](mem://features/service-pages/demolition/faq-interaction) — Accordion rows turning solid red with white text on hover
+- [Demolition Service Area](mem://features/service-pages/demolition/service-area-layout) — Two-column map and 3-column white box city grids
+- [Dirt Work Service Page](mem://features/service-pages/dirt-work) — Mirrors demolition layout with custom DirtWorkIcons and Phoenix soil/permits content
+- [Skid Steer Service Page](mem://features/service-pages/skid-steer) — Mirrors layout with custom SkidSteerIcons, hire-vs-rent comparison, attachments table, /skid-steer-services-phoenix-az
+- [Service Area Pages](mem://features/service-pages/service-areas) — Shared ServiceAreaPage component powering West Valley + East Valley regional pages with city cards, glance table, FAQ + LocalBusiness schema

@@ -62,13 +62,15 @@ When you dispatch a sibling pilot, read its SKILL.md too — don't assume you kn
 
 ## The three-brain architecture (shared pattern)
 
-Several pilots (AutoPilot, WebsitePilot) use a **three-brain architecture**:
+Several pilots (AutoPilot, WebsitePilot) use a **three-brain architecture** with **model routing**:
 
-1. **Brand Brain** — archaeology. What IS the brand right now? No opinions, just facts.
-2. **Designer Brain** — strategy. What should we preserve, elevate, or invent?
-3. **Website/Website Brain** — execution. Apply the design spec to a template starter.
+1. **Brand Brain** — archaeology. What IS the brand right now? No opinions, just facts. → **Claude** (Playwright + Python Pillow)
+2. **Designer Brain** — strategy. What should we preserve, elevate, or invent? → **Gemini 3.1 Pro subagent** (validated April 2026 as cleaner + tighter than Claude on this stage). Dispatched via `./scripts/gemini-dispatch.sh`.
+3. **Website Brain** — execution. Apply the design spec to a template starter. → **Claude** (multi-file TS/TSX editing).
 
-Read `autopilot/skill/references/three-brain-architecture.md` for the full doctrine. This is the most important reference in the package.
+Read `autopilot/skill/references/three-brain-architecture.md` for the architecture and `autopilot/skill/references/model-routing.md` for how Claude dispatches the Designer Brain to Gemini. These are the two most important references in the package.
+
+**Gemini requirement:** `GEMINI_API_KEY` env var (get one at https://aistudio.google.com/apikey) + `npm i -g @google/gemini-cli`. If unavailable, Claude runs Designer Brain itself — never block the pipeline on Gemini.
 
 ---
 

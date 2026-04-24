@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Phone with speech lines for "Easy Consultation" -->
+  <path d="M18 8 C14 8 10 12 10 16 L10 20 C10 38 26 54 44 54 L48 54 C52 54 56 50 56 46 L56 42 C56 40 54 38 52 38 L46 38 C44 38 42 40 42 42 L42 44 C36 42 22 28 20 22 L22 22 C24 22 26 20 26 18 L26 12 C26 10 24 8 22 8 Z"/>
+  <line x1="36" y1="10" x2="44" y2="10"/>
+  <line x1="38" y1="16" x2="50" y2="16"/>
+  <line x1="36" y1="22" x2="46" y2="22"/>
+</svg>
