@@ -1,0 +1,10 @@
+{
+  "company_name": "Tiny Window Cleaning",
+  "domain": "tinywindows.com",
+  "service": "window cleaning",
+  "location": "Phoenix, AZ",
+  "lead_value": "$3,000/mo",
+  "generate_demo": false,
+  "run_close_pitch": true,
+  "notes": "Outbound discovery. Low initial fit — audit + strategy only, no demo build."
+}

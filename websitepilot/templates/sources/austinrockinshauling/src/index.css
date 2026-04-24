@@ -1,0 +1,191 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Brand Colors - Industrial Red & Black Theme */
+    --brand-red: 0 72% 40%;
+    --brand-dark-red: 0 78% 28%;
+    --brand-black: 0 0% 8%;
+    --brand-gray: 0 0% 15%;
+    --brand-light-gray: 0 0% 96%;
+    
+    /* Semantic Tokens */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 8%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
+    
+    --primary: 0 72% 40%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 8%;
+    
+    --muted: 0 0% 94%;
+    --muted-foreground: 0 0% 28%;
+    
+    --accent: 0 72% 40%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 0 72% 40%;
+    
+    --radius: 0px;
+    
+    /* Custom Design Tokens */
+    --shadow-hard: 6px 6px 0px 0px hsl(0 72% 40%);
+    --shadow-hard-sm: 4px 4px 0px 0px hsl(0 72% 40%);
+    --shadow-hard-black: 6px 6px 0px 0px hsl(0 0% 8%);
+    --shadow-hard-hover: 0px 0px 0px 0px hsl(0 72% 40%);
+    --gradient-hero: linear-gradient(135deg, hsl(0 72% 40%) 0%, hsl(0 65% 55%) 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(0 0% 8%) 0%, hsl(0 0% 15%) 100%);
+    --gradient-instagram: linear-gradient(45deg, #f09433 0%, #e6683c 24%, #dc2743 52%, #cc2366 76%, #bc1888 100%);
+  }
+
+  .dark {
+    --background: 0 0% 8%;
+    --foreground: 0 0% 96%;
+    
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 96%;
+    
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 96%;
+    
+    --primary: 0 72% 45%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 0 0% 18%;
+    --secondary-foreground: 0 0% 100%;
+    
+    --muted: 0 0% 18%;
+    --muted-foreground: 0 0% 55%;
+    
+    --accent: 0 72% 45%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 0 0% 22%;
+    --input: 0 0% 22%;
+    --ring: 0 72% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans font-black tracking-tight;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply py-20 md:py-28 lg:py-32;
+  }
+  
+  .container-custom {
+    @apply container mx-auto px-5 md:px-8 lg:px-10;
+  }
+  
+  .btn-primary {
+    @apply bg-primary text-primary-foreground px-8 py-4 text-sm font-black uppercase tracking-widest 
+           hover:bg-foreground hover:text-background transition-all duration-300
+           shadow-hard hover:shadow-none hover:translate-x-[6px] hover:translate-y-[6px] inline-block text-center;
+  }
+  
+  .btn-secondary {
+    @apply bg-foreground text-background px-8 py-4 text-sm font-black uppercase tracking-widest 
+           hover:bg-foreground hover:scale-95 transition-all duration-300 inline-block text-center;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-primary text-primary px-8 py-4 text-sm font-black uppercase tracking-widest 
+           hover:bg-primary hover:text-primary-foreground transition-all duration-300 inline-block text-center;
+  }
+  
+  .section-badge {
+    @apply inline-flex items-center gap-2 bg-primary border-none px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] text-primary-foreground;
+  }
+  
+  .section-heading {
+    @apply text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-[0.95] tracking-tight;
+  }
+  
+  .section-subheading {
+    @apply text-lg md:text-xl lg:text-2xl text-foreground/60 font-medium max-w-2xl leading-relaxed;
+  }
+  
+  .card-hard {
+    @apply bg-card p-6 md:p-8 shadow-hard border-t-4 border-primary;
+  }
+  
+  .text-gradient {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-primary to-red-400;
+  }
+  
+  .skew-box {
+    @apply transform -skew-x-6;
+  }
+  
+  .skew-box-content {
+    @apply transform skew-x-6;
+  }
+}
+
+@layer utilities {
+  .shadow-hard {
+    box-shadow: var(--shadow-hard);
+  }
+  
+  .shadow-hard-sm {
+    box-shadow: var(--shadow-hard-sm);
+  }
+  
+  .shadow-hard-black {
+    box-shadow: var(--shadow-hard-black);
+  }
+  
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+  
+  .gradient-dark {
+    background: var(--gradient-dark);
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .text-balance {
+    text-wrap: balance;
+  }
+}

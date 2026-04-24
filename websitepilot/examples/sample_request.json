@@ -1,0 +1,18 @@
+{
+  "company_name": "All Thingz Electric",
+  "domain": "allthingzelectric.com",
+  "service": "electrician",
+  "location": "Chandler, AZ",
+  "audience": "homeowners",
+  "primary_cta": "Request Estimate",
+  "differentiators": "same-day service, master electricians, financing",
+  "competitor_domains": "competitor1.com, competitor2.com",
+  "lead_value": "$45,000/mo",
+  "tier": "full",
+  "design_template": "state48-authority-blue",
+  "generate_demo": true,
+  "run_audit": true,
+  "run_strategy": true,
+  "run_close_pitch": true,
+  "notes": "Prospect called for a quote. Use authority tone. Emphasize premium trust."
+}

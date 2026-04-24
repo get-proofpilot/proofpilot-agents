@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 213 10% 20%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 213 10% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 213 10% 20%;
+
+    /* State 48 Blue - #1454A4 */
+    --primary: 213 78% 36%;
+    --primary-foreground: 0 0% 100%;
+
+    /* State 48 Gray - #5C5C5C */
+    --secondary: 0 0% 36%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 213 15% 96%;
+    --muted-foreground: 0 0% 45%;
+
+    /* Accent - lighter blue for highlights */
+    --accent: 213 78% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 213 15% 88%;
+    --input: 213 15% 88%;
+    --ring: 213 78% 36%;
+
+    --radius: 0.5rem;
+
+    /* Custom State 48 colors */
+    --state48-blue: 213 78% 36%;
+    --state48-blue-light: 213 60% 95%;
+    --state48-blue-dark: 213 78% 28%;
+    --state48-gray: 0 0% 36%;
+    --state48-gray-light: 0 0% 55%;
+    --state48-navy: 215 28% 17%;
+    --state48-sky: 200 80% 55%;
+    --state48-gold: 45 90% 50%;
+    --state48-copper: 24 95% 53%;
+    
+    /* Semantic surface colors */
+    --surface-dark: 215 28% 17%;
+    --surface-darker: 215 30% 12%;
+    
+    --gradient-blue: linear-gradient(135deg, hsl(213 78% 36%), hsl(213 78% 45%));
+    --gradient-dark: linear-gradient(135deg, hsl(215 28% 17%), hsl(213 78% 28%));
+  }
+
+  .dark {
+    --background: 213 30% 10%;
+    --foreground: 0 0% 100%;
+
+    --card: 213 30% 14%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 213 30% 14%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 213 78% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 45%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 213 20% 20%;
+    --muted-foreground: 213 10% 65%;
+
+    --accent: 213 78% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 213 20% 25%;
+    --input: 213 20% 25%;
+    --ring: 213 78% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Custom utility for brutal shadow */
+.shadow-brutal {
+  box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+}
+
+.shadow-brutal-sm {
+  box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+}
+
+.text-outline-blue {
+  -webkit-text-stroke: 2px hsl(var(--state48-blue));
+  color: transparent;
+}
+
+/* Grunge texture overlay utilities */
+.grunge-overlay-dark {
+  position: relative;
+}
+
+.grunge-overlay-dark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/src/assets/grunge-texture.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.25;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grunge-overlay-subtle {
+  position: relative;
+}
+
+.grunge-overlay-subtle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/src/assets/grunge-texture.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.12;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grain-overlay-dark {
+  position: relative;
+}
+
+.grain-overlay-dark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/src/assets/grain-dark.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.35;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grain-overlay-light {
+  position: relative;
+}
+
+.grain-overlay-light::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/src/assets/grain-light.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.25;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 1;
+}

@@ -1,0 +1,148 @@
+{
+  "templates": [
+    {
+      "id": "state48-authority-blue",
+      "name": "State48 Authority Blue",
+      "status": "ready",
+      "source_slug": "state48glass",
+      "source_repo": "https://github.com/get-proofpilot/state48glass.git",
+      "page_types": ["homepage", "service-page", "location-page"],
+      "selection_terms": ["glass", "windshield", "premium", "authority", "blue", "repair", "estimate", "home service"],
+      "style_traits": ["premium blue palette", "authority stats", "early lead capture", "video authority", "long-form trust layout"],
+      "best_for": "Authority-first homepages and service pages that need a premium look with an early estimate action.",
+      "prompt_focus": "Use this when the page needs premium trust, layered proof, and an early estimate form without feeling generic."
+    },
+    {
+      "id": "state48-estimator-led",
+      "name": "State48 Estimator-Led",
+      "status": "ready",
+      "source_slug": "state48glass",
+      "source_repo": "https://github.com/get-proofpilot/state48glass.git",
+      "page_types": ["homepage", "service-page"],
+      "selection_terms": ["estimate", "quote", "inspection", "lead form", "book now", "conversion"],
+      "style_traits": ["form-first flow", "offer banner", "stacked proof sections", "FAQ depth"],
+      "best_for": "Demo pages where the call-to-action needs to appear near the top and repeatedly through the funnel.",
+      "prompt_focus": "Prioritize fast conversion, estimate framing, and a visible proof stack."
+    },
+    {
+      "id": "keystone-earthy-restoration",
+      "name": "Keystone Earthy Restoration",
+      "status": "ready",
+      "source_slug": "keystonerestoration",
+      "source_repo": "https://github.com/get-proofpilot/keystonerestoration.git",
+      "page_types": ["homepage", "service-page", "location-page"],
+      "selection_terms": ["restoration", "roof", "water damage", "remodel", "earthy", "construction", "mitigation", "general contractor"],
+      "style_traits": ["earth-tone palette", "trust-heavy sections", "storytelling about section", "clean contact finish"],
+      "best_for": "Restoration, roofing, remodeling, and trust-heavy home service brands that need warmth instead of tech energy.",
+      "prompt_focus": "Lean into grounded trust, craftsmanship, and a simple, reassuring conversion path."
+    },
+    {
+      "id": "keystone-contact-heavy",
+      "name": "Keystone Contact Heavy",
+      "status": "ready",
+      "source_slug": "keystonerestoration",
+      "source_repo": "https://github.com/get-proofpilot/keystonerestoration.git",
+      "page_types": ["homepage", "service-page"],
+      "selection_terms": ["contact", "consultation", "inspection", "schedule", "reassuring", "trust"],
+      "style_traits": ["compact section stack", "strong contact module", "testimonial support", "soft warm theme"],
+      "best_for": "Lead-gen pages that need direct contact conversion without a huge number of modules.",
+      "prompt_focus": "Use this for cleaner pages with trust, process, testimonials, and a strong contact close."
+    },
+    {
+      "id": "rockin-rugged-industrial",
+      "name": "Rockin Rugged Industrial",
+      "status": "ready",
+      "source_slug": "austinrockinshauling",
+      "source_repo": "https://github.com/get-proofpilot/austinrockinshauling.git",
+      "page_types": ["homepage", "service-page", "location-page"],
+      "selection_terms": ["hauling", "demolition", "junk", "skid steer", "dirt work", "industrial", "rugged", "construction"],
+      "style_traits": ["black and red industrial palette", "hard shadows", "bold uppercase headlines", "rugged proof sections"],
+      "best_for": "Rougher blue-collar services that need confident industrial styling and strong visual attitude.",
+      "prompt_focus": "Favor aggressive typography, rugged section rhythm, and bold CTA blocks."
+    },
+    {
+      "id": "rockin-gallery-social",
+      "name": "Rockin Gallery Social",
+      "status": "ready",
+      "source_slug": "austinrockinshauling",
+      "source_repo": "https://github.com/get-proofpilot/austinrockinshauling.git",
+      "page_types": ["homepage", "service-page"],
+      "selection_terms": ["gallery", "before after", "instagram", "project photos", "visual proof"],
+      "style_traits": ["gallery-first modules", "stats plus images", "social proof rail", "before/after energy"],
+      "best_for": "Brands with strong project photos, before/after content, or social proof that should shape the layout.",
+      "prompt_focus": "Use visuals and project proof as core page structure, not decoration."
+    },
+    {
+      "id": "rockin-service-area-map",
+      "name": "Rockin Service Area Map",
+      "status": "ready",
+      "source_slug": "austinrockinshauling",
+      "source_repo": "https://github.com/get-proofpilot/austinrockinshauling.git",
+      "page_types": ["homepage", "location-page"],
+      "selection_terms": ["service area", "map", "locations", "territory", "coverage", "city pages"],
+      "style_traits": ["map section", "territory framing", "regional proof", "location support modules"],
+      "best_for": "Businesses selling coverage, delivery range, or local service areas as a major trust factor.",
+      "prompt_focus": "Highlight territory, map support, and local reach in a bold way."
+    },
+    {
+      "id": "proactive-clean-cyan",
+      "name": "Proactive Clean Cyan",
+      "status": "ready",
+      "source_slug": "proactive-pool-solutions",
+      "source_repo": "https://github.com/get-proofpilot/Proactive-pool-solutions.git",
+      "page_types": ["homepage", "service-page", "location-page"],
+      "selection_terms": ["pool", "clean", "maintenance", "modern", "cyan", "service", "luxury service"],
+      "style_traits": ["clean cyan and navy palette", "modern service layout", "video and service-area blend", "polished residential feel"],
+      "best_for": "Modern residential service brands that need a clean, polished, upscale feel.",
+      "prompt_focus": "Favor clean spacing, polished service cards, and a premium residential vibe."
+    },
+    {
+      "id": "proactive-inspection-led",
+      "name": "Proactive Inspection Led",
+      "status": "ready",
+      "source_slug": "proactive-pool-solutions",
+      "source_repo": "https://github.com/get-proofpilot/Proactive-pool-solutions.git",
+      "page_types": ["homepage", "service-page"],
+      "selection_terms": ["inspection", "free inspection", "quote", "book inspection", "consult"],
+      "style_traits": ["inspection form near top", "service explanation flow", "clear CTA stack"],
+      "best_for": "Lead-gen pages where the offer is an inspection, quote, or evaluation rather than generic contact.",
+      "prompt_focus": "Make the inspection-style offer feel specific, low-friction, and premium."
+    },
+    {
+      "id": "proactive-local-service-area",
+      "name": "Proactive Local Service Area",
+      "status": "ready",
+      "source_slug": "proactive-pool-solutions",
+      "source_repo": "https://github.com/get-proofpilot/Proactive-pool-solutions.git",
+      "page_types": ["homepage", "location-page"],
+      "selection_terms": ["local", "service area", "coverage", "city", "neighborhood", "map pack"],
+      "style_traits": ["local proof sections", "service-area support", "FAQ and contact pairing"],
+      "best_for": "Local SEO demos that need a clear blend of service explanation and geographic trust.",
+      "prompt_focus": "Use this when local market coverage and contact trust need to be obvious."
+    },
+    {
+      "id": "doggy-bold-membership",
+      "name": "Doggy Bold Membership",
+      "status": "ready",
+      "source_slug": "doggy-detail",
+      "source_repo": "https://github.com/get-proofpilot/doggy-detail.git",
+      "page_types": ["homepage", "service-page"],
+      "selection_terms": ["membership", "club", "consumer", "lifestyle", "subscription", "promo", "playful"],
+      "style_traits": ["bold consumer brand styling", "membership framing", "playful trust bar", "offer-led sections"],
+      "best_for": "Consumer-facing services that need more personality, membership energy, or a lifestyle feel.",
+      "prompt_focus": "Use bold personality, playful confidence, and membership-style offer framing."
+    },
+    {
+      "id": "doggy-pricing-promo",
+      "name": "Doggy Pricing Promo",
+      "status": "ready",
+      "source_slug": "doggy-detail",
+      "source_repo": "https://github.com/get-proofpilot/doggy-detail.git",
+      "page_types": ["homepage", "service-page"],
+      "selection_terms": ["pricing", "promos", "offers", "subscription", "plans", "consumer offer"],
+      "style_traits": ["pricing section emphasis", "promo rails", "offer stack", "strong plan comparison energy"],
+      "best_for": "Pages that need visible pricing, offer framing, and consumer promo sections.",
+      "prompt_focus": "Make offers and plan choices visually central without losing design polish."
+    }
+  ]
+}
