@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-accent: #4ca8de;
+  --color-accent-ink: #2f85b7;
+  --color-navy: #121a1e;
+  --color-mist: #e9f5fb;
+  --color-twilight: #0c0c0c;
+  --radius-btn: 8px;
+}
+
+html,
+body {
+  font-family: 'Work Sans', system-ui, sans-serif;
+  color: var(--color-navy);
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer components {
+  /* Chunky offset-shadow button — Anomaly Pool / BtA signature move */
+  .btn-chunk {
+    @apply inline-flex items-center justify-center gap-2 font-body font-bold text-[16px];
+    background: var(--color-accent);
+    color: #ffffff;
+    border: 1px solid var(--color-navy);
+    border-radius: var(--radius-btn);
+    padding: 12px 24px;
+    box-shadow: 0 5px 0 0 var(--color-navy);
+    transition: transform 120ms ease, box-shadow 120ms ease;
+    text-transform: none;
+  }
+  .btn-chunk:hover {
+    transform: translateY(2px);
+    box-shadow: 0 3px 0 0 var(--color-navy);
+  }
+  .btn-chunk:active {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 0 var(--color-navy);
+  }
+
+  .btn-chunk--ghost {
+    background: #ffffff;
+    color: var(--color-accent);
+  }
+
+  .btn-chunk--dark-bg {
+    box-shadow: 0 5px 0 0 #ffffff;
+  }
+  .btn-chunk--dark-bg:hover {
+    box-shadow: 0 3px 0 0 #ffffff;
+  }
+
+  .section-pad {
+    @apply px-4 md:px-8 lg:px-14 py-16 md:py-24;
+  }
+
+  /* Title-case Bebas display headline — BtA differentiator vs 180 Sites' all-caps */
+  .display-headline {
+    @apply font-display text-hero-xl text-navy;
+    text-transform: none;
+  }
+  .display-headline .accent {
+    color: var(--color-accent);
+  }
+
+  .section-headline {
+    @apply font-display text-section-xl text-navy;
+    text-transform: none;
+  }
+
+  .card-headline {
+    @apply font-display text-card-lg text-navy;
+    text-transform: none;
+  }
+}

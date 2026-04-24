@@ -28,14 +28,22 @@ You are **Stage 3 (Designer Brain)** of AutoPilot's three-brain architecture for
 ## Doctrine to follow (read in this order)
 
 1. `~/proofpilot-agents/autopilot/skill/references/three-brain-architecture.md` (Stage 2 section)
-2. **`~/proofpilot-agents/autopilot/skill/references/style-presets.md` — READ FIRST. Pick one of the 7 presets (rugged-industrial / archetype-mascot / dfw-luxe-aerial / contractor-heritage / editorial-serif / playful-chunky-consumer / premium-design-build) using the decision tree. Lock it in before anything else. NO DEFAULTING to editorial-serif.**
-3. `~/proofpilot-agents/autopilot/skill/references/design-strategist.md` (11-section output template)
-4. `~/proofpilot-agents/autopilot/skill/references/gold-standard-playbook.md` (Cohesive · Detail · Dynamic)
-5. `~/proofpilot-agents/autopilot/skill/references/inspiration/180sites-portfolio-dna.md` — rugged-industrial + archetype-mascot reference builds (Volt Vikings, Haro Electric, Patriot Illumination, Valkyrie Wraps)
-6. `~/proofpilot-agents/autopilot/skill/references/inspiration/betheanomaly-portfolio-dna.md` — dfw-luxe-aerial reference builds (Anomaly Pool, Salas Concrete, Kingswood Landscape)
-7. `~/proofpilot-agents/autopilot/skill/references/inspiration/hookagency-portfolio-dna.md` — contractor-heritage reference builds (Bears Plumbing, B&M Roofing, TopDog HVAC)
-8. `~/proofpilot-agents/autopilot/skill/references/inspiration/inspiration-guide.md`
-9. (optional if present) `~/proofpilot-agents/websitepilot/style-families/<<STYLE_FAMILY>>/FAMILY.md` — per-family deeper spec + starter CSS + starter section components
+2. **`~/proofpilot-agents/autopilot/skill/references/design-patterns-catalog.md` — THE MASTER COOKBOOK. Integrates 3 pillars (Cohesive · Detail · Dynamic), 4 agency DNA docs, 7 presets, 3 pixel-perfect clone templates, section pattern library. READ THIS FIRST.**
+3. `~/proofpilot-agents/autopilot/skill/references/style-presets.md` — 7 presets inside 4 parent families (no defaulting to editorial-serif for trades)
+4. `~/proofpilot-agents/autopilot/skill/references/design-strategist.md` (11-section output template)
+5. `~/proofpilot-agents/autopilot/skill/references/gold-standard-playbook.md`
+6. `~/proofpilot-agents/autopilot/skill/references/inspiration/180sites-portfolio-dna.md` — archetype-mascot + rugged references (Volt Vikings, Patriot, Valkyrie, Haro)
+7. `~/proofpilot-agents/autopilot/skill/references/inspiration/betheanomaly-portfolio-dna.md` — dfw-luxe-aerial references (Anomaly Pool, Salas, Kingswood)
+8. `~/proofpilot-agents/autopilot/skill/references/inspiration/hookagency-portfolio-dna.md` — contractor-heritage references (Bears, B&M, TopDog)
+9. `~/proofpilot-agents/autopilot/skill/references/inspiration/getlocalleads-portfolio-dna.md` — hardscape/outdoor-living references (Cinco Mosqueteros, Pro Outdoor, KSJ)
+10. `~/proofpilot-agents/autopilot/skill/references/inspiration/inspiration-guide.md` — Matthew's curated 30+ reference site list
+11. **Pick a CLONE template if the preset has one:**
+    - `archetype-mascot` → `~/proofpilot-agents/websitepilot/templates/sources/ref-archetype-mascot/` (Volt Vikings clone)
+    - `contractor-heritage` → `~/proofpilot-agents/websitepilot/templates/sources/ref-contractor-heritage/` (Bears Plumbing clone)
+    - `dfw-luxe-aerial` → `~/proofpilot-agents/websitepilot/templates/sources/ref-dfw-luxe-aerial/` (Anomaly Pool clone)
+    - Other presets → fall back to legacy scaffolds (rockin-rugged, state48glass, keystone, etc)
+12. **Pick section patterns to compose from:** `~/proofpilot-agents/websitepilot/patterns/<preset>/*` — prop-driven brand-agnostic React components
+13. (optional) `~/proofpilot-agents/websitepilot/style-families/<<STYLE_FAMILY>>/FAMILY.md`
 
 ## Brand Brain summary (filled by Claude before dispatch)
 

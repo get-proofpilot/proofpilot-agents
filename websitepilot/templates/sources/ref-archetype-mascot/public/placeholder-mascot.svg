@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 431 563" width="431" height="563" role="img" aria-label="Placeholder mascot">
+  <!--
+    PLACEHOLDER — SWAP WITH CLIENT MASCOT.
+    Same ~0.765 aspect ratio (431x563) as the reference source so layout
+    pinning stays intact when replaced.
+  -->
+  <defs>
+    <linearGradient id="helmet" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#8D5B32"/>
+      <stop offset="1" stop-color="#4B2B10"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#F1C7A4"/>
+      <stop offset="1" stop-color="#D49C6F"/>
+    </linearGradient>
+    <linearGradient id="beard" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#C7923E"/>
+      <stop offset="1" stop-color="#7A5620"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Placeholder watermark band -->
+  <rect x="0" y="0" width="431" height="18" fill="#FF9143"/>
+  <text x="215.5" y="13" text-anchor="middle" font-family="'Saira',sans-serif" font-size="10" font-weight="800" fill="#250845" letter-spacing="1">
+    MASCOT HERE — SWAP ASSET
+  </text>
+
+  <!-- Horned helmet -->
+  <path d="M70 170 q145 -90 290 0 l-20 30 q-125 -60 -250 0 Z" fill="url(#helmet)"/>
+  <path d="M45 155 q-25 -25 -35 -45 q25 0 50 20 z" fill="url(#helmet)"/>
+  <path d="M385 155 q25 -25 35 -45 q-25 0 -50 20 z" fill="url(#helmet)"/>
+  <rect x="200" y="145" width="30" height="30" fill="#C79A53"/>
+
+  <!-- Face -->
+  <ellipse cx="215" cy="290" rx="140" ry="150" fill="url(#skin)"/>
+
+  <!-- Beard -->
+  <path d="M95 300 q15 180 120 220 q105 -40 120 -220 q-60 60 -120 60 q-60 0 -120 -60 z" fill="url(#beard)"/>
+
+  <!-- Eyes -->
+  <circle cx="170" cy="270" r="10" fill="#1a0e05"/>
+  <circle cx="260" cy="270" r="10" fill="#1a0e05"/>
+
+  <!-- Smile -->
+  <path d="M170 330 q45 30 90 0" stroke="#3C0E70" stroke-width="6" stroke-linecap="round" fill="none"/>
+
+  <!-- Lightning bolt charm, wink to 'volt' archetype -->
+  <path d="M205 470 l20 -35 l-10 30 l22 -10 l-25 45 l8 -30 z" fill="#FF9143" stroke="#250845" stroke-width="2"/>
+</svg>

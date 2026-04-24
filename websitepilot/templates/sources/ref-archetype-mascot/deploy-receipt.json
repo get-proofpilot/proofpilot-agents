@@ -1,0 +1,10 @@
+{
+  "client": "ref-archetype-mascot",
+  "project": "proofpilot-preview",
+  "clean_url": "https://demo.proofpilotapps.com/ref-archetype-mascot/",
+  "pages_url": "https://proofpilot-preview.pages.dev/ref-archetype-mascot/",
+  "immutable": "https://0245abe5.proofpilot-preview.pages.dev",
+  "index_url": "https://demo.proofpilotapps.com/",
+  "clean_url_http": "200",
+  "deployed_at": "2026-04-24T19:44:34Z"
+}
