@@ -2,6 +2,28 @@
 
 > Every demo ends at a public preview URL. One Pages project (`proofpilot-preview`) hosts every client as a subpath under `demo.proofpilotapps.com/<client>/`. Every deploy also regenerates a landing index at the root listing all active demos.
 
+## Multi-operator rule — always deploy with `--variant` unless you own the slug
+
+Both Claude Code and ChatGPT Codex run WebsitePilot. Each ships to the same Pages project. To avoid collisions:
+
+- **Pick a unique slug per run.** Pattern: `<client>-<variant>` where variant is `v1/v2/...`, `a/b/c`, or a descriptor like `bold` / `minimal`.
+- **The `--variant` flag** in `deploy-preview.sh` appends its value to the client slug: `--client richardson-pest --variant v2` → ships as `/richardson-pest-v2/`.
+- **Collision protection** — the helper detects if the final slug already exists locally OR live, and warns + waits 4 seconds before overwriting. Pass `--replace` to skip the warning, or `--if-exists error` to fail hard instead.
+- **URL pattern is tool-agnostic** — slugs never reveal which agent built them. Operators pick semantic variants instead.
+
+## Auto-sync prevents overwriting other operators' work
+
+Every deploy loops through these steps in order:
+
+1. **Pull remote state.** `sync-remote.sh` reads the live landing index at `demo.proofpilotapps.com/`, finds every registered subpath, and mirrors any that aren't already in the local meta-dist. Uses a headless-browser scrape (HTML + every resource URL the browser requests) so it captures client-side-imported assets, not just static refs.
+2. Merge the new client's build into the local meta-dist.
+3. Regenerate the landing index with ALL clients.
+4. Deploy the merged tree.
+
+**Without step 1**, operator A's `/richardson-pest/` disappears from production when operator B deploys from a meta-dist that doesn't know about it. This happened on 2026-04-24 — the Claude-side deploy wiped Codex's Richardson build. Fixed by scraping the prior immutable deployment, restoring locally, and wiring the sync step into every deploy.
+
+**Skip the sync** for fast-path deploys with `PROOFPILOT_SKIP_SYNC=1 ./scripts/deploy-preview.sh ...` (rare — normally you want the sync).
+
 ## URL pattern
 
 - **Canonical:** `https://demo.proofpilotapps.com/<client-slug>/`

@@ -31,17 +31,22 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 DEMO_DIR=""
 CLIENT=""
+VARIANT=""
 PROJECT="proofpilot-preview"
 META_DIST="${PROOFPILOT_META_DIST:-$HOME/.proofpilot/meta-dist}"
 CUSTOM_DOMAIN="demo.proofpilotapps.com"
+REPLACE_MODE="warn"   # warn | error | replace
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --client)   CLIENT="$2"; shift 2 ;;
-    --project)  PROJECT="$2"; shift 2 ;;
-    --meta)     META_DIST="$2"; shift 2 ;;
+    --client)     CLIENT="$2"; shift 2 ;;
+    --variant)    VARIANT="$2"; shift 2 ;;
+    --project)    PROJECT="$2"; shift 2 ;;
+    --meta)       META_DIST="$2"; shift 2 ;;
+    --if-exists)  REPLACE_MODE="$2"; shift 2 ;;
+    --replace)    REPLACE_MODE="replace"; shift ;;
     -h|--help)
-      sed -n '2,30p' "$0" | sed 's/^# \{0,1\}//'
+      sed -n '2,32p' "$0" | sed 's/^# \{0,1\}//'
       exit 0
       ;;
     -*) echo "unknown flag: $1" >&2; exit 2 ;;
@@ -54,9 +59,44 @@ done
 [[ -z "$CLIENT" ]] && { echo "error: --client <slug> required" >&2; exit 2; }
 command -v wrangler >/dev/null 2>&1 || { echo "error: wrangler not installed. npm i -g wrangler" >&2; exit 2; }
 
+# Combine client + optional variant into final slug
+if [[ -n "$VARIANT" ]]; then
+  CLIENT="$CLIENT-$VARIANT"
+fi
+
 if ! [[ "$CLIENT" =~ ^[a-z0-9][a-z0-9-]*$ ]]; then
-  echo "error: --client slug must be lowercase-with-dashes (got: $CLIENT)" >&2
+  echo "error: slug '$CLIENT' must be lowercase-with-dashes" >&2
   exit 2
+fi
+
+# Collision protection — local meta-dist AND remote Pages check
+LOCAL_EXISTS=false
+[[ -d "$META_DIST/$CLIENT" ]] && LOCAL_EXISTS=true
+REMOTE_HTTP="$(curl -sL -o /dev/null -w "%{http_code}" --max-time 5 "https://$CUSTOM_DOMAIN/$CLIENT/" 2>/dev/null || echo "000")"
+REMOTE_EXISTS=false
+[[ "$REMOTE_HTTP" == "200" ]] && REMOTE_EXISTS=true
+
+if [[ "$LOCAL_EXISTS" == "true" || "$REMOTE_EXISTS" == "true" ]]; then
+  case "$REPLACE_MODE" in
+    error)
+      echo "error: slug '$CLIENT' already exists (local=$LOCAL_EXISTS, remote=$REMOTE_EXISTS)." >&2
+      echo "       Use --variant <suffix> to add a unique variant, OR --replace to overwrite." >&2
+      exit 5
+      ;;
+    warn)
+      echo ""
+      echo "⚠️  slug '$CLIENT' already exists:"
+      echo "   local meta-dist: $LOCAL_EXISTS"
+      echo "   live URL:        $REMOTE_EXISTS (HTTP $REMOTE_HTTP)"
+      echo ""
+      echo "   Proceeding will REPLACE the existing deploy. Abort with Ctrl-C in 4s or wait..."
+      sleep 4
+      echo ""
+      ;;
+    replace)
+      echo "note: slug '$CLIENT' exists — overwriting (--replace)."
+      ;;
+  esac
 fi
 
 echo "┌─ deploy-preview"
@@ -65,6 +105,15 @@ echo "│  client:   $CLIENT"
 echo "│  project:  $PROJECT"
 echo "│  meta:     $META_DIST"
 echo "└─"
+
+# Step -1 — sync remote state into local meta-dist first, so this deploy doesn't
+# blow away clients owned by other operators (Codex, another Matthew machine, etc).
+# Skip with PROOFPILOT_SKIP_SYNC=1 if you explicitly want a fast-path deploy.
+if [[ "${PROOFPILOT_SKIP_SYNC:-0}" != "1" ]]; then
+  echo ""
+  echo "step -1: sync remote state..."
+  "$SCRIPT_DIR/sync-remote.sh" --meta "$META_DIST" --domain "$CUSTOM_DOMAIN" 2>&1 | sed 's/^/  /' | tail -6
+fi
 
 # Step 0 — patch React Router basename if BrowserRouter is present but basename is not
 # Vite handles asset paths via --base, but React Router needs basename explicitly.
