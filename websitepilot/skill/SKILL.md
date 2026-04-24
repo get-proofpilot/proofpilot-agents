@@ -219,6 +219,22 @@ Save as `/tmp/<client>/<Client>-WebsitePilot-YYYY-MM-DD.docx`.
 
 ## WebsitePilot output bundle
 
+## Durable run workspaces
+
+Default scratch work still happens in `/tmp/<client>/` and `/tmp/<client>-demo/`
+while a run is active. When a run needs to be preserved in GitHub with the
+WebsitePilot agent, copy the cleaned source into:
+
+- `websitepilot/workspaces/codex/<client-slug>/` for Codex-authored runs.
+- `websitepilot/workspaces/claude/<client-slug>/` for Claude Code / Gemini-authored runs.
+
+Commit source, artifacts, QA notes, and screenshots. Do not commit
+`node_modules/`, `dist/`, local `.env` files, or temporary server caches.
+
+The authoring lane is internal only. Never expose `codex`, `claude`, or
+`gemini` in a client-facing preview URL; use clean client slugs like
+`https://demo.proofpilotapps.com/<client-slug>/`.
+
 A full WebsitePilot deliverable:
 
 - **`.docx` sales bundle** — branded, 35-45 pages typical

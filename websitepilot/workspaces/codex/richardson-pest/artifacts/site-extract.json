@@ -1,0 +1,939 @@
+{
+  "title": "Richardson Pest Management - Same Day Exterminator",
+  "url": "https://www.richardsonpestmanagement.com/",
+  "logo": {
+    "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/black-circle-logo-rpm.png",
+    "alt": "Richardson Pest Management",
+    "width": 100,
+    "height": 100
+  },
+  "images": [
+    {
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/black-circle-logo-rpm.png",
+      "alt": "Richardson Pest Management",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/richardson-pest-management-talking-to-customer_orig.jpg",
+      "alt": "Queen Creek Pest Control Companies talking to customer",
+      "width": 612,
+      "height": 408
+    },
+    {
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/queen-creek-pest-control-companies-spraying-house-rpm_orig.jpg",
+      "alt": "Queen Creek Pest Control Companies Spraying Residential house - Richardson Pest Management",
+      "width": 612,
+      "height": 407
+    },
+    {
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/arizona-scorpion-200x180_orig.jpg",
+      "alt": "Scorpion Removal Chandler AZ",
+      "width": 200,
+      "height": 180
+    },
+    {
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/roof-rats-200x180_orig.jpg",
+      "alt": "Roof Rat Exterminator Mesa AZ",
+      "width": 200,
+      "height": 179
+    },
+    {
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/mosquitoes-in-chandler-arizona-200x180_orig.jpg",
+      "alt": "Mosquito Control Chandler AZ",
+      "width": 199,
+      "height": 180
+    },
+    {
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/bee-in-arizona-200x180_orig.jpg",
+      "alt": "Bee Exterminator Mesa AZ",
+      "width": 200,
+      "height": 180
+    },
+    {
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/weed-control-220x180_orig.jpg",
+      "alt": "Bee Exterminator Mesa AZ",
+      "width": 220,
+      "height": 180
+    },
+    {
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/subterranean-termites-in-arizona-200x180_orig.jpg",
+      "alt": "Termite Exterminator Mesa AZ",
+      "width": 200,
+      "height": 180
+    },
+    {
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/german-roach-small_orig.jpg",
+      "alt": "Cockroach exterminator Mesa AZ",
+      "width": 180,
+      "height": 200
+    },
+    {
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/chase-richardson-spraying-house_orig.jpg",
+      "alt": "Queen Creek Pest Control Companies -Richardson Pest Management owner Chase Richardson",
+      "width": 375,
+      "height": 562
+    },
+    {
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/published/richardson-pest-management-logo.png?1566239278",
+      "alt": "Picture",
+      "width": 213,
+      "height": 106
+    }
+  ],
+  "typography": {
+    "h1": {
+      "fontFamily": "Lato",
+      "fontWeight": "600",
+      "fontSize": "36px"
+    },
+    "h2": {
+      "fontFamily": "\"Playfair Display\"",
+      "fontWeight": "400",
+      "fontSize": "70px"
+    },
+    "body": {
+      "fontFamily": "Birdseye, sans-serif",
+      "fontWeight": "500",
+      "fontSize": "16px"
+    },
+    "button": {
+      "fontFamily": "Birdseye, sans-serif",
+      "fontWeight": "400",
+      "fontSize": "18px"
+    },
+    "loadedFonts": [
+      {
+        "family": "ProximaNova",
+        "weight": "normal",
+        "status": "unloaded"
+      },
+      {
+        "family": "ProximaNova",
+        "weight": "bold",
+        "status": "unloaded"
+      },
+      {
+        "family": "ProximaNova-Semibold",
+        "weight": "normal",
+        "status": "unloaded"
+      },
+      {
+        "family": "wsocial",
+        "weight": "normal",
+        "status": "loaded"
+      },
+      {
+        "family": "Birdseye",
+        "weight": "100",
+        "status": "unloaded"
+      },
+      {
+        "family": "Birdseye",
+        "weight": "100",
+        "status": "unloaded"
+      },
+      {
+        "family": "Birdseye",
+        "weight": "500",
+        "status": "loaded"
+      },
+      {
+        "family": "Birdseye",
+        "weight": "500",
+        "status": "unloaded"
+      },
+      {
+        "family": "Birdseye",
+        "weight": "600",
+        "status": "loaded"
+      },
+      {
+        "family": "Birdseye",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "weight": "400",
+        "status": "loaded"
+      },
+      {
+        "family": "Montserrat",
+        "weight": "700",
+        "status": "loaded"
+      },
+      {
+        "family": "Open Sans",
+        "weight": "300",
+        "status": "loaded"
+      },
+      {
+        "family": "Open Sans",
+        "weight": "400",
+        "status": "loaded"
+      },
+      {
+        "family": "Open Sans",
+        "weight": "700",
+        "status": "loaded"
+      },
+      {
+        "family": "Open Sans",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "weight": "700",
+        "status": "unloaded"
+      },
+      {
+        "family": "Lato",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Lato",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Lato",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Lato",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Lato",
+        "weight": "700",
+        "status": "loaded"
+      },
+      {
+        "family": "Lato",
+        "weight": "700",
+        "status": "unloaded"
+      },
+      {
+        "family": "Playfair Display",
+        "weight": "400",
+        "status": "loaded"
+      },
+      {
+        "family": "Playfair Display",
+        "weight": "700",
+        "status": "unloaded"
+      },
+      {
+        "family": "Playfair Display",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Playfair Display",
+        "weight": "700",
+        "status": "unloaded"
+      },
+      {
+        "family": "Karla",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Karla",
+        "weight": "400",
+        "status": "loaded"
+      },
+      {
+        "family": "Anton",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Anton",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Anton",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Architects Daughter",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Architects Daughter",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Cedarville Cursive",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Cherry Cream Soda",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Chewy",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Condiment",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Condiment",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Crafty Girls",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Dancing Script",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Dancing Script",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Dancing Script",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Erica One",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Erica One",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Exo 2",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Exo 2",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Exo 2",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Exo 2",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Exo 2",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Faster One",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Faster One",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Gloria Hallelujah",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Gloria Hallelujah",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "IM Fell DW Pica SC",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Indie Flower",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Indie Flower",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Josefin Sans",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Josefin Sans",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Josefin Sans",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Lato",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Lato",
+        "weight": "400",
+        "status": "loaded"
+      },
+      {
+        "family": "Loved by the King",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Loved by the King",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Luckiest Guy",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Luckiest Guy",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Monofett",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Monofett",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "weight": "400",
+        "status": "loaded"
+      },
+      {
+        "family": "News Cycle",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "News Cycle",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "News Cycle",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "News Cycle",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "News Cycle",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "News Cycle",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "News Cycle",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "weight": "400",
+        "status": "loaded"
+      },
+      {
+        "family": "Oswald",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Oswald",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Oswald",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Oswald",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Oswald",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Over the Rainbow",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Over the Rainbow",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Oxygen",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Oxygen",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Patrick Hand SC",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Patrick Hand SC",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Patrick Hand SC",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Paytone One",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Paytone One",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Paytone One",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Permanent Marker",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Playfair Display",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Playfair Display",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Playfair Display",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Playfair Display",
+        "weight": "400",
+        "status": "loaded"
+      },
+      {
+        "family": "Questrial",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Questrial",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Questrial",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Quicksand",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Quicksand",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Quicksand",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Raleway",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Raleway",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Raleway",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Raleway",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Raleway",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Reenie Beanie",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Roboto",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Roboto",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Roboto",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Roboto",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Roboto",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Roboto",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Roboto",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Roboto",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Roboto",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Rock Salt",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Shadows Into Light",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Shadows Into Light",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Syncopate",
+        "weight": "700",
+        "status": "unloaded"
+      },
+      {
+        "family": "Syncopate",
+        "weight": "700",
+        "status": "unloaded"
+      },
+      {
+        "family": "Titillium Web",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Titillium Web",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Yanone Kaffeesatz",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Yanone Kaffeesatz",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Yanone Kaffeesatz",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Yanone Kaffeesatz",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Yanone Kaffeesatz",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Yanone Kaffeesatz",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Yanone Kaffeesatz",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Zeyada",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "Zeyada",
+        "weight": "400",
+        "status": "unloaded"
+      }
+    ],
+    "fontLinks": [
+      "https://cdn2.editmysite.com/fonts/Montserrat/font.css?2",
+      "https://cdn2.editmysite.com/fonts/Open_Sans/font.css?2",
+      "https://cdn2.editmysite.com/fonts/Lato/font.css?2",
+      "https://cdn2.editmysite.com/fonts/Playfair_Display/font.css?2",
+      "https://cdn2.editmysite.com/fonts/Playfair_Display/font.css?2",
+      "https://fonts.googleapis.com/css?family=Anton|Architects+Daughter|Cedarville+Cursive|Cherry+Cream+Soda|Chewy|Condiment|Crafty+Girls|Dancing+Script|Erica+One|Exo+2|Faster+One|Gloria+Hallelujah|IM+Fell+DW+Pica+SC|Indie+Flower|Josefin+Sans|Lato|Loved+by+the+King|Luckiest+Guy|Monofett|Montserrat|News+Cycle|Open+Sans|Oswald|Over+the+Rainbow|Oxygen|Patrick+Hand+SC|Paytone+One|Permanent+Marker|Playfair+Display|Questrial|Quicksand|Raleway|Reenie+Beanie|Roboto|Rock+Salt|Shadows+Into+Light|Syncopate:700|Titillium+Web|Yanone+Kaffeesatz|Zeyada",
+      "https://fonts.googleapis.com/css?family=Anton|Architects+Daughter|Cedarville+Cursive|Cherry+Cream+Soda|Chewy|Condiment|Crafty+Girls|Dancing+Script|Erica+One|Exo+2|Faster+One|Gloria+Hallelujah|IM+Fell+DW+Pica+SC|Indie+Flower|Josefin+Sans|Lato|Loved+by+the+King|Luckiest+Guy|Monofett|Montserrat|News+Cycle|Open+Sans|Oswald|Over+the+Rainbow|Oxygen|Patrick+Hand+SC|Paytone+One|Permanent+Marker|Playfair+Display|Questrial|Quicksand|Raleway|Reenie+Beanie|Roboto|Rock+Salt|Shadows+Into+Light|Syncopate:700|Titillium+Web|Yanone+Kaffeesatz|Zeyada",
+      "https://fonts.googleapis.com/css?family=Anton|Architects+Daughter|Cedarville+Cursive|Cherry+Cream+Soda|Chewy|Condiment|Crafty+Girls|Dancing+Script|Erica+One|Exo+2|Faster+One|Gloria+Hallelujah|IM+Fell+DW+Pica+SC|Indie+Flower|Josefin+Sans|Lato|Loved+by+the+King|Luckiest+Guy|Monofett|Montserrat|News+Cycle|Open+Sans|Oswald|Over+the+Rainbow|Oxygen|Patrick+Hand+SC|Paytone+One|Permanent+Marker|Playfair+Display|Questrial|Quicksand|Raleway|Reenie+Beanie|Roboto|Rock+Salt|Shadows+Into+Light|Syncopate:700|Titillium+Web|Yanone+Kaffeesatz|Zeyada"
+    ]
+  },
+  "favicon": null,
+  "appleTouch": null,
+  "ogImage": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/richardson-pest-management-talking-to-customer_orig.jpg",
+  "downloads": [
+    {
+      "type": "logo",
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/black-circle-logo-rpm.png",
+      "filePath": "/tmp/richardson-pest-v2-websitepilot/assets/logo-original.png",
+      "bytes": 8626
+    },
+    {
+      "type": "authentic",
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/richardson-pest-management-talking-to-customer_orig.jpg",
+      "alt": "Queen Creek Pest Control Companies talking to customer",
+      "filePath": "/tmp/richardson-pest-v2-websitepilot/assets/authentic/01-richardson-pest-management-talking-to-customer-orig.jpg",
+      "bytes": 39336
+    },
+    {
+      "type": "authentic",
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/queen-creek-pest-control-companies-spraying-house-rpm_orig.jpg",
+      "alt": "Queen Creek Pest Control Companies Spraying Residential house - Richardson Pest Management",
+      "filePath": "/tmp/richardson-pest-v2-websitepilot/assets/authentic/02-queen-creek-pest-control-companies-spraying-house-rpm-orig.jpg",
+      "bytes": 70146
+    },
+    {
+      "type": "authentic",
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/arizona-scorpion-200x180_orig.jpg",
+      "alt": "Scorpion Removal Chandler AZ",
+      "filePath": "/tmp/richardson-pest-v2-websitepilot/assets/authentic/03-arizona-scorpion-200x180-orig.jpg",
+      "bytes": 7441
+    },
+    {
+      "type": "authentic",
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/roof-rats-200x180_orig.jpg",
+      "alt": "Roof Rat Exterminator Mesa AZ",
+      "filePath": "/tmp/richardson-pest-v2-websitepilot/assets/authentic/04-roof-rats-200x180-orig.jpg",
+      "bytes": 6284
+    },
+    {
+      "type": "authentic",
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/mosquitoes-in-chandler-arizona-200x180_orig.jpg",
+      "alt": "Mosquito Control Chandler AZ",
+      "filePath": "/tmp/richardson-pest-v2-websitepilot/assets/authentic/05-mosquitoes-in-chandler-arizona-200x180-orig.jpg",
+      "bytes": 4395
+    },
+    {
+      "type": "authentic",
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/bee-in-arizona-200x180_orig.jpg",
+      "alt": "Bee Exterminator Mesa AZ",
+      "filePath": "/tmp/richardson-pest-v2-websitepilot/assets/authentic/06-bee-in-arizona-200x180-orig.jpg",
+      "bytes": 7925
+    },
+    {
+      "type": "authentic",
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/weed-control-220x180_orig.jpg",
+      "alt": "Bee Exterminator Mesa AZ",
+      "filePath": "/tmp/richardson-pest-v2-websitepilot/assets/authentic/07-weed-control-220x180-orig.jpg",
+      "bytes": 13841
+    },
+    {
+      "type": "authentic",
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/subterranean-termites-in-arizona-200x180_orig.jpg",
+      "alt": "Termite Exterminator Mesa AZ",
+      "filePath": "/tmp/richardson-pest-v2-websitepilot/assets/authentic/08-subterranean-termites-in-arizona-200x180-orig.jpg",
+      "bytes": 5064
+    },
+    {
+      "type": "authentic",
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/german-roach-small_orig.jpg",
+      "alt": "Cockroach exterminator Mesa AZ",
+      "filePath": "/tmp/richardson-pest-v2-websitepilot/assets/authentic/09-german-roach-small-orig.jpg",
+      "bytes": 6769
+    },
+    {
+      "type": "authentic",
+      "src": "https://www.richardsonpestmanagement.com/uploads/1/2/6/9/126971389/chase-richardson-spraying-house_orig.jpg",
+      "alt": "Queen Creek Pest Control Companies -Richardson Pest Management owner Chase Richardson",
+      "filePath": "/tmp/richardson-pest-v2-websitepilot/assets/authentic/10-chase-richardson-spraying-house-orig.jpg",
+      "bytes": 57851
+    }
+  ]
+}
