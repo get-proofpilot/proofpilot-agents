@@ -66,6 +66,30 @@ echo "│  project:  $PROJECT"
 echo "│  meta:     $META_DIST"
 echo "└─"
 
+# Step 0 — patch React Router basename if BrowserRouter is present but basename is not
+# Vite handles asset paths via --base, but React Router needs basename explicitly.
+if grep -rq "BrowserRouter" "$DEMO_DIR/src" 2>/dev/null; then
+  if ! grep -rq "basename=" "$DEMO_DIR/src" 2>/dev/null; then
+    echo "step 0: patching BrowserRouter basename..."
+    for f in "$DEMO_DIR"/src/App.tsx "$DEMO_DIR"/src/App.jsx "$DEMO_DIR"/src/main.tsx; do
+      [[ -f "$f" ]] || continue
+      python3 - "$f" <<'PYEOF'
+import sys, re
+p = sys.argv[1]
+with open(p) as f: src = f.read()
+new = re.sub(
+    r"<BrowserRouter(\s*/?>|\s*>)",
+    r"<BrowserRouter basename={import.meta.env.BASE_URL}\1",
+    src,
+)
+if new != src:
+    with open(p, "w") as f: f.write(new)
+    print(f"  patched {p}")
+PYEOF
+    done
+  fi
+fi
+
 # Step 1 — build with subpath base
 echo ""
 echo "step 1: building with base=/$CLIENT/ ..."

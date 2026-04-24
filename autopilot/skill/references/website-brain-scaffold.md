@@ -2,6 +2,51 @@
 
 > Rules that apply to every Website Brain run, before you start executing the design-spec Implementation Order. These are load-bearing — skipping them causes preventable failures.
 
+## Mandatory first step — `scrub-template.sh`
+
+**Before any design work:**
+
+```bash
+./scripts/scrub-template.sh /tmp/<client>-demo \
+  --logo /tmp/<client>/assets/logo-original.png \
+  --client-name "Client Display Name" \
+  --tagline "One-line tagline for the OG card" \
+  --brand-color "#<hex>"
+```
+
+What it does:
+1. **Removes `lovable-tagger`** from `package.json` + scrubs `componentTagger` from `vite.config` (no Lovable attribution in prod bundle)
+2. **Deletes template-default public/ assets** (Lovable `favicon.ico`, `placeholder.svg`, default `robots.txt` < 200 bytes)
+3. **Copies the real client logo** to `src/assets/logo.png` — the canonical import path
+4. **Generates `public/favicon.png`** (32×32) + **`public/apple-touch-icon.png`** (180×180) from the logo
+5. **Generates `public/og-image.png`** (1200×630) — logo + tagline on brand-color background
+6. **Patches `index.html`** meta tags so favicon / og:image / twitter:image point at the new assets
+
+**Then update Header + Footer** to import + render the real logo (the scrub script can't do this — it's per-template-specific):
+
+```tsx
+import logoSrc from '@/assets/logo.png';
+
+// Header + Footer:
+<a href="/" aria-label="<Client> — home">
+  <img src={logoSrc} alt="<Client>" className="h-12 md:h-14 w-auto" />
+</a>
+```
+
+**Never** use a type-recreated wordmark as the primary nav/hero lockup. Real logo is the brand equity. Type recreation is acceptable ONLY as a secondary footer mark, never as nav.
+
+**Why this is Step 0:** Richardson Pest v2 initially shipped with an amber-square + scorpion-icon treatment instead of the real Richardson logo — because Brand Brain pulled the logo correctly but Website Brain never copied it into `src/assets/`. Similarly the Lovable favicon stayed in place because nothing in the doctrine forced a scrub. This rule prevents both.
+
+## Mandatory deploy step — path-based URL via `deploy-preview.sh`
+
+After the build passes + Stage 6b QA loop clears, deploy with:
+
+```bash
+./scripts/deploy-preview.sh /tmp/<client>-demo --client <client-slug>
+```
+
+Ships to `https://demo.proofpilotapps.com/<client-slug>/` via the single `proofpilot-preview` Pages project. Full doctrine in `deploy-preview.md`. The helper auto-patches BrowserRouter `basename={import.meta.env.BASE_URL}` if needed (React Router doesn't inherit Vite's `--base` by default).
+
 ---
 
 ## Scaffold pre-flight (run BEFORE any design work)
