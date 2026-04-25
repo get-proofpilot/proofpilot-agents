@@ -251,7 +251,29 @@ With it, demos look like agency-grade builds — diagonal slashes on dark bands,
 
 This is the pillar #2 ("Detail") of Matthew's 3-pillar Cohesive · Detail · Dynamic framework, fully operationalized at agency tier.
 
+## Generation gotchas (lessons learned)
+
+### The "transparent background" → checkered JPG trap
+
+When you ask Nano Banana Pro for a pattern with `transparent background`, the JPG output bakes in the standard checkerboard transparency placeholder. JPG doesn't support transparency, so the model renders the placeholder pattern visually.
+
+**Fix in the prompt:** explicitly say *"the entire square frame is solid white background, no checkered pattern, no transparency artifacts"* — Nano Banana will then render a clean white field around the asset.
+
+**Fix in CSS:** for assets where the subject is centered (badges, watermarks), apply `clip-path: circle(45% at center)` plus oversized `background-size: 110-115%` so the clip cuts away the checker ring while the subject fills the visible circle.
+
+**When CSS-only beats Nano Banana:** treatments like `corner-slashes` that should be small thin marks at corners — Nano Banana tends to interpret "stripe" or "slash" as a big bold brushstroke and overpowers the host element. Pure CSS `linear-gradient` corner pseudo-elements give better control.
+
+### When to fall back to CSS / SVG
+
+- Pattern is a true geometric primitive (line, dot, single shape)
+- Pattern needs to scale infinitely with the viewport
+- Pattern needs to be precisely 4-corner-anchored or layout-aware
+- Pattern's brand color must shift dynamically (use `currentColor` or CSS vars)
+
+For everything else, Nano Banana Pro produces the agency-grade hand-rendered character that pure CSS cannot.
+
 ## History
 
 - **2026-04-24** — V1 pattern system codified after Premier Pest live demo. 10 pattern types generated, 7 CSS utility classes shipped, section-to-pattern mapping established.
 - **2026-04-25** — V2 expansion shipped. 11 new patterns generated from Volt Vikings / Valkyrie Wraps / Owl Roofing / V.C. Veterans references, 14 new CSS utility classes added (now 21 patterns + 14 utilities total). Nano-Banana-first generation rule codified. Reference inventory documented.
+- **2026-04-25 (post-deploy fixes)** — Documented the JPG-transparency-checker trap. Premier Guarantee badge moved to `clip-path: circle(45%) + background-size: 115%` to mask the checker ring. Corner-slashes treatment moved from Nano Banana JPG to pure-CSS `linear-gradient` corner pseudo-elements (matches Valkyrie ref better — small thin marks instead of huge brushstrokes). Sprayer wireframe + layered-divider regenerated with explicit "solid white background" prompts to eliminate transparency artifacts.
