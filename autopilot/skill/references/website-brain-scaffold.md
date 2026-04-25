@@ -115,6 +115,43 @@ import logoSrc from '@/assets/logo.png';
 
 **Why this is Step 0:** Richardson Pest v2 initially shipped with an amber-square + scorpion-icon treatment instead of the real Richardson logo — because Brand Brain pulled the logo correctly but Website Brain never copied it into `src/assets/`. Similarly the Lovable favicon stayed in place because nothing in the doctrine forced a scrub. This rule prevents both.
 
+## CRITICAL — every JSX `src="/..."` MUST use `import.meta.env.BASE_URL`
+
+Demos deploy to `demo.proofpilotapps.com/<slug>/` (path-based). Vite's `--base /<slug>/` flag rewrites:
+- ✅ Bundled imports (`import logo from '@/assets/logo.png'`)
+- ✅ CSS `url()` references (even absolute `/path` ones)
+- ❌ String literals in JSX (`<img src="/icons/foo.jpg" />`) — Vite leaves these untouched
+- ❌ Template strings in JS object literals (`{ a: '/icons/foo.jpg' }`)
+
+CF Pages SPA fallback returns 200 for missing-at-root paths (serves the landing index HTML), so the bug is silent — images appear "missing" in the rendered page but DevTools shows 200. Hard to debug.
+
+**Mandatory pattern** for any asset path written inline in TSX/JSX/JS:
+
+```tsx
+// WRONG — breaks under subpath deploy
+<img src="/icons/scorpion.jpg" />
+const ICONS = { scorpion: '/icons/scorpion.jpg' };
+
+// RIGHT — works under any base path including root
+<img src={`${import.meta.env.BASE_URL}icons/scorpion.jpg`} />
+const ICONS = { scorpion: `${import.meta.env.BASE_URL}icons/scorpion.jpg` };
+```
+
+**Better:** import from `src/assets/` so Vite handles it natively:
+```tsx
+import scorpionIcon from '@/assets/icons/scorpion.jpg';
+<img src={scorpionIcon} />
+```
+
+Pre-deploy lint check (run before every deploy-preview.sh):
+```bash
+grep -rEn 'src="/[a-zA-Z0-9_./-]+\.(jpg|png|svg|webp)"' src/ && \
+  echo "❌ Hardcoded JSX src paths found — must use BASE_URL or import" || \
+  echo "✓ No hardcoded JSX src paths"
+```
+
+Validated April 2026 on Premier Pest AZ run — 5 components had hardcoded paths, all images broke silently in production, fix-and-redeploy cycle confirmed CF SPA fallback was masking 404s as 200s.
+
 ## Mandatory deploy step — path-based URL via `deploy-preview.sh`
 
 After the build passes + Stage 6b QA loop clears, deploy with:
