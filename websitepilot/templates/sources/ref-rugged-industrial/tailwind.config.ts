@@ -20,8 +20,8 @@ export default {
         body: ['Roboto', 'system-ui', 'sans-serif'],
       },
       fontSize: {
-        'hero-xl': ['clamp(2.25rem, 5.5vw, 4.25rem)', { lineHeight: '0.98', letterSpacing: '-0.01em' }],
-        'section-xl': ['clamp(2rem, 5vw, 4.4rem)', { lineHeight: '1.02', letterSpacing: '-0.01em' }],
+        'hero-xl': ['clamp(1.875rem, 4.25vw, 3.5rem)', { lineHeight: '1.0', letterSpacing: '-0.01em' }],
+        'section-xl': ['clamp(1.625rem, 3.5vw, 3rem)', { lineHeight: '1.05', letterSpacing: '-0.01em' }],
         'section-lg': ['clamp(1.75rem, 4vw, 3.5rem)', { lineHeight: '1.04' }],
         'card-lg': ['clamp(1.25rem, 2vw, 1.625rem)', { lineHeight: '1.3', letterSpacing: '-0.03em' }],
         eyebrow: ['clamp(0.95rem, 1.2vw, 1.25rem)', { lineHeight: '1.1', letterSpacing: '0.02em' }],
