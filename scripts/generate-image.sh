@@ -26,6 +26,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 PROMPT=""
 OUT=""
+INPUT=""
 MODEL="nano-banana-pro-preview"
 ASPECT="16:9"
 NEGATIVE=""
@@ -34,6 +35,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --prompt)    PROMPT="$2"; shift 2 ;;
     --out)       OUT="$2"; shift 2 ;;
+    --input)     INPUT="$2"; shift 2 ;;
     --model)     MODEL="$2"; shift 2 ;;
     --aspect)    ASPECT="$2"; shift 2 ;;
     --negative)  NEGATIVE="$2"; shift 2 ;;
@@ -49,6 +51,7 @@ done
 [[ -z "$PROMPT" ]] && { echo "error: --prompt required" >&2; exit 2; }
 [[ -z "$OUT" ]] && { echo "error: --out <path> required" >&2; exit 2; }
 [[ -z "${GEMINI_API_KEY:-}" ]] && { echo "error: GEMINI_API_KEY not set (put in ~/.config/proofpilot/env)" >&2; exit 2; }
+[[ -n "$INPUT" && ! -f "$INPUT" ]] && { echo "error: --input file not found: $INPUT" >&2; exit 2; }
 
 # Build the user instruction with aspect and negative hints baked in
 FULL_PROMPT="$PROMPT"
@@ -65,7 +68,27 @@ echo "│  prompt:   $(echo "$PROMPT" | head -c 90)..."
 echo "└─"
 
 REQ="$(mktemp)"
-python3 - "$FULL_PROMPT" > "$REQ" <<'PYEOF'
+if [[ -n "$INPUT" ]]; then
+  # Image-to-image — input image + prompt = transformed/upscaled output
+  python3 - "$FULL_PROMPT" "$INPUT" > "$REQ" <<'PYEOF'
+import sys, json, base64, mimetypes
+prompt, input_path = sys.argv[1:3]
+with open(input_path, "rb") as f: data = base64.b64encode(f.read()).decode()
+mime = mimetypes.guess_type(input_path)[0] or "image/jpeg"
+payload = {
+    "contents": [{
+        "role": "user",
+        "parts": [
+            {"inline_data": {"mime_type": mime, "data": data}},
+            {"text": prompt}
+        ]
+    }],
+    "generationConfig": {"responseModalities": ["IMAGE"], "temperature": 0.5}
+}
+print(json.dumps(payload))
+PYEOF
+else
+  python3 - "$FULL_PROMPT" > "$REQ" <<'PYEOF'
 import sys, json
 prompt = sys.argv[1]
 payload = {
@@ -80,6 +103,7 @@ payload = {
 }
 print(json.dumps(payload))
 PYEOF
+fi
 
 RESP="$(mktemp)"
 HTTP_CODE="$(curl -sS -o "$RESP" -w "%{http_code}" \
