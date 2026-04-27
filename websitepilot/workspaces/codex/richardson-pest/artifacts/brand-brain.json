@@ -1,0 +1,130 @@
+{
+  "client": {
+    "name": "Richardson Pest Management",
+    "url": "https://www.richardsonpestmanagement.com/",
+    "phone": "602-380-8869",
+    "email_observed": "richardsonpestmanagement@gmail.com",
+    "license": "License #9626",
+    "office_hours": [
+      "Monday-Friday 9:00am-5:00pm",
+      "Saturdays 9:00am-2:00pm"
+    ]
+  },
+  "positioning_facts": [
+    "Same day exterminating now available.",
+    "Local father-son owned and operated pest control company.",
+    "Specializes in treating scorpions and termites.",
+    "Mission is to bring peace of mind by protecting little ones from scorpions and other pests.",
+    "If an issue happens between regular pest services, the company says it is willing to come back for free.",
+    "Open Saturdays for customers who need a bug exterminator."
+  ],
+  "origin_story": {
+    "verified_from_site": true,
+    "summary": "Owner Nelson Richardson started Richardson Pest Management after his 2-year-old daughter was stung by a scorpion, had a severe reaction, and had to be taken to the hospital. The site frames the company around protecting families from that experience."
+  },
+  "services": [
+    "Scorpion Control",
+    "General Pest Control",
+    "Roaches",
+    "Crickets",
+    "Ants",
+    "Spiders",
+    "Mosquito Control",
+    "Termite Treatment",
+    "Roof-Rat Treatment",
+    "Bee Treatment",
+    "German Roach Treatment",
+    "Weed Control",
+    "Pigeon Exclusion"
+  ],
+  "process_facts": [
+    {
+      "step": "Home Evaluation",
+      "copy_basis": "A technician comes to the property, discusses the issues, and aligns on the plan because each home is unique."
+    },
+    {
+      "step": "Pest Control Service",
+      "copy_basis": "General pest treatments include exterior wall void flush, cinder-block wall void flush, and spraying vegetation bases. Interior treatments are available at no extra charge."
+    },
+    {
+      "step": "Regular Exterminating",
+      "copy_basis": "Pest control is a process, not an event. The site recommends treatment every other month to keep issues from resurfacing."
+    }
+  ],
+  "safety_facts": [
+    "Products are described as safe for children, pets, and the environment.",
+    "The site names the products as pyrethrins and says they are organically derived.",
+    "The site says products are labeled for schools, animal shelters, and hospitals.",
+    "Once products have dried, normal activity may resume."
+  ],
+  "service_areas": [
+    "Chandler",
+    "Gilbert",
+    "Queen Creek",
+    "Mesa",
+    "Tempe",
+    "San Tan Valley",
+    "Scottsdale",
+    "Ahwatukee",
+    "Sun Lakes",
+    "Gold Canyon",
+    "Apache Junction"
+  ],
+  "assets": {
+    "logo_circle": "artifacts/assets/logo-original.png",
+    "logo_full_color": "artifacts/assets/logo-full-color.png",
+    "authentic_photos": [
+      "artifacts/assets/authentic/01-richardson-pest-management-talking-to-customer-orig.jpg",
+      "artifacts/assets/authentic/02-queen-creek-pest-control-companies-spraying-house-rpm-orig.jpg",
+      "artifacts/assets/authentic/10-chase-richardson-spraying-house-orig.jpg"
+    ],
+    "service_photos": [
+      "artifacts/assets/authentic/03-arizona-scorpion-200x180-orig.jpg",
+      "artifacts/assets/authentic/04-roof-rats-200x180-orig.jpg",
+      "artifacts/assets/authentic/05-mosquitoes-in-chandler-arizona-200x180-orig.jpg",
+      "artifacts/assets/authentic/06-bee-in-arizona-200x180-orig.jpg",
+      "artifacts/assets/authentic/07-weed-control-220x180-orig.jpg",
+      "artifacts/assets/authentic/08-subterranean-termites-in-arizona-200x180-orig.jpg",
+      "artifacts/assets/authentic/09-german-roach-small-orig.jpg"
+    ]
+  },
+  "visual_facts": {
+    "logo_palette": [
+      {
+        "hex": "#303030",
+        "role": "primary charcoal"
+      },
+      {
+        "hex": "#000000",
+        "role": "black badge"
+      },
+      {
+        "hex": "#FFFFFF",
+        "role": "logo contrast"
+      },
+      {
+        "hex": "#FFC000",
+        "role": "scorpion amber"
+      },
+      {
+        "hex": "#FFD000",
+        "role": "warm highlight"
+      }
+    ],
+    "current_site_typography": [
+      "Lato",
+      "Playfair Display",
+      "Birdseye",
+      "Montserrat",
+      "Open Sans"
+    ],
+    "current_site_pattern": "Light Weebly-style layout with low hierarchy, modal interruption, and important trust facts buried deep on the page."
+  },
+  "non_negotiables": [
+    "Use real Richardson logo and real Richardson imagery.",
+    "Do not invent review counts, years in business, guarantees, certifications, or awards.",
+    "Keep the founder story and family safety mission visible above or near the first scroll.",
+    "Make scorpion and termite specialization obvious without making the site feel gimmicky.",
+    "Preserve the phone CTA and East Valley location specificity."
+  ]
+}

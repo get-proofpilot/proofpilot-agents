@@ -8,6 +8,17 @@ See `ARCHITECTURE.md` for the pipeline diagram, `skill/SKILL.md` for
 the full operating doctrine, and `templates/README.md` for the
 style-family design library.
 
+## Local workspaces
+
+Durable WebsitePilot run source lives under `workspaces/` when it needs
+to be committed with this agent repo:
+
+- `workspaces/codex/<client-slug>/` — Codex-authored WebsitePilot runs.
+- `workspaces/claude/<client-slug>/` — Claude Code / Gemini-authored WebsitePilot runs.
+
+Agent names are only internal workspace lanes. Public preview URLs stay
+client-clean, for example `https://demo.proofpilotapps.com/richardson-pest/`.
+
 ## Quick run
 
 ```bash
@@ -50,3 +61,4 @@ curl -X POST https://proofpilot-agents.up.railway.app/api/agents/website/templat
 - `visual_qa.py` — Playwright + Claude vision compare loop
 - `skill/` — full operating doctrine (SKILL.md + references + related)
 - `tests/` — pytest smoke tests
+- `workspaces/` — durable per-agent WebsitePilot run source and QA artifacts

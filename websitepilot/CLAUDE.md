@@ -38,6 +38,8 @@ It **composes** other pilots. It does not duplicate their internals.
 - `visual_qa.py` — Playwright + Claude vision screenshot compare
 - `skill/` — full SKILL.md + references + related-skill doctrine
 - `ARCHITECTURE.md` — the pipeline diagram and design rationale
+- `workspaces/` — durable WebsitePilot run source split by authoring lane:
+  `codex/<client-slug>/` and `claude/<client-slug>/`
 
 ## Cross-agent reach (all lazy-imported inside stages)
 
@@ -73,6 +75,8 @@ It **composes** other pilots. It does not duplicate their internals.
 - Low-value leads get the **light** tier; don't force a full bundle.
 - Never copy brand names from template sources.
 - Every run ends with the WebsitePilot Handoff Summary block.
+- Public preview URLs never include authoring lane names like Codex,
+  Claude, or Gemini. Use clean client slugs only.
 
 ## How the demo handoff actually runs
 
