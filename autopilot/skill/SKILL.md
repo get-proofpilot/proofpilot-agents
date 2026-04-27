@@ -84,7 +84,8 @@ Full routing doctrine (when to route, when not to, brief template, failure modes
 
 **Hard rules (learned from Prestige v2 + Red Rock v1) — include these verbatim in any brief you hand to Gemini:**
 - Do **not** add colors the logo doesn't have. If the logo is red + blue + black + white, the palette is red + blue + black + white + grey. Period.
-- Do **not** replace typography that has brand equity. If the client's current site uses Manrope + Poppins, keep those and elevate with weight. Replace only when current type is genuinely generic (Arial, default sans).
+- **Do not** replace typography that has brand equity. If the client's current site uses Manrope + Poppins, keep those and elevate with weight. Replace only when current type is genuinely generic (Arial, default sans).
+- Use the selector's `brand_customization_context` to avoid sameness: bold/emblem logos need harder, more expressive treatment; quiet/minimal logos usually need restrained humanist sans such as Inter; serif accents are only for premium/editorial evidence and never for dense body copy.
 - Commit to **one** motif, not three.
 - Commit to **one** section-transition signature, not a mix.
 - Fewer sections, uniform grids when content is parallel. Every section must earn its place — don't add sections to fill pattern slots from an inspiration site.
@@ -93,7 +94,7 @@ Full routing doctrine (when to route, when not to, brief template, failure modes
 **Doctrine:** `references/three-brain-architecture.md` (Stage 3 section).
 Pick the best starting template and customize it heavily. This is the single most important design quality lever.
 
-**Design-system selection** — use `websitepilot/templates/library.py::recommend_design_system(...)` against the brief + brand fit signals. Pick the style family first, then the top scaffold (winner) and runner-up. Never pre-pick a default.
+**Design-system selection** — use `websitepilot/templates/library.py::recommend_design_system(...)` against the brief + brand fit signals. Pass Brand Brain's logo description, typography notes, visual temperament, and salvageable-equity notes into `brand_cues`. Pick the style family first, read the returned `brand_customization_context`, then pick the top scaffold (winner) and runner-up. Never pre-pick a default.
 
 **Customization discipline:**
 - Copy the template's source to a scratch dir (e.g. `/tmp/<client>-demo/`).

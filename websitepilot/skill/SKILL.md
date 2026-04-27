@@ -149,12 +149,28 @@ Capture what the brand IS — no opinions. Download the logo, pixel-analyze for 
 Doctrine: `autopilot/skill/references/style-family-selector.md`.
 Classify the prospect into the correct ProofPilot style family before any design spec gets written. Output `/tmp/<client>/template-pick.md`.
 
+When calling `websitepilot/templates/library.py::recommend_design_system(...)`, pass the Brand Brain's logo, typography, visual temperament, and salvageable-equity notes into `brand_cues`. The selector now returns `brand_customization` and `brand_customization_context` in addition to family and template picks.
+
+#### Stage 5b.5 — Brand Customization Matrix *(mandatory anti-sameness layer)*
+Doctrine: `websitepilot/skill/references/brand-uniqueness-plan.md`.
+Before Designer Brain writes the spec, lock the brand-specific treatment lane from the selector's `brand_customization_context`:
+- Typography strategy and font pairing
+- Body copy legibility rule
+- Corner treatment
+- Button treatment
+- Card treatment
+- Section-transition signature
+- Motif intensity
+- Anti-sameness checks
+
+This layer does not replace the style family or scaffold. It prevents repeated demos from inheriting the same Inter/serif choice, same rounded-card treatment, same pill buttons, or same section rhythm without brand evidence.
+
 #### Stage 5c — Designer Brain *(mandatory — routed to Gemini 3.1 Pro)*
 Doctrine: `autopilot/skill/references/style-family-selector.md` + `autopilot/skill/references/style-presets.md` + `autopilot/skill/references/design-strategist.md` + `autopilot/skill/references/gold-standard-playbook.md` + `autopilot/skill/references/inspiration/180sites-portfolio-dna.md` + `autopilot/skill/references/inspiration/betheanomaly-portfolio-dna.md` + `autopilot/skill/references/inspiration/hookagency-portfolio-dna.md` + `autopilot/skill/references/inspiration/inspiration-guide.md` + `autopilot/skill/references/model-routing.md`.
 
 **Pick preset first.** Stage 5b locked the family. Narrow to one of 7 presets in `style-presets.md` (rugged-industrial / archetype-mascot / dfw-luxe-aerial / contractor-heritage / editorial-serif / playful-chunky-consumer / premium-design-build). **No defaulting to editorial-serif** for home service brands. Cite the 180 Sites / Be The Anomaly / Hook Agency DNA reference builds as your design ancestors.
 
-Then decide preserve / elevate / invent for each element. Lock the palette (logo-derived only). Lock typography (preset-bounded). Commit to ONE motif. Commit to ONE section-transition signature.
+Then decide preserve / elevate / invent for each element. Lock the palette (logo-derived only). Lock typography from the Brand Customization Matrix and existing typography equity. Commit to ONE motif. Commit to ONE section-transition signature. If the matrix says restrained-humanist-sans, do not force a bold display face. If the matrix says expressive-bold-sans, do not keep the soft rounded default. Only use a serif accent when the matrix returns `restrained-serif-accent` and the brand has premium/editorial evidence.
 
 **Model routing: dispatch this stage to Gemini 3.1 Pro** via `./scripts/gemini-dispatch.sh` (see `autopilot/skill/references/model-routing.md`). Claude writes the brief, Gemini produces `design-spec.md`, Claude reads it and proceeds. Fallback: if Gemini is unreachable, Claude runs the stage itself.
 
@@ -169,7 +185,7 @@ Then decide preserve / elevate / invent for each element. Lock the palette (logo
 #### Stage 5d — Website Brain *(executor)*
 Doctrine: `autopilot/skill/references/three-brain-architecture.md` (Stage 3).
 
-1. **Run the design-system selector** in `websitepilot/templates/library.py`. Infer the style family first, then score scaffold templates inside that family. **Never pre-pick a default.** Pick winner + runner-up with rationale.
+1. **Run the design-system selector** in `websitepilot/templates/library.py`. Infer the style family first, pass `brand_cues` from Brand Brain, then score scaffold templates inside that family. **Never pre-pick a default.** Pick winner + runner-up with rationale and include `brand_customization_context` in `/tmp/<client>/template-pick.md`.
 2. **Clone the winner's source** from `websitepilot/templates/sources/<slug>/` into `/tmp/<client>-demo/`.
 3. `npm install` in the clone.
 4. **Apply the Implementation Order** from `design-spec.md`, priority 1 → N:
@@ -264,6 +280,7 @@ Every WebsitePilot run should answer this sequence:
 - **Always run the three-brain sequence before Design.** Brand Brain → Style Family Pick → Designer Brain → Website Brain. No shortcuts.
 - **Choose the family first, then score templates inside it.** Never pre-pick.
 - **The chosen template is structural DNA only.** Content DNA (copy, color, typography, logo, imagery, motif, transitions) is replaced per Designer Brain's spec.
+- **Use the Brand Customization Matrix.** Typography, radius, buttons, cards, motif intensity, and section transitions must come from logo/brand cues, not the previous demo's defaults.
 - **Preserve the client's real brand.** Logo in header + footer. Authentic photography in hero when available. Palette locked to logo colors + neutrals.
 - **QA gate: "remove the logo" test.** 5/5 yes or back to Designer Brain.
 - **One motif, one transition.** Multiple motifs = decoration, not design.

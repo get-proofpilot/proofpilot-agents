@@ -125,6 +125,170 @@ def _match_metadata_value(candidate: str | None, allowed: list[str]) -> bool:
     return _normalize_text(candidate) in {_normalize_text(value) for value in allowed}
 
 
+def _has_any(blob: str, terms: list[str]) -> bool:
+    return any(_normalize_text(term) in blob for term in terms)
+
+
+def derive_brand_customization(
+    *,
+    style_family_id: str | None = None,
+    service: str = "",
+    notes: str = "",
+    visual_temperament: list[str] | tuple[str, ...] | str | None = None,
+    brand_cues: str = "",
+) -> dict[str, Any]:
+    """Derive brand-specific design guardrails from logo and brand cues.
+
+    This does not replace family or scaffold selection. It adds the missing
+    creative-director layer that prevents different demos from inheriting the
+    same fonts, radius, buttons, card treatment, and transition signature.
+    """
+    blob = _normalize_text(style_family_id, service, notes, brand_cues, " ".join(_normalize_list(visual_temperament)))
+
+    bold_terms = [
+        "bold",
+        "heavy",
+        "block",
+        "mascot",
+        "shield",
+        "badge",
+        "aggressive",
+        "rugged",
+        "industrial",
+        "high contrast",
+        "uppercase",
+        "emblem",
+        "character led",
+        "urgent",
+    ]
+    quiet_terms = [
+        "quiet",
+        "timid",
+        "simple",
+        "minimal",
+        "thin",
+        "delicate",
+        "calm",
+        "soft",
+        "muted",
+        "subtle",
+        "friendly",
+    ]
+    premium_terms = [
+        "premium",
+        "luxury",
+        "editorial",
+        "estate",
+        "architectural",
+        "refined",
+        "elegant",
+        "serif",
+        "gallery",
+        "design build",
+    ]
+    playful_terms = ["playful", "membership", "promo", "consumer", "rounded", "fun", "pet", "family"]
+    technical_terms = ["technical", "precision", "engineered", "modern", "geometric", "clean", "inspection"]
+
+    is_bold = _has_any(blob, bold_terms)
+    is_quiet = _has_any(blob, quiet_terms)
+    is_premium = style_family_id == "premium-outdoor-editorial" and _has_any(blob, premium_terms)
+    is_playful = _has_any(blob, playful_terms) and not is_bold
+    is_technical = _has_any(blob, technical_terms) and not is_quiet and not is_premium
+
+    if is_premium:
+        temperament = "premium-editorial"
+        typography_strategy = "restrained-serif-accent"
+        font_pairing = "Cormorant Garamond or Fraunces for display accents + Inter for body and forms"
+        body_copy_rule = "Serif only for display accents and short editorial headlines; keep body copy, forms, FAQs, and service details in Inter or another highly legible sans."
+        corner_treatment = "editorial-minimal"
+        button_treatment = "thin-border secondary + solid logo-color primary with restrained radius"
+        card_treatment = "spacious image-led cards with minimal borders and generous whitespace"
+        transition_signature = "thin logo-color divider or full-bleed editorial image break"
+        motif_intensity = "medium"
+    elif is_bold and not is_quiet:
+        temperament = "bold-emblematic"
+        typography_strategy = "expressive-bold-sans"
+        font_pairing = "Condensed display sans such as Barlow Condensed or Oswald + Inter or Manrope body"
+        body_copy_rule = "Use the expressive face only for short headlines, stats, and CTA labels; keep paragraphs in a readable sans."
+        corner_treatment = "hard-or-angular"
+        button_treatment = "solid high-contrast buttons with hard shadows or angular cuts"
+        card_treatment = "hard-edged cards, accent bars, sharp image masks, and confident contrast"
+        transition_signature = "angled wedge, chevron, or badge-anchored divider derived from the logo mark"
+        motif_intensity = "high"
+    elif is_playful:
+        temperament = "friendly-playful"
+        typography_strategy = "friendly-rounded-sans"
+        font_pairing = "Nunito Sans or Plus Jakarta Sans for headings + Inter for body"
+        body_copy_rule = "Keep rounded personality in headings and badges; keep service explanations in plain readable sans."
+        corner_treatment = "pill-friendly"
+        button_treatment = "rounded CTA pills with icon accents and bright logo-color fills"
+        card_treatment = "rounded cards, offer ribbons, friendly badges, and softer shadows"
+        transition_signature = "soft wave, badge rail, or rounded color band repeated consistently"
+        motif_intensity = "medium"
+    elif is_technical:
+        temperament = "precise-modern"
+        typography_strategy = "geometric-sans"
+        font_pairing = "Sora or Space Grotesk for headings + Inter for body"
+        body_copy_rule = "Use geometric type for hierarchy and technical proof, but keep dense copy in Inter for legibility."
+        corner_treatment = "precise-small-radius"
+        button_treatment = "clean squared buttons with small radius, tight labels, and subtle motion"
+        card_treatment = "structured proof cards with grid alignment and thin accent rules"
+        transition_signature = "thin technical rule, grid break, or checklist rail repeated consistently"
+        motif_intensity = "medium"
+    else:
+        temperament = "quiet-readable"
+        typography_strategy = "restrained-humanist-sans"
+        font_pairing = "Inter or Source Sans 3 for the full system, with weight contrast instead of decorative fonts"
+        body_copy_rule = "Use a legible sans for paragraphs, forms, FAQs, and service details; reserve decorative faces for evidence-backed accents only."
+        corner_treatment = "soft-moderate"
+        button_treatment = "clean medium-radius buttons with calm logo-color fills and no hard shadow default"
+        card_treatment = "soft cards, light borders, restrained shadows, and simple icon accents"
+        transition_signature = "subtle color band, soft divider, or single motif prefix repeated consistently"
+        motif_intensity = "low"
+
+    anti_sameness_checks = [
+        "avoid reusing the previous demo's font pair without brand evidence",
+        "avoid soft generic rounded-card defaults" if temperament == "bold-emblematic" else "avoid hard-shadow heroic defaults unless the logo supports them",
+        "radius, buttons, cards, and transitions must match the logo temperament",
+        "justify any serif or decorative type with brand evidence and keep body copy legible",
+    ]
+
+    return {
+        "temperament": temperament,
+        "typography_strategy": typography_strategy,
+        "font_pairing": font_pairing,
+        "body_copy_rule": body_copy_rule,
+        "corner_treatment": corner_treatment,
+        "button_treatment": button_treatment,
+        "card_treatment": card_treatment,
+        "section_transition_signature": transition_signature,
+        "motif_intensity": motif_intensity,
+        "anti_sameness_checks": anti_sameness_checks,
+        "input_cues": brand_cues.strip(),
+    }
+
+
+def build_brand_customization_context(customization: dict[str, Any] | None) -> str:
+    if not customization:
+        return ""
+    lines = [
+        "Brand Customization Guardrails",
+        f"Temperament: {customization.get('temperament', '')}",
+        f"Typography: {customization.get('typography_strategy', '')} - {customization.get('font_pairing', '')}",
+        f"Body copy rule: {customization.get('body_copy_rule', '')}",
+        f"Corner treatment: {customization.get('corner_treatment', '')}",
+        f"Button treatment: {customization.get('button_treatment', '')}",
+        f"Card treatment: {customization.get('card_treatment', '')}",
+        f"Section transition signature: {customization.get('section_transition_signature', '')}",
+        f"Motif intensity: {customization.get('motif_intensity', '')}",
+        "Anti-sameness checks:",
+    ]
+    lines.extend(f"- {item}" for item in customization.get("anti_sameness_checks", []))
+    if customization.get("input_cues"):
+        lines.append(f"Brand cues used: {customization['input_cues']}")
+    return "\n".join(lines).strip()
+
+
 def _score_style_family(
     family: dict[str, Any],
     *,
@@ -463,6 +627,7 @@ def recommend_design_system(
     price_point: str | None = None,
     service_model: str | None = None,
     visual_temperament: list[str] | tuple[str, ...] | str | None = None,
+    brand_cues: str = "",
     style_family_override: str | None = None,
     template_override: str | list[str] | tuple[str, ...] | None = None,
     limit: int = 2,
@@ -482,6 +647,13 @@ def recommend_design_system(
         limit=limit,
     )
     lead_family = families[0] if families else None
+    customization = derive_brand_customization(
+        style_family_id=lead_family.get("id") if lead_family else None,
+        service=service,
+        notes=notes,
+        visual_temperament=visual_temperament,
+        brand_cues=brand_cues,
+    )
     templates = select_templates(
         page_type=page_type,
         service=service,
@@ -495,6 +667,8 @@ def recommend_design_system(
     return {
         "style_families": families,
         "templates": templates,
+        "brand_customization": customization,
+        "brand_customization_context": build_brand_customization_context(customization),
         "style_family_context": build_style_family_context(families),
         "template_context": build_template_context(templates),
     }
@@ -512,6 +686,7 @@ def _build_cli_parser() -> argparse.ArgumentParser:
     parser.add_argument("--price-point", default=None)
     parser.add_argument("--service-model", default=None)
     parser.add_argument("--visual-temperament", action="append", default=[])
+    parser.add_argument("--brand-cues", default="")
     parser.add_argument("--style-family", default=None)
     parser.add_argument("--design-template", default=None)
     parser.add_argument("--limit", type=int, default=2)
@@ -544,6 +719,10 @@ def _render_cli_text(recommendation: dict[str, Any]) -> str:
             if template.get("reasons"):
                 lines.append(f"  reasons: {', '.join(template['reasons'])}")
 
+    if recommendation.get("brand_customization_context"):
+        lines.append("")
+        lines.append(recommendation["brand_customization_context"])
+
     lines.append("")
     lines.append(recommendation.get("style_family_context", ""))
     lines.append("")
@@ -565,6 +744,7 @@ def main() -> int:
         price_point=args.price_point,
         service_model=args.service_model,
         visual_temperament=args.visual_temperament,
+        brand_cues=args.brand_cues,
         style_family_override=args.style_family,
         template_override=args.design_template,
         limit=args.limit,

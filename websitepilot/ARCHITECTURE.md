@@ -92,7 +92,7 @@ Lives at `websitepilot/templates/`, with companion family doctrine in `websitepi
 ### Selector algorithm
 
 `recommend_design_system(page_type, service, keyword, location, notes, ...)`
-runs two decisions in order.
+runs three decisions in order.
 
 First: `infer_style_families(...)` scores each family with:
 
@@ -104,7 +104,17 @@ First: `infer_style_families(...)` scores each family with:
 - `+7` when `service_model` fits
 - `+4` per matching visual temperament signal
 
-Second: `select_templates(...)` scores templates inside the chosen
+Second: `derive_brand_customization(...)` converts Brand Brain cues into
+anti-sameness design guardrails:
+
+- typography strategy and font pairing
+- body copy legibility rule
+- corner, button, and card treatment
+- section-transition signature
+- motif intensity
+- QA checks against repeated template defaults
+
+Third: `select_templates(...)` scores templates inside the chosen
 family:
 
 - `+12` if the template supports the requested `page_type`
@@ -117,6 +127,10 @@ family:
 Requested override IDs bypass scoring for either layer.
 
 Returns the top-`limit` families and templates, plus prompt-ready context.
+The return payload also includes `brand_customization` and
+`brand_customization_context` so Designer Brain has concrete guardrails
+for typography, radius, buttons, cards, motif intensity, and transition
+style before touching code.
 
 `build_style_family_context` renders the chosen family doctrine into a
 prompt block — including the family rationale, starter CSS excerpt, and
