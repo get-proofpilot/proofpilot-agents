@@ -1,6 +1,8 @@
 from .library import (
+    build_brand_customization_context,
     build_style_family_context,
     build_template_context,
+    derive_brand_customization,
     get_style_family,
     get_template,
     infer_style_family,
@@ -13,8 +15,10 @@ from .library import (
 )
 
 __all__ = [
+    "build_brand_customization_context",
     "build_style_family_context",
     "build_template_context",
+    "derive_brand_customization",
     "get_style_family",
     "get_template",
     "infer_style_family",

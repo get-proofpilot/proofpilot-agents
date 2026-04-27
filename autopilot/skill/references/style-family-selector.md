@@ -112,11 +112,17 @@ This is the most important classifier after brand truth.
 
 ### Step 4. Only then pick the scaffold
 
-Use `websitepilot/templates/library.py::recommend_design_system(...)` or the two lower-level calls:
+Use `websitepilot/templates/library.py::recommend_design_system(...)` or the lower-level calls:
 
 ```python
-from websitepilot.templates.library import infer_style_families, select_templates
+from websitepilot.templates.library import (
+    derive_brand_customization,
+    infer_style_families,
+    select_templates,
+)
 ```
+
+Pass Brand Brain notes into `brand_cues` so the selector can return `brand_customization_context`. Use cues from the logo description, wordmark, typography, favicon, current site treatment, and salvageable-equity verdict.
 
 Pick:
 - **winner** = top family + top scaffold
@@ -142,6 +148,19 @@ Write `/tmp/<client>/template-pick.md` with this exact structure:
 - Winner: `rockin-family-home-service`
 - Why: 2-4 bullets
 - Runner-up: `rockin-rugged-industrial`
+
+## Brand Customization Matrix
+Paste the selector's `brand_customization_context` here.
+
+Required decisions:
+- Typography strategy and font pairing
+- Body copy legibility rule
+- Corner treatment
+- Button treatment
+- Card treatment
+- Section-transition signature
+- Motif intensity
+- Anti-sameness checks
 
 ## Starter files to read
 - `~/proofpilot-agents/websitepilot/style-families/heroic-branded-conversion/FAMILY.md`
