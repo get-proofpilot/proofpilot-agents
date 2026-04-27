@@ -2,7 +2,7 @@
 name: autopilot
 description: >
   AutoPilot: ProofPilot's named agent for generating custom SEO pages and demo
-  homepages. Canonical path is local Claude Code — three-brain architecture
+  homepages. Canonical path is a local Codex/Claude-compatible agent session — three-brain architecture
   (Brand → Designer → Website) applied to a WebsitePilot template starter.
   Aliases: AutoPilot, Auto Pilot, autopilot-ai, "generate page", "build homepage",
   "content sprint", "build service page"
@@ -20,9 +20,9 @@ Load this skill when Matthew or the team asks for:
 - "Redesign" a page with new brand + content
 - Any website demo inside a WebsitePilot run
 
-## Canonical flow (local — Claude Code)
+## Canonical flow (local agent session)
 
-This is how AutoPilot runs in the normal case. Everything happens in the current Claude Code session with Claude + Playwright + Python (Pillow) + Bash + Recraft MCP. No VPS, no Railway call, no external model orchestration.
+This is how AutoPilot runs in the normal case. Everything happens in the current local agent session with the orchestrating agent (Codex or Claude), browser automation, Python (Pillow), Bash, and optional image tooling. No Hermes harness, no VPS, no Railway call, and no Anthropic requirement.
 
 ```
 Research  →  Brand Brain  →  Style Family Pick  →  Designer Brain  →  Website Brain  →  Images  →  QA
@@ -64,7 +64,7 @@ Classify the brand into the right ProofPilot style family first, then pick the b
 
 Then decide what to preserve, elevate, or invent within the preset's bounds. Produce a concrete `design-spec.md` with palette, typography, THE one committed motif, THE one section-transition signature, button system, icon system, photography strategy, motion.
 
-**Model routing (default): dispatch to Gemini 3.1 Pro.** Gemini's design judgment is cleaner and tighter than Claude's on this specific stage (validated April 2026, Red Rock Family Dentistry head-to-head). Claude orchestrates the pipeline; Gemini handles only Designer Brain.
+**Model routing (optional quality route): dispatch to Gemini 3.1 Pro only when the helper and `GEMINI_API_KEY` are available.** Gemini's design judgment has been cleaner and tighter on this specific stage (validated April 2026, Red Rock Family Dentistry head-to-head). For Codex runs, Codex may run Designer Brain directly; never block the pipeline on Gemini availability.
 
 How to dispatch (from the `~/proofpilot-agents/` directory):
 
@@ -75,10 +75,10 @@ How to dispatch (from the `~/proofpilot-agents/` directory):
 ./scripts/gemini-dispatch.sh /tmp/<client>/designer-brain-brief.md \
   --cwd /tmp/<client> \
   --log /tmp/<client>/designer-brain.log
-# 3. Claude reads /tmp/<client>/design-spec.md and proceeds to Stage 4 (Website Brain)
+# 3. The orchestrating agent reads /tmp/<client>/design-spec.md and proceeds to Stage 4 (Website Brain)
 ```
 
-Requires `GEMINI_API_KEY` env var. **Fallback:** if Gemini is unreachable or errors, Claude runs Designer Brain itself — don't block the pipeline on Gemini availability.
+Requires `GEMINI_API_KEY` env var. **Fallback:** if Gemini is unreachable or errors, the orchestrating agent runs Designer Brain itself — don't block the pipeline on Gemini availability.
 
 Full routing doctrine (when to route, when not to, brief template, failure modes): `references/model-routing.md`.
 

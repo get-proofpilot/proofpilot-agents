@@ -21,17 +21,20 @@ branded Sales Audit v2 document.
 
 ## Stages
 
-1. Site Analysis (Firecrawl + LLM)
-2. Ranking Reality Check (DataForSEO SERP + ranked keywords)
-3. Strategic Brain (8 dimensions of invisibility)
-4. Synthesis (Sales Audit v2 document)
+1. Target confirmation (business, domain, market, services, competitors)
+2. Research ledger (Firecrawl inventory, sitemap/robots, schema, proof, conversion, local visibility)
+3. Ranking reality check (10 money SERPs, indexed pages, DataForSEO domain intelligence)
+4. Competitor and page-system research (20-25 query sweep when Sales Audit v2 depth is needed)
+5. Strategic Brain (8 dimensions of invisibility)
+6. Synthesis (Sales Audit v2 document)
 
-## Run locally
+AuditPilot is research-first. Do not draft the audit until the evidence ledger
+can support the pain story, competitor story, and opportunity story.
+
+## Local Helpers
 
 ```bash
-cd backend
-.venv/bin/uvicorn server:app --reload
-curl -N -X POST http://localhost:8000/api/agents/audit \
-  -H "Content-Type: application/json" \
-  -d '{"domain":"example.com","service":"plumber","location":"Mesa, AZ"}'
+python3 auditpilot/skill/scripts/firecrawl_agent.py --help
+python3 auditpilot/skill/scripts/local_falcon.py --help
+python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py --help
 ```

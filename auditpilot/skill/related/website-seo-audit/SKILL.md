@@ -53,7 +53,7 @@ This audit exists to feed a sales proposal. Frame every finding as a revenue pro
 3. **Firecrawl Search** - Find competitors, review data, listicle placements, anything searchable
 4. **Browser** - Manual review for trust signals, CTAs, conversion paths (use sparingly, do it yourself, NOT subagents)
 5. **DataForSEO** via Composio REST API - keyword research, SERP analysis, keyword difficulty (see audit-pilot/references/dataforseo-auth.md for exact curl commands). Use `DATAFORSEO_GET_KW_GOOGLE_ADS_KW_FOR_KW_LIVE` for keyword data. Backlinks API NOT active.
-6. **Local Falcon** via ProofPilot Agency API key at ~/.hermes/secrets/local_falcon.env. Geo-grid rank tracking with rich map images, per-competitor SoLV/ARP/ATRP, and AI strategic analysis. MANDATORY on every audit. Use the helper at audit-pilot/scripts/local_falcon.py. See audit-pilot skill "Local Falcon" section for the full workflow.
+6. **Local Falcon** via `LOCAL_FALCON_API_KEY` or `~/.proofpilot/secrets/local_falcon.env`. Geo-grid rank tracking with rich map images, per-competitor SoLV/ARP/ATRP, and AI strategic analysis. MANDATORY on every audit. Use `auditpilot/skill/scripts/local_falcon.py`. See AuditPilot's "Local Falcon" section for the full workflow.
 
 ### Tools We Do NOT Have Access To
 - BrightLocal (no account)
@@ -241,16 +241,16 @@ grid image is the single most visceral piece of evidence in the doc.
 
 **Steps:**
 1. Find the business:
-   `python3 ~/.hermes/skills/productivity/audit-pilot/scripts/local_falcon.py find "Business Name" --near "City, ST"`
+   `python3 auditpilot/skill/scripts/local_falcon.py find "Business Name" --near "City, ST"`
 2. Add to account if new:
-   `python3 ~/.hermes/skills/productivity/audit-pilot/scripts/local_falcon.py add <place_id>`
+   `python3 auditpilot/skill/scripts/local_falcon.py add <place_id>`
 3. Run the scan with AI analysis enabled:
-   `python3 ~/.hermes/skills/productivity/audit-pilot/scripts/local_falcon.py scan --place_id <id> --keyword "primary keyword" --lat <lat> --lng <lng> --grid 7 --radius 5 --measurement mi --platform google`
+   `python3 auditpilot/skill/scripts/local_falcon.py scan --place_id <id> --keyword "primary keyword" --lat <lat> --lng <lng> --grid 7 --radius 5 --measurement mi --platform google`
    (Manually trigger ai_analysis=true in the scan call if needed, see the helper.)
 4. Wait for the scan to complete (check status via the reports endpoint), then:
-   `python3 ~/.hermes/skills/productivity/audit-pilot/scripts/local_falcon.py report <report_key> --markdown --ai`
+   `python3 auditpilot/skill/scripts/local_falcon.py report <report_key> --markdown --ai`
 5. Download the rich grid image for embedding:
-   `python3 ~/.hermes/skills/productivity/audit-pilot/scripts/local_falcon.py images <report_key> <owner_key> --out /tmp/audit-lf/`
+   `python3 auditpilot/skill/scripts/local_falcon.py images <report_key> <owner_key> --out /tmp/audit-lf/`
 
 **Use the rich grid image** (`/image/<report_key>/<owner_key>`) which shows the
 Google Map with rank numbers in each circle. NOT the bare heatmap overlay.
@@ -259,7 +259,7 @@ Google Map with rank numbers in each circle. NOT the bare heatmap overlay.
 
 **Credit budget:** 49 credits per 7x7 scan + a few for AI analysis. Starter plan
 has ~7500/cycle so budget 50-100 credits per audit. Check `python3
-~/.hermes/skills/productivity/audit-pilot/scripts/local_falcon.py account`
+auditpilot/skill/scripts/local_falcon.py account`
 before running if credits are a concern.
 
 ---

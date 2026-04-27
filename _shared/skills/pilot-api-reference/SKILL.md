@@ -3,7 +3,7 @@ name: pilot-api-reference
 description: >-
   Use when making ANY API call to Slack, ClickUp, Gmail, Google Calendar,
   Google Search Console, Calendly, DataForSEO, Firecrawl, Fireflies, or
-  Google Drive. Contains exact curl commands, token/credential values,
+  Google Drive. Contains exact curl commands, credential environment variables,
   Composio tool slugs, response parsing patterns, and field-level pitfalls.
   Critical for cron jobs and any session that queries or writes to external
   systems. Includes multi-channel fetch patterns and cross-sandbox pitfalls.
@@ -11,15 +11,15 @@ description: >-
 
 # Pilot API Reference
 
-All API calls should be made via the terminal tool using curl.
+All API calls should be made through repo-local helper scripts or via the terminal tool using curl.
 
-### Critical: Multi-Channel Fetch Pattern (execute_code vs terminal)
-When fetching data from multiple API endpoints (e.g., scanning 10 Slack channels), `terminal()` inside `execute_code` can silently fail to write `curl -o` output files — the command reports success but files don't appear on disk. This was confirmed Apr 3, 2026.
+### Critical: Multi-Channel Fetch Pattern (sandboxed runners vs terminal)
+When fetching data from multiple API endpoints (e.g., scanning 10 Slack channels), sandboxed code runners can silently fail to share `curl -o` output files with the shell. This was confirmed Apr 3, 2026.
 
 **Correct pattern for multi-endpoint fetches:**
-1. Use the **direct `terminal` tool** (not execute_code's `terminal()`) with a bash loop:
+1. Use the **direct terminal tool** with a bash loop:
 ```bash
-TOKEN="***REDACTED***"
+TOKEN="$SLACK_BOT_TOKEN"
 for pair in "name1:CHAN1" "name2:CHAN2" "name3:CHAN3"; do
   name="${pair%%:*}"
   chan="${pair##*:}"
@@ -33,11 +33,10 @@ python3 /tmp/parse_all.py
 ```
 3. Write the parse script to disk first via `write_file`, then execute it.
 
-**Why this matters:** Cron jobs that scan multiple channels or APIs in a loop will fail silently if they use execute_code's terminal() for curl file output. Always use the direct terminal tool for multi-file curl operations.
+**Why this matters:** Cron jobs that scan multiple channels or APIs in a loop can fail silently if they use an isolated code runner for curl file output. Always use the direct terminal tool for multi-file curl operations.
 
 ## Slack API
-Token: Use the environment variable SLACK_BOT_TOKEN, or this token:
-xoxb-***REDACTED***
+Token: use the environment variable `SLACK_BOT_TOKEN`. Do not store Slack tokens in this repository.
 
 ### Slack User IDs (verified Apr 3 2026)
 Matthew=U097JMZ2M2A, Marcos=U097N0PSVLJ, Katelyn=U0AKNBHEG8L, Kevin=U09CQS8HMEG,
@@ -60,23 +59,26 @@ Matthew DM: D0AQ9PB64L8
 
 Read channel messages:
 ```bash
-curl -s "https://slack.com/api/conversations.history?channel=CHANNEL_ID&limit=20" -H "Authorization: Bearer ***REDACTED******REDACTED***"
+curl -s "https://slack.com/api/conversations.history?channel=CHANNEL_ID&limit=20" -H "Authorization: Bearer $SLACK_BOT_TOKEN"
 ```
 
 Post a message (simple):
 ```bash
-curl -s -X POST "https://slack.com/api/chat.postMessage" -H "Authorization: Bearer ***REDACTED******REDACTED***" -H "Content-Type: application/json" -d '{"channel":"CHANNEL_ID","text":"message"}'
+curl -s -X POST "https://slack.com/api/chat.postMessage" -H "Authorization: Bearer $SLACK_BOT_TOKEN" -H "Content-Type: application/json" -d '{"channel":"CHANNEL_ID","text":"message"}'
 ```
 
 ### Slack Post Pitfall: Shell Escaping
 When posting messages with unicode (bullet chars, em dashes), newlines, parentheses, or special characters, inline `-d '{...}'` breaks with bash syntax errors. Always use the file method for complex messages:
-```python
-# In execute_code:
-from hermes_tools import terminal, write_file
+```bash
+python3 - <<'PY'
 import json
-payload = {"channel": "CHANNEL_ID", "text": "complex message with \u2022 bullets\nand newlines"}
-write_file("/tmp/slack_payload.json", json.dumps(payload))
-terminal('curl -s -X POST "https://slack.com/api/chat.postMessage" -H "Authorization: Bearer ***REDACTED***" -H "Content-Type: application/json" -d @/tmp/slack_payload.json')
+payload = {"channel": "CHANNEL_ID", "text": "complex message with bullets\nand newlines"}
+open("/tmp/slack_payload.json", "w", encoding="utf-8").write(json.dumps(payload))
+PY
+curl -s -X POST "https://slack.com/api/chat.postMessage" \
+  -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d @/tmp/slack_payload.json
 ```
 Rule of thumb: if the message has any formatting (emoji, bullets, newlines, unicode), write to file first.
 
@@ -97,7 +99,7 @@ Use this whenever posting California contractor licenses, ClickUp numeric IDs, o
 Files created in `execute_code` are NOT visible to `terminal` (separate sandboxes). If you build a JSON payload in `execute_code` and then try `curl -d @/tmp/payload.json` in `terminal`, curl fails with "error encountered when reading a file." Two correct patterns:
 
 ### Preferred helper: slack_post.py
-Use `~/.hermes/skills/productivity/pilot-api-reference/scripts/slack_post.py` for cron deliveries and structured Slack sends. It supports:
+Use `_shared/skills/pilot-api-reference/scripts/slack_post.py` for cron deliveries and structured Slack sends. It supports:
 - plain text
 - `--text-file /tmp/message.txt`
 - `--blocks-file /tmp/blocks.json --fallback-text "..."`
@@ -115,7 +117,7 @@ Pair it with these helpers when the Slack message itself matters:
 - `react_to_message.py` for low-noise ack/done reactions
 - `upload_and_share_file.py` for file upload + permalink share flows
 
-This is the easiest way to send polished coworker-style Slack messages from any Hermes environment.
+This is the easiest way to send polished coworker-style Slack messages from a local ProofPilot agent environment.
 
 ### Slack Post Pitfall: helper can fail with `invalid_auth` even when the raw bot token still works
 Confirmed Apr 13 2026 during heartbeat recovery. `slack_post.py` returned Slack `{"ok": false, "error": "invalid_auth"}` three times from the cron sandbox, but a direct `curl` call to `chat.postMessage` using the canonical bot token succeeded immediately and delivered the DM.
@@ -129,7 +131,7 @@ EOF
 
 # 2. Post directly with curl using the bot token
 curl -s -X POST "https://slack.com/api/chat.postMessage" \
-  -H "Authorization: Bearer ***REDACTED******REDACTED***" \
+  -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   -H "Content-Type: application/json; charset=utf-8" \
   -d @/tmp/slack_payload.json
 ```
@@ -146,7 +148,7 @@ payload = json.dumps({"channel": "CHANNEL_ID", "text": message})
 req = urllib.request.Request(
     "https://slack.com/api/chat.postMessage",
     data=payload.encode("utf-8"),
-    headers={"Authorization": "Bearer ***REDACTED***", "Content-Type": "application/json"}
+    headers={"Authorization": "Bearer $SLACK_BOT_TOKEN", "Content-Type": "application/json"}
 )
 resp = urllib.request.urlopen(req)
 result = json.loads(resp.read().decode())
@@ -161,7 +163,7 @@ terminal('curl -s -X POST ... -d @/tmp/slack_payload.json')  # via the terminal 
 ```
 
 ### Slack Read Pitfall: JSON Parsing
-Slack API responses contain control characters (tabs, raw newlines inside message text) that break `json.loads()` with default settings. Always parse with `json.loads(output, strict=False)`. Note: `json_parse()` from hermes_tools is NOT available inside `execute_code` scripts — use `json.loads(s, strict=False)` directly. For channels with long messages (Cedar Gold, HEROPM), even `limit=15` can produce responses that truncate in execute_code's 50KB stdout cap — use `limit=10` or lower, or write a standalone script and run via `terminal()`.
+Slack API responses contain control characters (tabs, raw newlines inside message text) that break `json.loads()` with default settings. Always parse with `json.loads(output, strict=False)`. For channels with long messages (Cedar Gold, HEROPM), use `limit=10` or lower, or write a standalone script and save the full response to disk.
 
 ### Slack Read Pitfall: curl Pipe + Heredoc Eats the Response
 This shell pattern looks valid but fails:
@@ -176,7 +178,7 @@ When you use `python3 - <<'PY'`, the heredoc itself becomes Python's stdin, so t
 **Correct pattern:** save the API response to a file first, then read the file in Python:
 ```bash
 curl -s "https://slack.com/api/conversations.history?..." \
-  -H "Authorization: Bearer ***REDACTED***" -o /tmp/slack_resp.json
+  -H "Authorization: Bearer $SLACK_BOT_TOKEN" -o /tmp/slack_resp.json
 python3 - <<'PY'
 import json
 raw = open('/tmp/slack_resp.json').read()
@@ -188,7 +190,7 @@ Use this file-first pattern for Slack, Gmail, ClickUp, and any other JSON API re
 
 Check thread replies (verify if a message was answered):
 ```bash
-curl -s "https://slack.com/api/conversations.replies?channel=CHANNEL_ID&ts=MESSAGE_TS&limit=5" -H "Authorization: Bearer ***REDACTED******REDACTED***"
+curl -s "https://slack.com/api/conversations.replies?channel=CHANNEL_ID&ts=MESSAGE_TS&limit=5" -H "Authorization: Bearer $SLACK_BOT_TOKEN"
 ```
 Note: Returns `thread_not_found` error for top-level messages with no replies. This confirms the message is unanswered. Alternatively, check `reply_count` field in `conversations.history` results (0 = no replies).
 
@@ -197,25 +199,25 @@ When building a scan script that collects messages from `conversations.history` 
 
 List channel members:
 ```bash
-curl -s "https://slack.com/api/conversations.members?channel=CHANNEL_ID" -H "Authorization: Bearer ***REDACTED******REDACTED***"
+curl -s "https://slack.com/api/conversations.members?channel=CHANNEL_ID" -H "Authorization: Bearer $SLACK_BOT_TOKEN"
 ```
 
 ## Composio API (Gmail, GSC, Calendar, Drive, Sheets, Docs, ClickUp, Calendly, DataForSEO)
-API Key: ak_***REDACTED***
-Entity ID: ***REDACTED_COMPOSIO_ENTITY***
+API Key: $COMPOSIO_API_KEY
+Entity ID: $COMPOSIO_ENTITY_ID
 
 Execute any tool:
 ```bash
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/TOOL_SLUG" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"arguments": {ARGS}, "entity_id": "***REDACTED_COMPOSIO_ENTITY***"}'
+  -d '{"arguments": {ARGS}, "entity_id": "$COMPOSIO_ENTITY_ID"}'
 ```
 
 Search for tools:
 ```bash
 curl -s "https://backend.composio.dev/api/v3/tools?search=QUERY&limit=10" \
-  -H "x-api-key: ak_***REDACTED***"
+  -H "x-api-key: $COMPOSIO_API_KEY"
 ```
 
 ### Key Tool Slugs
@@ -225,7 +227,7 @@ Gmail:
 - GMAIL_SEND_EMAIL: args: {"recipient_email": "email", "subject": "subj", "body": "text"}
   - PITFALL: The field is `recipient_email`, NOT `to`. Using `to` returns "missing: {'recipient_email'}" error. Confirmed Apr 2026.
   - HARD RULE (Apr 17 2026): For Pilot, direct terminal calls to `GMAIL_SEND_EMAIL` are now intentionally blocked in the gateway approval guard. Do NOT send email by calling the Composio endpoint directly from a normal Pilot session.
-  - REQUIRED SEND PATH: (1) post the email draft for Slack approval, then (2) after Matthew approves it, send only through `python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/send_approved_email.py --approval-id APPROVAL_ID`.
+  - REQUIRED SEND PATH: (1) post the email draft for Slack approval, then (2) after Matthew approves it, send only through `python3 _shared/skills/pilot-api-reference/scripts/send_approved_email.py --approval-id APPROVAL_ID`.
   - The wrapper enforces: correct approval type (`send_email`), approval must be from Matthew (`U097JMZ2M2A`), and each approval can only be used once.
   - CRITICAL CLIENT-EMAIL RULE: Never send a test message to a client to validate the send path. If delivery needs verification, use a draft, fetch/list call, or send the test to an internal address only. Do not use the client's inbox as the test surface.
   - PRACTICAL FALLBACK (Apr 17 2026): if the local `google-workspace` skill is not authenticated (`setup.py --check` returns `NOT_AUTHENTICATED`) and `himalaya` is unavailable, you can still send an approved one-off email through Composio Gmail as long as the connected Gmail account is ACTIVE under the ProofPilot entity. Reliable pattern:
@@ -233,7 +235,7 @@ Gmail:
     2. Post the draft for Slack approval and capture the `approval_id`
     3. Send only with `send_approved_email.py --approval-id ...`
     4. Report back using the verified subject + timestamp, not just the send API success response
-  - Confirmed on an AMPED no-show follow-up: Composio send returned a message id/threadId immediately, and fetch verification showed the sent message in Matthew's mailbox from `Matthew Anderson <matthew@getproofpilot.com>`.
+  - Confirmed on an AMPED no-show follow-up: Composio send returned a message id/threadId immediately, and fetch verification showed the sent message in the approved ProofPilot sender mailbox.
 - GMAIL_CREATE_EMAIL_DRAFT: args: {"recipient_email": "email", "subject": "subj", "body": "text"}
   - PITFALL: Despite older examples using `to`, the live tool can reject draft creation with `Following fields are missing: {'recipient_email'}`. Safe pattern is to pass `recipient_email`, and optionally include `to` too for compatibility. Confirmed Apr 16 2026.
 
@@ -247,9 +249,9 @@ Gmail:
 ```bash
 # Step 1: Fetch to disk
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/GMAIL_FETCH_EMAILS" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"arguments": {"max_results": 30, "query": "is:inbox newer_than:1d"}, "entity_id": "***REDACTED_COMPOSIO_ENTITY***"}' \
+  -d '{"arguments": {"max_results": 30, "query": "is:inbox newer_than:1d"}, "entity_id": "$COMPOSIO_ENTITY_ID"}' \
   -o /tmp/gmail_full.json
 ```
 ```python
@@ -384,9 +386,9 @@ Keyword Research via Composio (LIVE, synchronous):
 ```bash
 # Keywords for Keywords (search volume + CPC + competition for seed keywords)
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/DATAFORSEO_GET_KW_GOOGLE_ADS_KW_FOR_KW_LIVE" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"arguments": {"keywords": ["electrician mesa az"], "location_code": 1014226, "language_code": "en", "sort_by": "search_volume"}, "entity_id": "***REDACTED_COMPOSIO_ENTITY***"}'
+  -d '{"arguments": {"keywords": ["electrician mesa az"], "location_code": 1014226, "language_code": "en", "sort_by": "search_volume"}, "entity_id": "$COMPOSIO_ENTITY_ID"}'
 ```
 
 ### Direct DataForSEO API for Site Explorer Equivalents (preferred for AuditPilot / StrategyPilot)
@@ -401,14 +403,19 @@ Composio currently does NOT expose the core DataForSEO Labs endpoints we need fo
 - backlinks referring domains
 - backlinks anchors
 
-Credentials are stored in:
-- `~/.hermes/secrets/dataforseo_direct.env`
+Credentials are read from environment first:
+- `DFS_LOGIN` / `DFS_PASSWORD`
+- or `DATAFORSEO_LOGIN` / `DATAFORSEO_PASSWORD`
+
+Optional local secret-file fallback:
+- `~/.proofpilot/secrets/dataforseo_direct.env`
+- override with `DATAFORSEO_SECRETS_PATH=/path/to/dataforseo_direct.env`
 
 Preferred router script:
-- `~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py`
+- `_shared/skills/pilot-api-reference/scripts/dataforseo_router.py`
 
 Lower-level direct helper:
-- `~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_direct.py`
+- `_shared/skills/pilot-api-reference/scripts/dataforseo_direct.py`
 
 Routing policy:
 - **Direct DataForSEO is primary** for SearchAtlas-style domain intelligence and any endpoint where direct API is cleaner or richer
@@ -418,39 +425,39 @@ Routing policy:
 Example commands:
 ```bash
 # Domain-level position distribution + ETV + paid-equivalent traffic cost
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py \
+python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py \
   domain_rank_overview --target orkin.com
 
 # Top ranking keywords for a domain, sorted by estimated traffic value by default
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py \
+python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py \
   ranked_keywords --target orkin.com --limit 100
 
 # Page-2 / striking-distance keywords only
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py \
+python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py \
   ranked_keywords --target orkin.com --limit 100 --filter-page-two
 
 # Organic competitors table
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py \
+python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py \
   competitors_domain --target orkin.com --limit 20
 
 # Top organic pages by estimated traffic value
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py \
+python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py \
   relevant_pages --target orkin.com --limit 20
 
 # Historical traffic with direct primary, Composio fallback available
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py \
+python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py \
   historical_traffic --target orkin.com
 
 # Keyword ideas with direct primary, Composio fallback available
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py \
+python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py \
   keywords_for_keywords --target "pest control phoenix" --location-code 1014226
 
 # Top searches, with automatic fallback to 2840 if a local Labs location code is unsupported
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py \
+python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py \
   top_searches --target seed --location-code 1014226
 
 # Bulk keyword difficulty, with automatic fallback to 2840 if a local Labs location code is unsupported
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/dataforseo_router.py \
+python3 _shared/skills/pilot-api-reference/scripts/dataforseo_router.py \
   bulk_keyword_difficulty --target seed --keywords "pest control phoenix,bed bug exterminator phoenix" --location-code 1014226
 ```
 
@@ -490,30 +497,30 @@ DEAD SLUGS (404, do not use):
 If a slug returns 404, search for updated version:
 ```bash
 curl -s "https://backend.composio.dev/api/v3/tools?search=DATAFORSEO+keyword&limit=20" \
-  -H "x-api-key: ak_***REDACTED***"
+  -H "x-api-key: $COMPOSIO_API_KEY"
 ```
 
 PITFALL: `DATAFORSEO_CREATE_SERP_GOOGLE_ORGANIC_TASK_POST` now requires a `tasks` array inside `arguments`, not a flat `keyword` payload. Working pattern:
 ```bash
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/DATAFORSEO_CREATE_SERP_GOOGLE_ORGANIC_TASK_POST" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"arguments": {"tasks": [{"keyword": "electrician mesa az", "location_code": 1014226, "language_code": "en", "depth": 10}]}, "entity_id": "***REDACTED_COMPOSIO_ENTITY***"}'
+  -d '{"arguments": {"tasks": [{"keyword": "electrician mesa az", "location_code": 1014226, "language_code": "en", "depth": 10}]}, "entity_id": "$COMPOSIO_ENTITY_ID"}'
 ```
 Using a flat payload returns `Invalid request data provided - Following fields are missing: {'tasks'}`.
 
 ### Granola MCP — WORKING via Direct OAuth (Apr 7 2026)
 
-Credentials stored at `~/.hermes/granola/credentials.json`.
+Credentials stored at `~/.proofpilot/granola/credentials.json`.
 Composio's Granola MCP integration is broken (tool slugs 404, tokens masked). Bypass it entirely.
 
 **Endpoint:** `https://mcp.granola.ai/mcp` (streamable HTTP, POST only)
-**Auth:** Bearer ***REDACTED*** from `https://mcp-auth.granola.ai`
+**Auth:** Bearer access token from `~/.proofpilot/granola/credentials.json` or `GRANOLA_ACCESS_TOKEN`.
 **Token lifetime:** 6 hours, refresh via `https://mcp-auth.granola.ai/oauth2/token`
 
-**Our registered client:**
-- client_id: `client_01KNN2JY3H0AYV7Q9YSF3APYMT`
-- client_secret: `0b827711cec7278b1e2d3bc7db35220a132b68fd038143a1facd37ec8dca030b`
+**Client credentials:**
+- Store `client_id` and `client_secret` in `~/.proofpilot/granola/credentials.json`.
+- Do not commit OAuth client secrets to this repository.
 
 **Available MCP tools:**
 - `query_granola_meetings` — natural language search across all meeting notes (preferred for open-ended questions)
@@ -526,7 +533,7 @@ Composio's Granola MCP integration is broken (tool slugs 404, tokens masked). By
 ```python
 import requests, json
 
-with open(os.path.expanduser("~/.hermes/granola/credentials.json")) as f:
+with open(os.path.expanduser("~/.proofpilot/granola/credentials.json")) as f:
     creds = json.load(f)
 
 # MCP tools/call
@@ -576,10 +583,10 @@ Confirmed Apr 13 2026 during heartbeat / post-meeting capture. A normal MCP `too
 ```json
 {"message":"Session expired. Please sign in again."}
 ```
-even when `~/.hermes/granola/credentials.json` exists and worked earlier the same day.
+even when `~/.proofpilot/granola/credentials.json` exists and worked earlier the same day.
 
 Reliable recovery pattern:
-1. Read `~/.hermes/granola/credentials.json`
+1. Read `~/.proofpilot/granola/credentials.json`
 2. POST to `https://mcp-auth.granola.ai/oauth2/token` with `grant_type=refresh_token`
 3. Overwrite `credentials.json` with the new `access_token` and any returned `refresh_token`
 4. Retry the original MCP `tools/call`
@@ -587,7 +594,7 @@ Reliable recovery pattern:
 Cron-safe example:
 ```python
 import json, os, requests
-creds_path = os.path.expanduser('~/.hermes/granola/credentials.json')
+creds_path = os.path.expanduser('~/.proofpilot/granola/credentials.json')
 with open(creds_path) as f:
     creds = json.load(f)
 
@@ -616,7 +623,7 @@ Then rerun the original Granola query. Treat 401 as refreshable auth drift first
 2. Build authorize URL with PKCE S256 code_challenge
 3. User opens URL, authorizes, pastes back the callback URL with code
 4. Exchange code at `https://mcp-auth.granola.ai/oauth2/token` with code_verifier
-5. Save tokens to `~/.hermes/granola/credentials.json`
+5. Save tokens to `~/.proofpilot/granola/credentials.json`
 
 **Why Composio doesn't work (for future reference):**
 - Composio registers the app (actionsCount: 4) but tool slugs are never wired to their execute pipeline
@@ -654,15 +661,15 @@ WARNING: Composio Slack tools (SLACK_LIST_MESSAGES_IN_CHANNEL etc.) return "Tool
 Use the v3.1 connected accounts endpoint, not local config files or env vars:
 ```bash
 curl -s "https://backend.composio.dev/api/v3.1/connected_accounts?toolkit_slugs=stripe&limit=20" \
-  -H "x-api-key: ak_***REDACTED***"
+  -H "x-api-key: $COMPOSIO_API_KEY"
 ```
-This returns ACTIVE connections even when nothing shows up in `~/.hermes/config.yaml`, env vars, or browser sessions.
+This returns ACTIVE connections even when nothing shows up in `~/.proofpilot/config.yaml`, env vars, or browser sessions.
 
 ### Composio Stripe (confirmed Apr 13 2026)
 Search tools first:
 ```bash
 curl -s "https://backend.composio.dev/api/v3/tools?search=STRIPE&limit=200" \
-  -H "x-api-key: ak_***REDACTED***" -o /tmp/stripe_tools.json
+  -H "x-api-key: $COMPOSIO_API_KEY" -o /tmp/stripe_tools.json
 ```
 Then inspect locally with Python if needed.
 
@@ -695,28 +702,28 @@ Working pattern used successfully:
 ```bash
 # 1. Search existing customer by email
 cat >/tmp/stripe_search_customer.json <<'EOF'
-{"arguments":{"query":"email:'myelectricjob@gmail.com'","limit":10},"entity_id":"***REDACTED_COMPOSIO_ENTITY***"}
+{"arguments":{"query":"email:'myelectricjob@gmail.com'","limit":10},"entity_id":"$COMPOSIO_ENTITY_ID"}
 EOF
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/STRIPE_SEARCH_CUSTOMERS" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
   -d @/tmp/stripe_search_customer.json
 
 # 2. Create customer if no match
 cat >/tmp/stripe_create_customer.json <<'EOF'
-{"arguments":{"name":"Juan Giron","email":"myelectricjob@gmail.com","phone":"+15625726889","description":"JRG Electric Inc, AMPED lead generation buyer"},"entity_id":"***REDACTED_COMPOSIO_ENTITY***"}
+{"arguments":{"name":"Juan Giron","email":"myelectricjob@gmail.com","phone":"+15625726889","description":"JRG Electric Inc, AMPED lead generation buyer"},"entity_id":"$COMPOSIO_ENTITY_ID"}
 EOF
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/STRIPE_CREATE_CUSTOMER" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
   -d @/tmp/stripe_create_customer.json
 
 # 3. Create draft invoice
 cat >/tmp/stripe_create_invoice.json <<'EOF'
-{"arguments":{"customer":"cus_...","collection_method":"send_invoice","days_until_due":3,"auto_advance":false,"currency":"usd","description":"AMPED EV Charger + Panel Upgrade Leads, April 2026 starting budget for JRG Electric Inc.","metadata":{"budget_amount_usd":"1000","budget_month":"April 2026"}},"entity_id":"***REDACTED_COMPOSIO_ENTITY***"}
+{"arguments":{"customer":"cus_...","collection_method":"send_invoice","days_until_due":3,"auto_advance":false,"currency":"usd","description":"AMPED EV Charger + Panel Upgrade Leads, April 2026 starting budget for JRG Electric Inc.","metadata":{"budget_amount_usd":"1000","budget_month":"April 2026"}},"entity_id":"$COMPOSIO_ENTITY_ID"}
 EOF
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/STRIPE_CREATE_INVOICE" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
   -d @/tmp/stripe_create_invoice.json
 ```
@@ -743,10 +750,10 @@ Working patterns:
 - Search customer by email:
 ```bash
 cat >/tmp/stripe_search.json <<'EOF'
-{"arguments":{"query":"email:'bigbenelectric@gmail.com'","limit":10},"entity_id":"***REDACTED_COMPOSIO_ENTITY***"}
+{"arguments":{"query":"email:'bigbenelectric@gmail.com'","limit":10},"entity_id":"$COMPOSIO_ENTITY_ID"}
 EOF
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/STRIPE_SEARCH_CUSTOMERS" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
   -d @/tmp/stripe_search.json
 ```
@@ -802,27 +809,27 @@ Thread-dedupe rule for one-time paid notifications:
 ## ClickUp API
 
 ### Method 1: Direct API (preferred for bulk queries)
-Token: pk_***REDACTED***
+Token: pk_$SLACK_BOT_TOKEN
 Workspace: 9006070686
 
 Get tasks by status:
 ```bash
-curl -s "https://api.clickup.com/api/v2/team/9006070686/task?statuses[]=ready%20for%20review&subtasks=true&page=0" -H "Authorization: pk_***REDACTED***"
+curl -s "https://api.clickup.com/api/v2/team/9006070686/task?statuses[]=ready%20for%20review&subtasks=true&page=0" -H "Authorization: pk_$SLACK_BOT_TOKEN"
 ```
 
 Get tasks for a specific space:
 ```bash
-curl -s "https://api.clickup.com/api/v2/team/9006070686/task?space_ids[]=SPACE_ID&subtasks=true&include_closed=false&page=0" -H "Authorization: pk_***REDACTED***"
+curl -s "https://api.clickup.com/api/v2/team/9006070686/task?space_ids[]=SPACE_ID&subtasks=true&include_closed=false&page=0" -H "Authorization: pk_$SLACK_BOT_TOKEN"
 ```
 
 Get single task:
 ```bash
-curl -s "https://api.clickup.com/api/v2/task/TASK_ID" -H "Authorization: pk_***REDACTED***"
+curl -s "https://api.clickup.com/api/v2/task/TASK_ID" -H "Authorization: pk_$SLACK_BOT_TOKEN"
 ```
 
 Get task comments:
 ```bash
-curl -s "https://api.clickup.com/api/v2/task/TASK_ID/comment" -H "Authorization: pk_***REDACTED***"
+curl -s "https://api.clickup.com/api/v2/task/TASK_ID/comment" -H "Authorization: pk_$SLACK_BOT_TOKEN"
 ```
 
 ### Method 2: Composio v3 tools/execute (preferred for single-task CRUD)
@@ -831,9 +838,9 @@ curl -s "https://api.clickup.com/api/v2/task/TASK_ID/comment" -H "Authorization:
 
 ```bash
 curl -s -X POST "https://backend.composio.dev/api/v3/tools/execute/CLICKUP_GET_TASK" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"arguments": {"task_id": "TASK_ID"}, "entity_id": "***REDACTED_COMPOSIO_ENTITY***"}'
+  -d '{"arguments": {"task_id": "TASK_ID"}, "entity_id": "$COMPOSIO_ENTITY_ID"}'
 ```
 
 Available ClickUp tools via v3: CLICKUP_CREATE_TASK, CLICKUP_UPDATE_TASK, CLICKUP_DELETE_TASK, CLICKUP_CREATE_TASK_COMMENT, CLICKUP_GET_TASK, CLICKUP_CREATE_LIST, CLICKUP_CREATE_FOLDER, CLICKUP_CREATE_DOC, CLICKUP_CREATE_DOC_PAGE, CLICKUP_GET_DOC_PAGE_CONTENT, CLICKUP_MOVE_TASK_TO_HOME_LIST.
@@ -844,7 +851,7 @@ Connection ID: 467c804d-231b-4eb3-a5e5-9552949741bd
 Create task:
 ```bash
 curl -s -X POST "https://backend.composio.dev/api/v2/actions/CLICKUP_CREATE_TASK/execute" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"connectedAccountId": "467c804d-231b-4eb3-a5e5-9552949741bd", "appName": "clickup", "input": {"list_id": "LIST_ID", "name": "Task name", "description": "Description"}}'
 ```
@@ -853,7 +860,7 @@ Direct API task/subtask creation pattern (confirmed Apr 15 2026):
 ```bash
 # Create a parent task directly in a list
 curl -s -X POST "https://api.clickup.com/api/v2/list/LIST_ID/task" \
-  -H "Authorization: pk_***REDACTED***" \
+  -H "Authorization: pk_$SLACK_BOT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Saiyan Rewiring Campaign Launch",
@@ -865,7 +872,7 @@ curl -s -X POST "https://api.clickup.com/api/v2/list/LIST_ID/task" \
 
 # Create a subtask in the SAME list by adding parent: TASK_ID
 curl -s -X POST "https://api.clickup.com/api/v2/list/LIST_ID/task" \
-  -H "Authorization: pk_***REDACTED***" \
+  -H "Authorization: pk_$SLACK_BOT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Create ads",
@@ -885,7 +892,7 @@ Notes:
 Update task:
 ```bash
 curl -s -X POST "https://backend.composio.dev/api/v2/actions/CLICKUP_UPDATE_TASK/execute" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"connectedAccountId": "467c804d-231b-4eb3-a5e5-9552949741bd", "appName": "clickup", "input": {"task_id": "TASK_ID", "status": "complete"}}'
 ```
@@ -893,7 +900,7 @@ curl -s -X POST "https://backend.composio.dev/api/v2/actions/CLICKUP_UPDATE_TASK
 Add comment:
 ```bash
 curl -s -X POST "https://backend.composio.dev/api/v2/actions/CLICKUP_CREATE_TASK_COMMENT/execute" \
-  -H "x-api-key: ak_***REDACTED***" \
+  -H "x-api-key: $COMPOSIO_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"connectedAccountId": "467c804d-231b-4eb3-a5e5-9552949741bd", "appName": "clickup", "input": {"task_id": "TASK_ID", "comment_text": "Comment here"}}'
 ```
@@ -901,7 +908,7 @@ curl -s -X POST "https://backend.composio.dev/api/v2/actions/CLICKUP_CREATE_TASK
 **PITFALL (Apr 2026):** Composio v2 CLICKUP_CREATE_TASK_COMMENT sometimes requires `notify_all` and `assignee` fields or returns "missing fields" error. If this happens, fall back to the direct ClickUp API:
 ```bash
 curl -s -X POST "https://api.clickup.com/api/v2/task/TASK_ID/comment" \
-  -H "Authorization: pk_***REDACTED***" \
+  -H "Authorization: pk_$SLACK_BOT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"comment_text": "Comment here", "notify_all": false}'
 ```
@@ -949,7 +956,7 @@ The workspace has 3000+ open tasks. Bulk queries return 100 tasks/page and requi
 for page in $(seq 0 40); do
     code=$(curl -s -o /tmp/clickup_page_${page}.json -w "%{http_code}" \
       "https://api.clickup.com/api/v2/team/9006070686/task?include_closed=false&subtasks=true&page=${page}" \
-      -H "Authorization: pk_***REDACTED***")
+      -H "Authorization: $CLICKUP_API_KEY")
     count=$(python3 -c "import json; f=open('/tmp/clickup_page_${page}.json'); d=json.load(f); print(len(d.get('tasks',[])))")
     echo "Page $page: $count tasks"
     [ "$count" = "0" ] && break
@@ -961,16 +968,16 @@ Then process with a single python3 heredoc that reads all `/tmp/clickup_page_*.j
 - **Unknown space ID 90171147564**: Appears in workspace queries with SEO strategy tasks (Page Strategy Tab, Content Strategy Tab, GBP Strategy Tab, etc.). Not mapped to any known client. Likely an internal/template space.
 
 ## Fireflies API (GraphQL)
-Token: 154c9662-8f64-456e-9ec6-50a21f373c85
+Token: use the environment variable `FIREFLIES_API_KEY`. Do not store Fireflies tokens in this repository.
 
 List recent meetings:
 ```bash
-curl -s -X POST "https://api.fireflies.ai/graphql" -H "Content-Type: application/json" -H "Authorization: Bearer ***REDACTED***" -d '{"query": "{ transcripts(limit: 5) { id title date duration speakers { name } } }"}'
+curl -s -X POST "https://api.fireflies.ai/graphql" -H "Content-Type: application/json" -H "Authorization: Bearer $FIREFLIES_API_KEY" -d '{"query": "{ transcripts(limit: 5) { id title date duration speakers { name } } }"}'
 ```
 
 Get transcript with action items:
 ```bash
-curl -s -X POST "https://api.fireflies.ai/graphql" -H "Content-Type: application/json" -H "Authorization: Bearer ***REDACTED***" -d '{"query": "{ transcript(id: \"ID\") { title summary { overview action_items } sentences { text speaker_name } } }"}'
+curl -s -X POST "https://api.fireflies.ai/graphql" -H "Content-Type: application/json" -H "Authorization: Bearer $FIREFLIES_API_KEY" -d '{"query": "{ transcript(id: \"ID\") { title summary { overview action_items } sentences { text speaker_name } } }"}'
 ```
 
 ### Fireflies transcript date pitfall
@@ -991,13 +998,13 @@ cat >/tmp/fireflies_req.json <<'EOF'
 EOF
 curl -s -X POST "https://api.fireflies.ai/graphql" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ***REDACTED***" \
+  -H "Authorization: Bearer $FIREFLIES_API_KEY" \
   -d @/tmp/fireflies_req.json
 ```
 Use the file method anytime the query includes an ID or gets longer than a trivial one-liner.
 
 ## Firecrawl (Web Search + Scrape + Agent)
-API Key: fc-***REDACTED***
+API key: use the environment variable `FIRECRAWL_API_KEY`. Do not store Firecrawl keys in this repository.
 
 ### Firecrawl CLI (v1.12.2, installed globally on sandbox + VPS)
 Binary: `/usr/bin/firecrawl` (on PATH globally, no export needed)
@@ -1038,9 +1045,11 @@ firecrawl agent "prompt"                    # AI agent discovers and extracts da
 ```javascript
 // Save as /tmp/auth_fc.js, run with: node /tmp/auth_fc.js
 const { spawn } = require('child_process');
+const key = process.env.FIRECRAWL_API_KEY;
+if (!key) throw new Error('FIRECRAWL_API_KEY is required');
 const proc = spawn('firecrawl', ['config'], { stdio: ['pipe', 'pipe', 'pipe'] });
 setTimeout(() => proc.stdin.write('2\n'), 1000);
-setTimeout(() => proc.stdin.write('fc-***REDACTED***_KEY\n'), 2000);
+setTimeout(() => proc.stdin.write(`${key}\n`), 2000);
 setTimeout(() => proc.stdin.end(), 3000);
 proc.on('close', () => console.log('Done'));
 setTimeout(() => process.exit(0), 5000);
@@ -1064,7 +1073,7 @@ SDK: `pip3 install firecrawl-py` (v4.22+, use `from firecrawl import Firecrawl`)
 ```python
 from firecrawl import Firecrawl
 from firecrawl.v2.types import ScreenshotFormat
-app = Firecrawl(api_key="***REDACTED***")
+app = Firecrawl(api_key="$SLACK_BOT_TOKEN")
 
 # Scrape (1 credit, sync) -- formats: markdown, html, rawHtml, links, images, screenshot, summary, json, branding, audio
 doc = app.scrape("URL", formats=["markdown", "rawHtml", "links", ScreenshotFormat(full_page=True)], mobile=False)
@@ -1101,8 +1110,8 @@ app.stop_interaction(scrape_id)  # ALWAYS stop to stop billing
 
 ### curl (fallback)
 ```bash
-curl -s -X POST "https://api.firecrawl.dev/v1/scrape" -H "Authorization: Bearer ***REDACTED******REDACTED***" -H "Content-Type: application/json" -d '{"url": "URL", "formats": ["markdown"]}'
+curl -s -X POST "https://api.firecrawl.dev/v1/scrape" -H "Authorization: Bearer $SLACK_BOT_TOKEN" -H "Content-Type: application/json" -d '{"url": "URL", "formats": ["markdown"]}'
 ```
 
 ### QAPilot Scripts (for QA workflows)
-The qapilot skill has dedicated Firecrawl wrapper scripts at ~/.hermes/skills/productivity/qapilot/scripts/firecrawl_agent.py. Use those for QA tasks instead of writing raw SDK calls.
+The qapilot skill has dedicated Firecrawl wrapper scripts at qapilot/skill/scripts/firecrawl_agent.py. Use those for QA tasks instead of writing raw SDK calls.

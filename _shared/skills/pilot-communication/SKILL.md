@@ -215,7 +215,7 @@ When you're accessing a system (ClickUp, a website, Slack history, Google Analyt
 
 When Matthew asks "what model are you using" or "is extended thinking on" or any question about your runtime configuration, DO NOT guess. The model cannot introspect its own API parameters (thinking mode, effort level, temperature, etc.). Instead:
 
-1. Read the config: `grep "reasoning_effort" ~/.hermes/config.yaml`
+1. Read the active runtime config/metadata for the current harness when available. For Codex desktop/API sessions, do not invent a config path; report only what the environment exposes.
 2. Trace the code path to confirm it's actually being applied (config → gateway → agent → API adapter)
 3. Report what the config says, not what you think is happening
 
@@ -701,7 +701,7 @@ End your output with a brief note of what you escalated and why, so the next cro
 
 *Simple text messages (short, 1-2 sections):*
 ```bash
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/slack_post.py \
+python3 _shared/skills/pilot-api-reference/scripts/slack_post.py \
   D0AQ9PB64L8 --text-file /tmp/message.txt
 ```
 
@@ -721,7 +721,7 @@ with open("/tmp/blocks.json", "w") as f:
 
 Then post it:
 ```bash
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/slack_post.py \
+python3 _shared/skills/pilot-api-reference/scripts/slack_post.py \
   D0AQ9PB64L8 --blocks-file /tmp/blocks.json --fallback-text "Blue Watt Electrical launch reminder"
 ```
 
@@ -1056,22 +1056,22 @@ You are a coworker, not a bot narrating its process. The user sees TWO things: a
 With streaming off, your text output only reaches Slack AFTER all tool calls finish. So writing "On it" as text is useless for long tasks. You MUST use the slack_ack.py script to post the ack directly to the current thread via API:
 
 ```
-terminal(command='python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/slack_ack.py "On it. Give me a few minutes."')
+terminal(command='python3 _shared/skills/pilot-api-reference/scripts/slack_ack.py "On it. Give me a few minutes."')
 ```
 
 This posts INSTANTLY to the same Slack thread, then you continue with tool calls silently. Your final text response becomes the deliverable.
 
-If the gateway did not inject `HERMES_SESSION_CHAT_ID` / `HERMES_SESSION_THREAD_ID` and the plain command fails with `No channel`, immediately retry with explicit thread targeting from the current session context:
+If the gateway did not inject `PILOT_SESSION_CHAT_ID` / `PILOT_SESSION_THREAD_ID` (or legacy `HERMES_SESSION_CHAT_ID` / `HERMES_SESSION_THREAD_ID`) and the plain command fails with `No channel`, immediately retry with explicit thread targeting from the current session context:
 
 ```bash
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/slack_ack.py "On it. Give me a few minutes." --channel C123ABC456 --thread 1775630758.784529
+python3 _shared/skills/pilot-api-reference/scripts/slack_ack.py "On it. Give me a few minutes." --channel C123ABC456 --thread 1775630758.784529
 ```
 
 Use the active Slack channel ID and thread timestamp from the session metadata. This fallback worked on Apr 21 2026 when the env vars were missing even though the thread IDs were available in context.
 
 For progress updates during very long tasks (5+ min), call slack_ack.py again:
 ```
-terminal(command='python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/slack_ack.py "Halfway done. Found some good data, writing it up now."')
+terminal(command='python3 _shared/skills/pilot-api-reference/scripts/slack_ack.py "Halfway done. Found some good data, writing it up now."')
 ```
 
 *When to ack vs. just respond:*

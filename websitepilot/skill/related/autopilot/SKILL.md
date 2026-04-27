@@ -32,8 +32,8 @@ Do NOT "manually follow the methodology" or "build content directly." The whole 
 - **Location:** Hostinger VPS `187.124.234.21`
 - **Backend:** `/root/Autopilot/backend/`
 - **Database:** `/root/Autopilot/backend/jobs.db` (SQLite)
-- **Env file:** `/root/Autopilot/.env` (DATABASE_PATH). LLM keys come from `~/.hermes/.env` (ANTHROPIC_TOKEN, FIRECRAWL_API_KEY).
-- **Models:** xiaomi/mimo-v2-pro (default, via OpenRouter), deepseek/deepseek-v3.2, z-ai/glm-5.1, qwen/qwen3-235b-a22b, claude-sonnet-4, claude-opus-4, claude-haiku-4.5. OpenRouter models go through `openrouter.ai/api/v1`; Anthropic models go through subscription OAuth token.
+- **Env file:** `/root/Autopilot/.env` (DATABASE_PATH). LLM keys come from local environment variables (`OPENAI_API_KEY`, `OPENROUTER_API_KEY`, `FIRECRAWL_API_KEY` as needed).
+- **Models:** xiaomi/mimo-v2-pro (default, via OpenRouter), deepseek/deepseek-v3.2, z-ai/glm-5.1, qwen/qwen3-235b-a22b, and OpenAI models available through the configured Codex/OpenRouter environment. Do not require Anthropic for Codex WebsitePilot runs.
 - **DO NOT USE for page gen:** Haiku (wireframe quality), Gemini 3 Flash (truncates mid-CSS, 62/100).
 - **DEPRECATED:** `qwen/qwen3.6-plus:free` is dead (404). Use `qwen/qwen3.6-plus` (paid) or `qwen/qwen3-235b-a22b`.
 
@@ -229,7 +229,7 @@ If this fails, STOP. Tell the user AutoPilot is unreachable.
 All commands require:
 ```bash
 cd /root/Autopilot/backend && export $(grep -v '^#' /root/Autopilot/.env | xargs) && \
-export $(grep -v '^#' /root/.hermes/.env | grep -E "OPENROUTER|FIRECRAWL|ANTHROPIC|DATAFORSEO" | xargs)
+export OPENROUTER_API_KEY FIRECRAWL_API_KEY DATAFORSEO_LOGIN DATAFORSEO_PASSWORD
 ```
 
 ### Generate a single page (reliable)
@@ -310,13 +310,12 @@ When running AutoPilot from Slack, be CONCISE. Do not narrate internal steps.
 2. Alternative: `--model "deepseek/deepseek-v3.2"` — 76/100, more concise. Good fallback.
 3. Budget: `--model "qwen/qwen3-235b-a22b"` — Cheaper. Decent quality.
 4. Avoid: Gemini 3 Flash (truncates), Haiku (wireframe), `qwen/qwen3.6-plus:free` (dead 404).
-5. Anthropic models (Sonnet/Opus): Only when gateway is idle. Severe 429 risk.
+5. Anthropic models: do not use for Codex WebsitePilot runs unless the user explicitly asks.
 6. Check OpenRouter credits: `curl -s https://openrouter.ai/api/v1/auth/key -H "Authorization: Bearer $OPENROUTER_API_KEY"` — look at `limit_remaining`.
 
-**Env for OpenRouter:** Export BOTH .env files:
+**Env for OpenRouter/DataForSEO:** use local environment variables:
 ```bash
-export $(grep -v '^#' /root/Autopilot/.env | xargs) && \
-export $(grep -v '^#' /root/.hermes/.env | grep -E "OPENROUTER|FIRECRAWL|ANTHROPIC|DATAFORSEO" | xargs)
+export OPENROUTER_API_KEY FIRECRAWL_API_KEY DATAFORSEO_LOGIN DATAFORSEO_PASSWORD
 ```
 
 ## Preview Server (Persistent, Shareable URLs)

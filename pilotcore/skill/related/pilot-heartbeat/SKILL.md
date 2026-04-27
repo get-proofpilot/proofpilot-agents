@@ -147,7 +147,7 @@ Use terminal with bash loop (NOT execute_code).
 **CRITICAL: Clean up leftover files first** (see Pitfall #33):
 ```bash
 rm -f /tmp/hb_*.json
-TOKEN="***REDACTED***"
+TOKEN="$SLACK_BOT_TOKEN"
 OLDEST=$(python3 -c "import time; print(f'{time.time() - 1800:.6f}')")
 for pair in "pm-team:C0AFPA546F3" "general:C097JMZ91RC" "approvals:C09FUEHE2A3" "seo-team:C097JN65KAS" \
             "cedar-gold:C0AC89HP4N4" "heropm:C0AM6EZ2CBX" "iss:C09FD47CERF" "pce:C097JNC232A" \
@@ -395,11 +395,11 @@ Most common. Log what was checked. Output [HEARTBEAT_OK].
 2. Prefer `slack_post.py` for delivery:
 ```bash
 # simple text
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/slack_post.py \
+python3 _shared/skills/pilot-api-reference/scripts/slack_post.py \
   D0AQ9PB64L8 --text-file /tmp/message.txt
 
 # Block Kit for reminders / multi-part updates
-python3 ~/.hermes/skills/productivity/pilot-api-reference/scripts/slack_post.py \
+python3 _shared/skills/pilot-api-reference/scripts/slack_post.py \
   D0AQ9PB64L8 --blocks-file /tmp/blocks.json --fallback-text "Pilot update"
 ```
 3. Use the canonical template layer when possible:
